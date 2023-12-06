@@ -1,0 +1,164 @@
+from tkinter import *
+from tkinter import ttk
+from tkinter.filedialog import askopenfilename
+contador_querys  = 1
+class interfaz:
+    def __init__(self, ventana):
+        self.ventana = ventana  #INICIALIZAMOS LA VENTANA
+        self.ventana.title("PROYECTO - COMPILADORES 2") #TITULO DE VENTANA
+        self.ventana.geometry("1280x720")    #TAMAÑO DE LA VENTANA
+        self.ventana.configure(bg='white')#color de fondo ventana
+        
+def crear_pestana(notebook,texto_prueba):
+    pestana = Frame(notebook)
+    notebook.add(pestana, text = texto_prueba)
+    contenido = Text(pestana)
+    contenido.place(x=0,y=0,width=1000,height=300)
+
+def cargar_nodos_arbol(tree, padre,nodos):
+    for key, valores in nodos.items():
+        iid = tree.insert(padre,'end',text=key)
+        cargar_nodos_arbol(tree,iid,valores)
+
+def cargar_datos_arbol():
+    #BUSCAR LAS BASES DE DATOS Y FORMAR ESTA ESTRUCTURA
+    datos = {
+        'BaseDatos1':{
+            'Tablas': {'Tabla1':{}, 'Tabla2':{}},
+            'Funciones': {'Funcion1':{}},
+            'Procedimientos': {'Procedimiento1':{}}
+        },
+        'BaseDatos2':{
+            'Tablas': {'Tabla1':{}, 'Tabla2':{}},
+            'Funciones': {'Funcion1':{}},
+            'Procedimientos': {'Procedimiento1':{}}
+        },
+    }
+    cargar_nodos_arbol(arbol,"",datos)
+
+def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
+    if(opcion == "nuevo"):
+        print("Archivo - Nuevo")
+    elif(opcion == "abrir"):
+        print("Archivo - Abrir")
+    elif(opcion == "guardar"):
+        print("Archivo - Guardar")
+    elif(opcion == "guardarcomo"):
+        print("Archivo - Guardar Como")
+    elif(opcion == "cerrar"):
+        print("Archivo - Cerrar")
+    else:
+        ventana_principal.destroy()
+
+def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
+    global contador_querys
+    if(opcion == "crear_base"):
+        print("Base Datos - Crear")
+    elif(opcion == "eliminar_base"):
+        print("Base Datos - Eliminar")
+    elif(opcion == "crear_dump"):
+        print("Base Datos - DUMP")
+    elif(opcion == "seleccionar_base"):
+        print("Base Datos - Seleccionar")
+
+    elif(opcion == "nuevo_query"):
+        crear_pestana(cuaderno, "Query"+str(int(contador_querys) +1))
+        if(int(contador_querys>0)):
+            contador_querys +=1
+    elif(opcion == "ejecutar_query"):
+        print("SQL - Ejecutar")
+        pestaña_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA PESTAÑA ACTUAL
+        contenido_texto = cuaderno.nametowidget(pestaña_actual).children['!text']
+        contenido = contenido_texto.get("1.0", END)
+        
+        salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
+        salida.delete(1.0, END) 
+        salida.insert(END, contenido)  
+        salida.config(state='disabled')
+        #ANALIZAR CONTENIDO
+
+
+    elif(opcion == "exportar"):
+        print("Herramientas - Exportar")
+
+    elif(opcion == "importar"):
+        print("Herramientas - Importar")
+    else:
+        ventana_principal.destroy()
+
+def mostrar_menu_archivo(): #ACCION BOTON ARCHIVO
+    menu_archivo.post(boton_archivo.winfo_rootx(),boton_archivo.winfo_rooty()+boton_archivo.winfo_height())
+
+def mostrar_menu_herramientas(): #ACCION BOTON HERRAMIENTAS
+    menu_herramientas.post(boton_herramientas.winfo_rootx(),boton_herramientas.winfo_rooty()+boton_herramientas.winfo_height())
+
+contador_querys  = 1
+ventana_principal = Tk()    #CREAMOS LA VENTANA PRINCIPAL                             
+programa = interfaz(ventana_principal)
+
+titulo = Label(ventana_principal, text="XSQL-IDE", font=("Helvetica", 16))          #TITULO
+titulo.place(x=0,y=0,width=1280,height=60)
+
+boton_archivo = Button(ventana_principal, text="Archivo",font=("Helvetica", 12),command=mostrar_menu_archivo)
+boton_archivo.place(x=10,y=65, width=100, height=30)
+menu_archivo = Menu(boton_archivo, tearoff=0)
+menu_archivo.add_command(label="Nuevo",command=lambda:accion_menu_archivo("nuevo"))
+menu_archivo.add_command(label="Abrir",command=lambda:accion_menu_archivo("abrir"))
+menu_archivo.add_command(label="Guardar",command=lambda:accion_menu_archivo("guardar"))
+menu_archivo.add_command(label="Guardar Como",command=lambda:accion_menu_archivo("guardarcomo"))
+menu_archivo.add_command(label="Cerrar",command=lambda:accion_menu_archivo("cerrar"))
+menu_archivo.add_command(label="Salir",command=lambda:accion_menu_archivo("salir"))
+
+boton_archivo.bind("<Button-1>",lambda event: None) 
+
+boton_herramientas = Button(ventana_principal, text="Herramientas",font=("Helvetica", 12),command=mostrar_menu_herramientas)
+boton_herramientas.place(x=110,y=65, width=100, height=30)
+
+menu_herramientas = Menu(boton_archivo, tearoff=0)
+submenu_base_datos = Menu(boton_archivo, tearoff=0)
+submenu_base_datos.add_command(label="Crear Base de Datos",command=lambda:accion_menu_herramientas("crear_base"))
+submenu_base_datos.add_command(label="Eliminar Base de Datos",command=lambda:accion_menu_herramientas("eliminar_base"))
+submenu_base_datos.add_command(label="Crear DUMP",command=lambda:accion_menu_herramientas("crear_dump"))
+submenu_base_datos.add_command(label="Seleccionar Base de Datos",command=lambda:accion_menu_herramientas("seleccionar_base"))
+
+submenu_sql = Menu(boton_archivo, tearoff=0)
+submenu_sql.add_command(label="Nuevo Query",command=lambda:accion_menu_herramientas("nuevo_query"))
+submenu_sql.add_command(label="Ejecutar Query",command=lambda:accion_menu_herramientas("ejecutar_query"))
+
+menu_herramientas.add_cascade(label="Base de Datos",menu=submenu_base_datos)        #AGREGAR LOS SUBMENUS AL MENU HERRAMIENTAS
+menu_herramientas.add_cascade(label="SQL",menu=submenu_sql)
+menu_herramientas.add_command(label="Exportar",command=lambda:accion_menu_herramientas("exportar"))
+menu_herramientas.add_command(label="Importar",command=lambda:accion_menu_herramientas("importar"))
+
+boton_herramientas.bind("<Button-1>",lambda event: None)
+
+vista_arbol = Frame(ventana_principal)  #CREAMOS EL CONTENEDOR DE LA VISTA DE ARBOL
+vista_arbol.configure(bg='red')
+vista_arbol.place(x=10,y=100,width=230,height=600)
+
+arbol = ttk.Treeview(vista_arbol)
+arbol.pack(side="left", fill="both", expand=True)
+
+scrollbar = ttk.Scrollbar(vista_arbol, orient="vertical", command=arbol.yview)  #SCROLLBAR PARA EL ARBOL
+scrollbar.pack(side="right", fill="y")
+arbol.configure(yscrollcommand=scrollbar.set)
+
+cargar_datos_arbol()
+
+area_query = Frame(ventana_principal)       #CREAMOS EL CONTENEDOR DE PESTAÑAS
+area_query.configure(bg='blue')
+area_query.place(x=250,y=100,width=1000,height=320)
+cuaderno = ttk.Notebook(area_query)
+crear_pestana(cuaderno, "Query1")
+cuaderno.pack(expand=True, fill='both')
+
+label_salida = Label(ventana_principal, text="Salida de Datos",font=("Helvetica", 12)) #CREAMOS EL TEXT PARA SALIDA
+label_salida.place(x=250,y=425,height=25)
+
+salida= Text(ventana_principal,state='disabled',font=("Helvetica", 12))
+salida.place(x=250, y=450, width=1000, height=250)
+salida.delete(1.0, END)
+algo = "asbc"
+salida.insert(END, algo)
+#INICIALIZAMOS VENTANA
+ventana_principal.mainloop()
