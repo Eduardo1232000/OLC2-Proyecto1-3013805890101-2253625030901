@@ -1,3 +1,6 @@
+from FUNCIONES.ARBOL.VALOR import *
+from FUNCIONES.DDL.CREATE_BASE import *
+from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 tokens = (
     'SELECT', 'FROM', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENAR', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
@@ -159,11 +162,14 @@ precedence = (
     ('right','RNOT')
 )
 
+listado_instrucciones = []      #LISTA GLOBAL
 
 #DEFINICION DE LA GRAMATICA
 def p_instrucciones_lista(t):
     '''instrucciones   : instruccion instrucciones 
                        | instruccion '''
+    listado_instrucciones.append(t[1])  #GUARDA CADA INSTRUCCION (DEBEN SER OBJETOS)
+    t[0] = listado_instrucciones        #PARA DEVOLVER LA LISTA ACTUALIZADA
     
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
@@ -174,13 +180,13 @@ def p_instrucciones_evaluar(t):
                     | sent_create_table
                     | f_insert 
                     | f_delete
-                    | select_from_table
                     '''
-    
+    t[0] = t[1]
 
 
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT operacion_sis'''
+    t[0] = t[2]
 
 def p_operacion_sistema(t):
     '''operacion_sis : func_concatena
@@ -191,9 +197,13 @@ def p_operacion_sistema(t):
                     | func_cas
                     | select_dato
                     '''
+    t[0] = t[1]
+
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
-    print("CONCATENAR -> "+str(t[3] +" , "+str(t[5])))
+    #print("CONCATENAR -> "+str(t[3] +" , "+str(t[5])))
+    t[0] = CONCATENAR(t[3],t[5],lexer.lineno,0)
+    
 
 def p_substraer(t):
     'func_substraer : SUBSTRAER PARABRE CADENA COMA NINT COMA NINT PARCIERRA'
@@ -204,27 +214,27 @@ def p_hoy(t):
     print("HOY -> HOY")
 
 def p_contar(t):
-    'func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM NOMBRE WHERE NOMBRE IGUAL expresion'
+    'func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion'
     print("CONTAR -> "+str(t[6]) + " , "+ str(t[8] + " , " + str(t[10])))
 
 def p_suma(t):
-    'func_suma : SUMA PARABRE NOMBRE PARCIERRA FROM NOMBRE WHERE NOMBRE IGUAL expresion'
+    'func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion'
     print("SUMA -> " + str(t[3]) + " , "+str(t[6]) + " , "+ str(t[8]) + " , " + str(t[10]))
 
 def p_cas(t):
-    'func_cas : CAST PARABRE ARROBA NOMBRE AS tipo_dato PARCIERRA '
+    'func_cas : CAST PARABRE ARROBA name AS tipo_dato PARCIERRA '
     print("CAST -> "+str(t[4]) + " -> " +str(t[6]))
 
 def p_select_dato(t):
-    '''select_dato : MULTIPLICACION FROM NOMBRE
-                    | FROM NOMBRE
-                    | FROM NOMBRE WHERE condiciones'''
+    '''select_dato : MULTIPLICACION FROM name
+                    | FROM name
+                    | FROM name WHERE condiciones'''
     print("SELECCIONANDO TODOS LOS DATOS DE: " +str(t[3]))
 
 def p_condiciones (t):
     '''condiciones : expresion
-                    |expresion AND condiciones
-                    |expresion OR condiciones '''
+                    | expresion AND condiciones
+                    | expresion OR condiciones '''
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -302,16 +312,17 @@ def p_not(t):
 
 
 def p_sentencia_create_database(t):
-    '''sent_create_database : CREATE DATA BASE NOMBRE PTCOMA '''
-    print("CREATE DATA BASE -> "+str(t[4]))
+    '''sent_create_database : CREATE DATA BASE name PTCOMA '''
+    t[0] = CREATE_BASE(t[4],lexer.lineno,0)
+
 
 def p_sentencia_create_table(t):
-    '''sent_create_table : CREATE TABLE NOMBRE PARABRE datos PARCIERRA PTCOMA'''
+    '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
     print("SE VA A CREAR UNA TABLE")
 
 def p_datos(t):
-    '''datos : NOMBRE tipo_dato
-             | NOMBRE tipo_dato caracteristicas
+    '''datos : name tipo_dato
+             | name tipo_dato caracteristicas
              | foreign_key
              | datos COMA datos '''
     try:
@@ -321,7 +332,7 @@ def p_datos(t):
         print("")     
     
 def p_foreign_key(t):
-    '''foreign_key : FOREIGN KEY PARABRE NOMBRE PARCIERRA REFERENCE NOMBRE PARABRE NOMBRE PARCIERRA'''
+    '''foreign_key : FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA'''
     print("HAY UN FOREIGN KEY")
 
 def p_caracteristicas(t):
@@ -333,16 +344,17 @@ def p_caracteristicas(t):
                         '''
 
 def p_f_insert(t):
-    ''' f_insert :  INSERT INTO NOMBRE PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
+    ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
     print("INSERTAR -> " +str(t[3]) )
+    
 
 def p_f_delete(t):
-    ''' f_delete : DELETE FROM NOMBRE WHERE NOMBRE IGUAL expresion PTCOMA'''
+    ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
 
 def p_columnas(t):
-    ''' columnas : NOMBRE
-                | NOMBRE COMA columnas'''
+    ''' columnas : name
+                | name COMA columnas'''
 def p_valores(t):
     ''' valores : expresion
                 | expresion COMA valores'''
@@ -369,13 +381,31 @@ def p_expresion(t):
                  | FECHA
                  | FECHAHORA
                  | CADENA'''
-    t[0] = t[1]
-
+    
+    if(t.slice[1].type == "FECHA"):
+        t[0] = VALOR(t[1],"FECHA",lexer.lineno,0)
+    elif(t.slice[1].type == "FECHAHORA"):
+        t[0] = VALOR(t[1],"FECHAHORA",lexer.lineno,0)
+    elif(t.slice[1].type == "CADENA"):
+        t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
+    else:
+        t[0] = t[1]
 def p_numero(t):
     '''numero : NINT
              | NBIT
              | NDECIMAL'''
-    t[0] = t[1]
+    if(t.slice[1].type == "NINT"):
+        t[0] = VALOR(t[1],"INT",lexer.lineno,0)
+    elif(t.slice[1].type == "NBIT"):
+        t[0] = VALOR(t[1],"BIT",lexer.lineno,0)
+    elif(t.slice[1].type == "NDECIMAL"):
+        t[0] = VALOR(t[1],"DECIMAL",lexer.lineno,0)
+    else:
+        t[0] = t[1]     #CASO DE ERROR
+
+def p_name(t):
+    '''name : NOMBRE'''     
+    t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
 
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
@@ -388,7 +418,7 @@ import ply.yacc as yacc
 parser = yacc.yacc()
 
 #pruebas
-f = open("./entrada.txt", "r")      #ABRIR ARCHIVO
-input = f.read()                    #LEER CONTENIDO
+#f = open("./entrada.txt", "r")      #ABRIR ARCHIVO
+#input = f.read()                    #LEER CONTENIDO
 #print(input)                        #MOSTRAR EL CONTENIDO
-parser.parse(input)                 #ANALIZARLO
+#parser.parse(input)                 #ANALIZARLO

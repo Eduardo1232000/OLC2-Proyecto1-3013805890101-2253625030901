@@ -17,5 +17,3 @@ def crear_base_vacia(nombre):
 
     with open("BASE_DATOS/"+str(nombre)+".xml", "w") as archivo:
         archivo.write(xml_con_formato)
-
-#crear_base_vacia("Alimentos")

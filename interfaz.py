@@ -7,6 +7,10 @@ from FUNCIONES.LECTURA_XML import *
 from FUNCIONES.RESALTADO import *
 from FUNCIONES.CREAR_BASE import *
 
+from FUNCIONES.ARBOL.AST import *
+
+import gramatica
+
 
 contador_querys  = 1
 ruta_query_actual = ""
@@ -155,17 +159,28 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         if(int(contador_querys>0)):
             contador_querys +=1
     elif(opcion == "ejecutar_query"):
-        print("SQL - Ejecutar")
         pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
         contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
         contenido = contenido_texto.get("1.0", END)
         
+        #salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
+        #salida.delete(1.0, END) 
+        #salida.insert(END, contenido)  
+        #salida.config(state='disabled')
+        #ANALIZAR CONTENIDO
+        analizador = gramatica.parser
+        respuesta = analizador.parse(contenido)     #YA DEBE RETORNAR LISTA DE OBJETOS
+        arbol_sintactico = AST(respuesta)
+        arbol_sintactico.ejecutar()
+        #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
+
+        
         salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
         salida.delete(1.0, END) 
-        salida.insert(END, contenido)  
+        salida.insert(END, arbol_sintactico.obtener_salida())  
         salida.config(state='disabled')
-        #ANALIZAR CONTENIDO
-
+        cargar_datos_arbol()
+    
 
     elif(opcion == "exportar"):
         print("Herramientas - Exportar")
