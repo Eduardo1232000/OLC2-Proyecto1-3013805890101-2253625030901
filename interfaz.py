@@ -5,6 +5,8 @@ from tkinter import messagebox      #MOSTRAR UN MENSAJE AL USUARIO
 import os       #PARA OBTENER EL NOMBRE DEL ARCHIVO
 from FUNCIONES.LECTURA_XML import *
 from FUNCIONES.RESALTADO import *
+from FUNCIONES.CREAR_BASE import *
+
 
 contador_querys  = 1
 ruta_query_actual = ""
@@ -24,40 +26,28 @@ def crear_pestana(notebook,texto_prueba):
     contenido = Label(pestana,text="",state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
 
 
-def cargar_nodos_arbol(tree, padre,nodos):
-    
-    #AGREGAR FUNCIONES
-    ba = construir_estructura_arbol_xml("BASE_DATOS/base1.xml")
-    bas = tree.insert("",'end',text=ba[0])
-    for i in range(1,4):
-        pa = ""
-        if(i == 1):
-            pa = tree.insert(bas,'end',text="Tablas")
-        elif(i == 2):
-            pa = tree.insert(bas,'end',text = "Funciones")
-        elif(i==3):
-            pa = tree.insert(bas,'end',text = "Procedimientos")
-        for j in ba[i]:
-            tree.insert(pa,'end',text = j)    
-
 
 def cargar_datos_arbol():
     #BUSCAR LAS BASES DE DATOS Y FORMAR ESTA ESTRUCTURA
-
-    datos = {
-        'BaseDatos1':{
-            'Tablas': {'Tabla1':{}, 'Tabla2':{}},
-            'Funciones': {'Funcion1':{}},
-            'Procedimientos': {'Procedimiento1':{}}
-        },
-        'BaseDatos2':{
-            'Tablas': {'Tabla1':{}, 'Tabla2':{}},
-            'Funciones': {'Funcion1':{}},
-            'Procedimientos': {'Procedimiento1':{}}
-        },
-    }
-    
-    cargar_nodos_arbol(arbol,"",datos)
+    try:
+        #AGREGAR FUNCIONES
+        arbol.delete(*arbol.get_children())
+        baa = construir_estructura_arbol_xml()
+        for dato in baa:
+            ba = dato
+            bas = arbol.insert("",'end',text=ba[0])
+            for i in range(1,4):
+                pa = ""
+                if(i == 1):
+                    pa = arbol.insert(bas,'end',text="Tablas")
+                elif(i == 2):
+                    pa = arbol.insert(bas,'end',text = "Funciones")
+                elif(i==3):
+                    pa = arbol.insert(bas,'end',text = "Procedimientos")
+                for j in ba[i]:
+                    arbol.insert(pa,'end',text = j)    
+    except:
+        print("NO HAY ARBOLES")
 
 def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
     global contador_querys
@@ -136,9 +126,25 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
 def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
     global contador_querys
     if(opcion == "crear_base"):
-        print("Base Datos - Crear")
+        nombre = simpledialog.askstring("Ingresar Nombre", "Por favor, ingresa el nombre de tu base de datos:")
+        if nombre:
+            crear_base_vacia(str(nombre))
+            cargar_datos_arbol()
+            messagebox.showinfo("Exito", "Base de Datos: "+str(nombre) + " Creada!")
     elif(opcion == "eliminar_base"):
-        print("Base Datos - Eliminar")
+        nombre = simpledialog.askstring("Ingresar Nombre", "Por favor, ingresa el nombre de tu base de datos:")
+        if nombre:
+            try:
+                ruta = "BASE_DATOS/" + str(nombre) + ".xml"
+                os.remove(ruta)
+                cargar_datos_arbol()
+                messagebox.showinfo("Exito", "Base de Datos: "+str(nombre) + " Eliminada!")
+            except FileNotFoundError:
+                messagebox.showerror("Error", "Base de Datos: "+str(nombre) + " No existe!")
+            except Exception as e:
+                print(f"Error al intentar eliminar el archivo '{nombre}': {e}")
+                messagebox.showerror("Error", "Error al intentar eliminar la base "+str(nombre)+".")
+
     elif(opcion == "crear_dump"):
         print("Base Datos - DUMP")
     elif(opcion == "seleccionar_base"):

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<database>
+    <base name="Alimentos">
+        <tabla name="comidas">
+            <campo>
+                <nombre>id_comida</nombre>
+                <tipo>int</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>id_comida</nombre>
+                <tipo>char(100)</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+        </tabla>
+        <tabla name="para"/>
+        <tabla name="personas"/>
+    </base>
+</database>

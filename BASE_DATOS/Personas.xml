@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+<database>
+    <base name="Personas">
+        <tabla name="Hombres"/>
+        <tabla name="Mujeres"/>
+    </base>
+</database>

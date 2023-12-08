@@ -1,37 +1,41 @@
 import xml.etree.ElementTree as ET
 import os
-def leer_xml(nombre_archivo):
-    # Parsear el archivo XML
-    tree = ET.parse(nombre_archivo)
-    root = tree.getroot()
-    print(root.get('name'))
 
-    # TABLAS
-    for tabla in root.findall('table'):
-        nombre = tabla.get('name')
-        print("TABLA: "+str(nombre))
+def construir_estructura_arbol_xml():
+    #LEER CADA BASE DE DATOS
+    try:
+        nombres_archivos = os.listdir('BASE_DATOS/')
+    except OSError as e:
+        nombres_archivos = None
+        print(f"No se pudo acceder a la carpeta de base de datos: {e}")
 
-        for columna in tabla.findall('column'):
-            nombre_col = columna.get("name")
-            print("\tCOLUMNA: "+str(nombre_col))
+    if nombres_archivos:
+        bases = []
+        for nombre_archivo in nombres_archivos:
+            ruta = "BASE_DATOS/"+str(nombre_archivo)
+            #print(nombre_archivo)
+            tree = ET.parse(ruta)
+            root = tree.getroot()
+            lista_base = []
+            lista_tablas= []
+            lista_funciones = []
+            lista_procedimientos = []
+            
+            for base in root.findall('base'):
+                #print(base.get('name'))#NOMBRE DE LA BASE
+                lista_base.append(str(base.get('name')))
+                for dato in base:
+                    if(dato.tag == "tabla"):
+                        #print("\t"+dato.get('name'))
+                        lista_tablas.append(str(dato.get('name')))
+                    elif(dato.tag == "funcion"):
+                        lista_funciones.append(str(dato.get('name')))
+                    elif(dato.tag == "procedimiento"):
+                        lista_procedimientos.append(str(dato.get('name')))
+                lista_base.append(lista_tablas)
+                lista_base.append(lista_funciones)
+                lista_base.append(lista_procedimientos)
 
-        for dato in tabla.findall('data'):
-            for filas in dato.findall('row'):
-                print("\tFILA")
-                for valor in filas.findall('value'):
-                    print("\t\t"+str(valor.text))
-
-def construir_estructura_arbol_xml(nombre_archivo):
-    tree = ET.parse(nombre_archivo)
-    root = tree.getroot()
-    base = []
-    datos = []
-    base.append(str(root.get('name')))
-    # TABLAS
-    for tabla in root.findall('table'):
-        nombre = tabla.get('name')
-        datos.append(str(tabla.get('name')))
-    base.append(datos)
-    base.append(datos)      #NO ESTABA LA ESTRUCTURA DE FUNCIONES
-    base.append(datos)      #NO ESTABA LA ESTRUCTURA DE PROCEDIMIENTOS
-    return base
+                
+            bases.append(lista_base)
+        return bases
