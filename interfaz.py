@@ -1,7 +1,13 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter.filedialog import askopenfilename
+from tkinter import filedialog      #ABRIR ARCHIVOS
+from tkinter import messagebox      #MOSTRAR UN MENSAJE AL USUARIO
+import os       #PARA OBTENER EL NOMBRE DEL ARCHIVO
+from FUNCIONES.LECTURA_XML import *
+from FUNCIONES.RESALTADO import *
+
 contador_querys  = 1
+ruta_query_actual = ""
 class interfaz:
     def __init__(self, ventana):
         self.ventana = ventana  #INICIALIZAMOS LA VENTANA
@@ -15,13 +21,29 @@ def crear_pestana(notebook,texto_prueba):
     contenido = Text(pestana)
     contenido.place(x=0,y=0,width=1000,height=300)
 
+    contenido = Label(pestana,text="",state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
+
+
 def cargar_nodos_arbol(tree, padre,nodos):
-    for key, valores in nodos.items():
-        iid = tree.insert(padre,'end',text=key)
-        cargar_nodos_arbol(tree,iid,valores)
+    
+    #AGREGAR FUNCIONES
+    ba = construir_estructura_arbol_xml("BASE_DATOS/base1.xml")
+    bas = tree.insert("",'end',text=ba[0])
+    for i in range(1,4):
+        pa = ""
+        if(i == 1):
+            pa = tree.insert(bas,'end',text="Tablas")
+        elif(i == 2):
+            pa = tree.insert(bas,'end',text = "Funciones")
+        elif(i==3):
+            pa = tree.insert(bas,'end',text = "Procedimientos")
+        for j in ba[i]:
+            tree.insert(pa,'end',text = j)    
+
 
 def cargar_datos_arbol():
     #BUSCAR LAS BASES DE DATOS Y FORMAR ESTA ESTRUCTURA
+
     datos = {
         'BaseDatos1':{
             'Tablas': {'Tabla1':{}, 'Tabla2':{}},
@@ -34,19 +56,80 @@ def cargar_datos_arbol():
             'Procedimientos': {'Procedimiento1':{}}
         },
     }
+    
     cargar_nodos_arbol(arbol,"",datos)
 
 def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
+    global contador_querys
     if(opcion == "nuevo"):
-        print("Archivo - Nuevo")
+        crear_pestana(cuaderno, "Query"+str(int(contador_querys) +1))
+        if(int(contador_querys>0)):
+            contador_querys +=1
     elif(opcion == "abrir"):
-        print("Archivo - Abrir")
+        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
+        archivo_seleccionado = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.sql"), ("Todos los archivos", "*.*")])
+        if archivo_seleccionado:
+            with open(archivo_seleccionado, "r") as archivo:
+                contenido = archivo.read()
+                contenido_texto.delete(1.0, END) 
+                contenido_texto.insert(END, contenido)
+
+                #MODIFICAR LA RUTA DEL ARCHIVO EN MEMORIA
+                contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
+                contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
+
+                nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
+                indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
+                cuaderno.tab(indice_pestana, text=nombre)
+
     elif(opcion == "guardar"):
-        print("Archivo - Guardar")
+        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
+
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']   #OBTENER EL CONTENIDO DEL AREA DE TEXTO
+        contenido = contenido_texto.get("1.0", END)
+
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']  #OBTENER EL CONTENIDO DEL LABEL OCULTO
+        ruta = contenido_texto.cget("text")
+
+        if(ruta !=""):                   #SI EXISTE ALGUNA RUTA GUARDADA GUARDARLO AHI
+            with open(ruta, "w") as archivo:
+                archivo.write(contenido)
+                messagebox.showinfo(message="Archivo Guardado con exito!", title="Aviso")
+        else:                                       #SI NO ES UN GUARDAR COMO
+            archivo_seleccionado = filedialog.asksaveasfilename(defaultextension=".sql", filetypes=[("Archivos de texto", "*.sql"), ("Todos los archivos", "*.*")])
+            if archivo_seleccionado:
+                with open(archivo_seleccionado, "w") as archivo:
+                    archivo.write(contenido)
+                messagebox.showinfo(message="Archivo Guardado con exito!", title="Aviso")
+
+                contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
+                contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
+                nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
+                indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
+                cuaderno.tab(indice_pestana, text=nombre)
+
     elif(opcion == "guardarcomo"):
-        print("Archivo - Guardar Como")
+        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
+        contenido = contenido_texto.get("1.0", END)        
+        
+        archivo_seleccionado = filedialog.asksaveasfilename(defaultextension=".sql", filetypes=[("Archivos de texto", "*.sql"), ("Todos los archivos", "*.*")])
+        if archivo_seleccionado:
+            with open(archivo_seleccionado, "w") as archivo:
+                archivo.write(contenido)
+            messagebox.showinfo(message="Archivo Guardado con exito!", title="Aviso")
+
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
+        contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
+        nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
+        indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
+        cuaderno.tab(indice_pestana, text=nombre)
+
     elif(opcion == "cerrar"):
-        print("Archivo - Cerrar")
+        pestana_actual = cuaderno.select() 
+        indice_pestana = cuaderno.index(pestana_actual)
+        cuaderno.forget(indice_pestana)
     else:
         ventana_principal.destroy()
 
@@ -67,8 +150,8 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
             contador_querys +=1
     elif(opcion == "ejecutar_query"):
         print("SQL - Ejecutar")
-        pestaña_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA PESTAÑA ACTUAL
-        contenido_texto = cuaderno.nametowidget(pestaña_actual).children['!text']
+        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
+        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
         contenido = contenido_texto.get("1.0", END)
         
         salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
@@ -92,7 +175,9 @@ def mostrar_menu_archivo(): #ACCION BOTON ARCHIVO
 def mostrar_menu_herramientas(): #ACCION BOTON HERRAMIENTAS
     menu_herramientas.post(boton_herramientas.winfo_rootx(),boton_herramientas.winfo_rooty()+boton_herramientas.winfo_height())
 
-contador_querys  = 1
+def actualizar_resaltar_palabras(event=None):
+    resaltar_palabras(contenido_texto)
+
 ventana_principal = Tk()    #CREAMOS LA VENTANA PRINCIPAL                             
 programa = interfaz(ventana_principal)
 
@@ -145,7 +230,7 @@ arbol.configure(yscrollcommand=scrollbar.set)
 
 cargar_datos_arbol()
 
-area_query = Frame(ventana_principal)       #CREAMOS EL CONTENEDOR DE PESTAÑAS
+area_query = Frame(ventana_principal)       #CREAMOS EL CONTENEDOR DE pestanaS
 area_query.configure(bg='blue')
 area_query.place(x=250,y=100,width=1000,height=320)
 cuaderno = ttk.Notebook(area_query)
@@ -157,8 +242,11 @@ label_salida.place(x=250,y=425,height=25)
 
 salida= Text(ventana_principal,state='disabled',font=("Helvetica", 12))
 salida.place(x=250, y=450, width=1000, height=250)
-salida.delete(1.0, END)
-algo = "asbc"
-salida.insert(END, algo)
+
+#VINCULAR FUNCION RESALTAR PALABRAS CLAVE
+pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
+contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
+
+contenido_texto.bind('<KeyRelease>', actualizar_resaltar_palabras)
 #INICIALIZAMOS VENTANA
 ventana_principal.mainloop()
