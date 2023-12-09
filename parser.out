@@ -1,0 +1,3135 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> instrucciones
+Rule 1     instrucciones -> instruccion instrucciones
+Rule 2     instrucciones -> instruccion
+Rule 3     instruccion -> f_sistema
+Rule 4     instruccion -> exp_aritmetica
+Rule 5     instruccion -> exp_relacional
+Rule 6     instruccion -> exp_logica
+Rule 7     instruccion -> sent_create_database
+Rule 8     instruccion -> sent_create_table
+Rule 9     instruccion -> f_insert
+Rule 10    instruccion -> f_delete
+Rule 11    f_sistema -> SELECT operacion_sis
+Rule 12    operacion_sis -> func_concatena
+Rule 13    operacion_sis -> func_substraer
+Rule 14    operacion_sis -> func_hoy
+Rule 15    operacion_sis -> func_contar
+Rule 16    operacion_sis -> func_suma
+Rule 17    operacion_sis -> func_cas
+Rule 18    operacion_sis -> select_dato
+Rule 19    func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA
+Rule 20    func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA
+Rule 21    func_hoy -> HOY PARABRE PARCIERRA
+Rule 22    func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
+Rule 23    func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion
+Rule 24    func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA
+Rule 25    select_dato -> MULTIPLICACION FROM name
+Rule 26    select_dato -> FROM name
+Rule 27    select_dato -> FROM name WHERE condiciones
+Rule 28    condiciones -> expresion
+Rule 29    condiciones -> expresion AND condiciones
+Rule 30    condiciones -> expresion OR condiciones
+Rule 31    exp_aritmetica -> op_suma
+Rule 32    exp_aritmetica -> op_resta
+Rule 33    exp_aritmetica -> op_multiplicacion
+Rule 34    exp_aritmetica -> op_division
+Rule 35    op_suma -> numero MAS numero
+Rule 36    op_resta -> numero RESTA numero
+Rule 37    op_multiplicacion -> numero MULTIPLICACION numero
+Rule 38    op_division -> numero DIVISION numero
+Rule 39    exp_relacional -> exr_igual
+Rule 40    exp_relacional -> exr_diferente
+Rule 41    exp_relacional -> exr_menorque
+Rule 42    exp_relacional -> exr_mayorque
+Rule 43    exp_relacional -> exr_menorigual
+Rule 44    exp_relacional -> exr_mayorigual
+Rule 45    exr_igual -> expresion IGUALIGUAL expresion
+Rule 46    exr_diferente -> expresion DIFERENTE expresion
+Rule 47    exr_menorque -> expresion MENORQUE expresion
+Rule 48    exr_mayorque -> expresion MAYORQUE expresion
+Rule 49    exr_menorigual -> expresion MENORIGUAL expresion
+Rule 50    exr_mayorigual -> expresion MAYORIGUAL expresion
+Rule 51    exp_logica -> exl_and
+Rule 52    exl_and -> expresion AND expresion
+Rule 53    exl_and -> expresion OR expresion
+Rule 54    exl_and -> RNOT expresion
+Rule 55    sent_create_database -> CREATE DATA BASE name PTCOMA
+Rule 56    sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA
+Rule 57    datos -> name tipo_dato
+Rule 58    datos -> name tipo_dato caracteristicas
+Rule 59    datos -> foreign_key
+Rule 60    datos -> datos COMA datos
+Rule 61    foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+Rule 62    caracteristicas -> NULL
+Rule 63    caracteristicas -> NOT NULL
+Rule 64    caracteristicas -> PRIMARY KEY
+Rule 65    caracteristicas -> NOT NULL PRIMARY KEY
+Rule 66    caracteristicas -> NULL PRIMARY KEY
+Rule 67    f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+Rule 68    f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA
+Rule 69    columnas -> name
+Rule 70    columnas -> name COMA columnas
+Rule 71    valores -> expresion
+Rule 72    valores -> expresion COMA valores
+Rule 73    tipo_dato -> INT
+Rule 74    tipo_dato -> BIT
+Rule 75    tipo_dato -> DECIMAL
+Rule 76    tipo_dato -> DATE
+Rule 77    tipo_dato -> DATETIME
+Rule 78    tipo_dato -> dato_nchar
+Rule 79    tipo_dato -> dato_nvarchar
+Rule 80    dato_nchar -> NCHAR PARABRE NINT PARCIERRA
+Rule 81    dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA
+Rule 82    expresion -> numero
+Rule 83    expresion -> FECHA
+Rule 84    expresion -> FECHAHORA
+Rule 85    expresion -> CADENA
+Rule 86    numero -> NINT
+Rule 87    numero -> NBIT
+Rule 88    numero -> NDECIMAL
+Rule 89    name -> NOMBRE
+Rule 90    cadenas -> CADENA
+
+Terminals, with rules where they appear
+
+AND                  : 29 52
+ARROBA               : 24
+AS                   : 24
+BASE                 : 55
+BIT                  : 74
+CADENA               : 85 90
+CAST                 : 24
+COMA                 : 19 20 20 60 70 72
+CONCATENAR           : 19
+CONTAR               : 22
+CREATE               : 55 56
+DATA                 : 55
+DATE                 : 76
+DATETIME             : 77
+DECIMAL              : 75
+DELETE               : 68
+DIFERENTE            : 46
+DIVISION             : 38
+FECHA                : 83
+FECHAHORA            : 84
+FOREIGN              : 61
+FROM                 : 22 23 25 26 27 68
+HOY                  : 21
+IGUAL                : 22 23 68
+IGUALIGUAL           : 45
+INSERT               : 67
+INT                  : 73
+INTO                 : 67
+KEY                  : 61 64 65 66
+MAS                  : 35
+MAYORIGUAL           : 50
+MAYORQUE             : 48
+MENORIGUAL           : 49
+MENORQUE             : 47
+MULTIPLICACION       : 22 25 37
+NBIT                 : 87
+NCHAR                : 80
+NDECIMAL             : 88
+NINT                 : 80 81 86
+NOMBRE               : 89
+NOT                  : 63 65
+NULL                 : 62 63 65 66
+NVARCHAR             : 81
+OR                   : 30 53
+PARABRE              : 19 20 21 22 23 24 56 61 61 67 67 80 81
+PARCIERRA            : 19 20 21 22 23 24 56 61 61 67 67 80 81
+PRIMARY              : 64 65 66
+PTCOMA               : 55 56 67 68
+REFERENCE            : 61
+RESTA                : 36
+RNOT                 : 54
+SELECT               : 11
+SUBSTRAER            : 20
+SUMA                 : 23
+TABLE                : 56
+VALUES               : 67
+WHERE                : 22 23 27 68
+error                : 
+
+Nonterminals, with rules where they appear
+
+cadenas              : 20
+caracteristicas      : 58
+columnas             : 67 70
+condiciones          : 27 29 30
+dato_nchar           : 78
+dato_nvarchar        : 79
+datos                : 56 60 60
+exl_and              : 51
+exp_aritmetica       : 4
+exp_logica           : 6
+exp_relacional       : 5
+expresion            : 19 19 22 23 28 29 30 45 45 46 46 47 47 48 48 49 49 50 50 52 52 53 53 54 68 71 72
+exr_diferente        : 40
+exr_igual            : 39
+exr_mayorigual       : 44
+exr_mayorque         : 42
+exr_menorigual       : 43
+exr_menorque         : 41
+f_delete             : 10
+f_insert             : 9
+f_sistema            : 3
+foreign_key          : 59
+func_cas             : 17
+func_concatena       : 12
+func_contar          : 15
+func_hoy             : 14
+func_substraer       : 13
+func_suma            : 16
+instruccion          : 1 2
+instrucciones        : 1 0
+name                 : 22 22 23 23 23 24 25 26 27 55 56 57 58 61 61 61 67 68 68 69 70
+numero               : 20 20 35 35 36 36 37 37 38 38 82
+op_division          : 34
+op_multiplicacion    : 33
+op_resta             : 32
+op_suma              : 31
+operacion_sis        : 11
+select_dato          : 18
+sent_create_database : 7
+sent_create_table    : 8
+tipo_dato            : 24 57 58
+valores              : 67 72
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . instrucciones
+    (1) instrucciones -> . instruccion instrucciones
+    (2) instrucciones -> . instruccion
+    (3) instruccion -> . f_sistema
+    (4) instruccion -> . exp_aritmetica
+    (5) instruccion -> . exp_relacional
+    (6) instruccion -> . exp_logica
+    (7) instruccion -> . sent_create_database
+    (8) instruccion -> . sent_create_table
+    (9) instruccion -> . f_insert
+    (10) instruccion -> . f_delete
+    (11) f_sistema -> . SELECT operacion_sis
+    (31) exp_aritmetica -> . op_suma
+    (32) exp_aritmetica -> . op_resta
+    (33) exp_aritmetica -> . op_multiplicacion
+    (34) exp_aritmetica -> . op_division
+    (39) exp_relacional -> . exr_igual
+    (40) exp_relacional -> . exr_diferente
+    (41) exp_relacional -> . exr_menorque
+    (42) exp_relacional -> . exr_mayorque
+    (43) exp_relacional -> . exr_menorigual
+    (44) exp_relacional -> . exr_mayorigual
+    (51) exp_logica -> . exl_and
+    (55) sent_create_database -> . CREATE DATA BASE name PTCOMA
+    (56) sent_create_table -> . CREATE TABLE name PARABRE datos PARCIERRA PTCOMA
+    (67) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+    (68) f_delete -> . DELETE FROM name WHERE name IGUAL expresion PTCOMA
+    (35) op_suma -> . numero MAS numero
+    (36) op_resta -> . numero RESTA numero
+    (37) op_multiplicacion -> . numero MULTIPLICACION numero
+    (38) op_division -> . numero DIVISION numero
+    (45) exr_igual -> . expresion IGUALIGUAL expresion
+    (46) exr_diferente -> . expresion DIFERENTE expresion
+    (47) exr_menorque -> . expresion MENORQUE expresion
+    (48) exr_mayorque -> . expresion MAYORQUE expresion
+    (49) exr_menorigual -> . expresion MENORIGUAL expresion
+    (50) exr_mayorigual -> . expresion MAYORIGUAL expresion
+    (52) exl_and -> . expresion AND expresion
+    (53) exl_and -> . expresion OR expresion
+    (54) exl_and -> . RNOT expresion
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+
+    SELECT          shift and go to state 11
+    CREATE          shift and go to state 23
+    INSERT          shift and go to state 24
+    DELETE          shift and go to state 25
+    RNOT            shift and go to state 28
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+
+    instrucciones                  shift and go to state 1
+    instruccion                    shift and go to state 2
+    f_sistema                      shift and go to state 3
+    exp_aritmetica                 shift and go to state 4
+    exp_relacional                 shift and go to state 5
+    exp_logica                     shift and go to state 6
+    sent_create_database           shift and go to state 7
+    sent_create_table              shift and go to state 8
+    f_insert                       shift and go to state 9
+    f_delete                       shift and go to state 10
+    op_suma                        shift and go to state 12
+    op_resta                       shift and go to state 13
+    op_multiplicacion              shift and go to state 14
+    op_division                    shift and go to state 15
+    exr_igual                      shift and go to state 16
+    exr_diferente                  shift and go to state 17
+    exr_menorque                   shift and go to state 18
+    exr_mayorque                   shift and go to state 19
+    exr_menorigual                 shift and go to state 20
+    exr_mayorigual                 shift and go to state 21
+    exl_and                        shift and go to state 22
+    expresion                      shift and go to state 26
+    numero                         shift and go to state 27
+
+state 1
+
+    (0) S' -> instrucciones .
+
+
+
+state 2
+
+    (1) instrucciones -> instruccion . instrucciones
+    (2) instrucciones -> instruccion .
+    (1) instrucciones -> . instruccion instrucciones
+    (2) instrucciones -> . instruccion
+    (3) instruccion -> . f_sistema
+    (4) instruccion -> . exp_aritmetica
+    (5) instruccion -> . exp_relacional
+    (6) instruccion -> . exp_logica
+    (7) instruccion -> . sent_create_database
+    (8) instruccion -> . sent_create_table
+    (9) instruccion -> . f_insert
+    (10) instruccion -> . f_delete
+    (11) f_sistema -> . SELECT operacion_sis
+    (31) exp_aritmetica -> . op_suma
+    (32) exp_aritmetica -> . op_resta
+    (33) exp_aritmetica -> . op_multiplicacion
+    (34) exp_aritmetica -> . op_division
+    (39) exp_relacional -> . exr_igual
+    (40) exp_relacional -> . exr_diferente
+    (41) exp_relacional -> . exr_menorque
+    (42) exp_relacional -> . exr_mayorque
+    (43) exp_relacional -> . exr_menorigual
+    (44) exp_relacional -> . exr_mayorigual
+    (51) exp_logica -> . exl_and
+    (55) sent_create_database -> . CREATE DATA BASE name PTCOMA
+    (56) sent_create_table -> . CREATE TABLE name PARABRE datos PARCIERRA PTCOMA
+    (67) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+    (68) f_delete -> . DELETE FROM name WHERE name IGUAL expresion PTCOMA
+    (35) op_suma -> . numero MAS numero
+    (36) op_resta -> . numero RESTA numero
+    (37) op_multiplicacion -> . numero MULTIPLICACION numero
+    (38) op_division -> . numero DIVISION numero
+    (45) exr_igual -> . expresion IGUALIGUAL expresion
+    (46) exr_diferente -> . expresion DIFERENTE expresion
+    (47) exr_menorque -> . expresion MENORQUE expresion
+    (48) exr_mayorque -> . expresion MAYORQUE expresion
+    (49) exr_menorigual -> . expresion MENORIGUAL expresion
+    (50) exr_mayorigual -> . expresion MAYORIGUAL expresion
+    (52) exl_and -> . expresion AND expresion
+    (53) exl_and -> . expresion OR expresion
+    (54) exl_and -> . RNOT expresion
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+
+    $end            reduce using rule 2 (instrucciones -> instruccion .)
+    SELECT          shift and go to state 11
+    CREATE          shift and go to state 23
+    INSERT          shift and go to state 24
+    DELETE          shift and go to state 25
+    RNOT            shift and go to state 28
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+
+    instruccion                    shift and go to state 2
+    instrucciones                  shift and go to state 35
+    f_sistema                      shift and go to state 3
+    exp_aritmetica                 shift and go to state 4
+    exp_relacional                 shift and go to state 5
+    exp_logica                     shift and go to state 6
+    sent_create_database           shift and go to state 7
+    sent_create_table              shift and go to state 8
+    f_insert                       shift and go to state 9
+    f_delete                       shift and go to state 10
+    op_suma                        shift and go to state 12
+    op_resta                       shift and go to state 13
+    op_multiplicacion              shift and go to state 14
+    op_division                    shift and go to state 15
+    exr_igual                      shift and go to state 16
+    exr_diferente                  shift and go to state 17
+    exr_menorque                   shift and go to state 18
+    exr_mayorque                   shift and go to state 19
+    exr_menorigual                 shift and go to state 20
+    exr_mayorigual                 shift and go to state 21
+    exl_and                        shift and go to state 22
+    expresion                      shift and go to state 26
+    numero                         shift and go to state 27
+
+state 3
+
+    (3) instruccion -> f_sistema .
+
+    SELECT          reduce using rule 3 (instruccion -> f_sistema .)
+    CREATE          reduce using rule 3 (instruccion -> f_sistema .)
+    INSERT          reduce using rule 3 (instruccion -> f_sistema .)
+    DELETE          reduce using rule 3 (instruccion -> f_sistema .)
+    RNOT            reduce using rule 3 (instruccion -> f_sistema .)
+    NINT            reduce using rule 3 (instruccion -> f_sistema .)
+    NBIT            reduce using rule 3 (instruccion -> f_sistema .)
+    NDECIMAL        reduce using rule 3 (instruccion -> f_sistema .)
+    FECHA           reduce using rule 3 (instruccion -> f_sistema .)
+    FECHAHORA       reduce using rule 3 (instruccion -> f_sistema .)
+    CADENA          reduce using rule 3 (instruccion -> f_sistema .)
+    $end            reduce using rule 3 (instruccion -> f_sistema .)
+
+
+state 4
+
+    (4) instruccion -> exp_aritmetica .
+
+    SELECT          reduce using rule 4 (instruccion -> exp_aritmetica .)
+    CREATE          reduce using rule 4 (instruccion -> exp_aritmetica .)
+    INSERT          reduce using rule 4 (instruccion -> exp_aritmetica .)
+    DELETE          reduce using rule 4 (instruccion -> exp_aritmetica .)
+    RNOT            reduce using rule 4 (instruccion -> exp_aritmetica .)
+    NINT            reduce using rule 4 (instruccion -> exp_aritmetica .)
+    NBIT            reduce using rule 4 (instruccion -> exp_aritmetica .)
+    NDECIMAL        reduce using rule 4 (instruccion -> exp_aritmetica .)
+    FECHA           reduce using rule 4 (instruccion -> exp_aritmetica .)
+    FECHAHORA       reduce using rule 4 (instruccion -> exp_aritmetica .)
+    CADENA          reduce using rule 4 (instruccion -> exp_aritmetica .)
+    $end            reduce using rule 4 (instruccion -> exp_aritmetica .)
+
+
+state 5
+
+    (5) instruccion -> exp_relacional .
+
+    SELECT          reduce using rule 5 (instruccion -> exp_relacional .)
+    CREATE          reduce using rule 5 (instruccion -> exp_relacional .)
+    INSERT          reduce using rule 5 (instruccion -> exp_relacional .)
+    DELETE          reduce using rule 5 (instruccion -> exp_relacional .)
+    RNOT            reduce using rule 5 (instruccion -> exp_relacional .)
+    NINT            reduce using rule 5 (instruccion -> exp_relacional .)
+    NBIT            reduce using rule 5 (instruccion -> exp_relacional .)
+    NDECIMAL        reduce using rule 5 (instruccion -> exp_relacional .)
+    FECHA           reduce using rule 5 (instruccion -> exp_relacional .)
+    FECHAHORA       reduce using rule 5 (instruccion -> exp_relacional .)
+    CADENA          reduce using rule 5 (instruccion -> exp_relacional .)
+    $end            reduce using rule 5 (instruccion -> exp_relacional .)
+
+
+state 6
+
+    (6) instruccion -> exp_logica .
+
+    SELECT          reduce using rule 6 (instruccion -> exp_logica .)
+    CREATE          reduce using rule 6 (instruccion -> exp_logica .)
+    INSERT          reduce using rule 6 (instruccion -> exp_logica .)
+    DELETE          reduce using rule 6 (instruccion -> exp_logica .)
+    RNOT            reduce using rule 6 (instruccion -> exp_logica .)
+    NINT            reduce using rule 6 (instruccion -> exp_logica .)
+    NBIT            reduce using rule 6 (instruccion -> exp_logica .)
+    NDECIMAL        reduce using rule 6 (instruccion -> exp_logica .)
+    FECHA           reduce using rule 6 (instruccion -> exp_logica .)
+    FECHAHORA       reduce using rule 6 (instruccion -> exp_logica .)
+    CADENA          reduce using rule 6 (instruccion -> exp_logica .)
+    $end            reduce using rule 6 (instruccion -> exp_logica .)
+
+
+state 7
+
+    (7) instruccion -> sent_create_database .
+
+    SELECT          reduce using rule 7 (instruccion -> sent_create_database .)
+    CREATE          reduce using rule 7 (instruccion -> sent_create_database .)
+    INSERT          reduce using rule 7 (instruccion -> sent_create_database .)
+    DELETE          reduce using rule 7 (instruccion -> sent_create_database .)
+    RNOT            reduce using rule 7 (instruccion -> sent_create_database .)
+    NINT            reduce using rule 7 (instruccion -> sent_create_database .)
+    NBIT            reduce using rule 7 (instruccion -> sent_create_database .)
+    NDECIMAL        reduce using rule 7 (instruccion -> sent_create_database .)
+    FECHA           reduce using rule 7 (instruccion -> sent_create_database .)
+    FECHAHORA       reduce using rule 7 (instruccion -> sent_create_database .)
+    CADENA          reduce using rule 7 (instruccion -> sent_create_database .)
+    $end            reduce using rule 7 (instruccion -> sent_create_database .)
+
+
+state 8
+
+    (8) instruccion -> sent_create_table .
+
+    SELECT          reduce using rule 8 (instruccion -> sent_create_table .)
+    CREATE          reduce using rule 8 (instruccion -> sent_create_table .)
+    INSERT          reduce using rule 8 (instruccion -> sent_create_table .)
+    DELETE          reduce using rule 8 (instruccion -> sent_create_table .)
+    RNOT            reduce using rule 8 (instruccion -> sent_create_table .)
+    NINT            reduce using rule 8 (instruccion -> sent_create_table .)
+    NBIT            reduce using rule 8 (instruccion -> sent_create_table .)
+    NDECIMAL        reduce using rule 8 (instruccion -> sent_create_table .)
+    FECHA           reduce using rule 8 (instruccion -> sent_create_table .)
+    FECHAHORA       reduce using rule 8 (instruccion -> sent_create_table .)
+    CADENA          reduce using rule 8 (instruccion -> sent_create_table .)
+    $end            reduce using rule 8 (instruccion -> sent_create_table .)
+
+
+state 9
+
+    (9) instruccion -> f_insert .
+
+    SELECT          reduce using rule 9 (instruccion -> f_insert .)
+    CREATE          reduce using rule 9 (instruccion -> f_insert .)
+    INSERT          reduce using rule 9 (instruccion -> f_insert .)
+    DELETE          reduce using rule 9 (instruccion -> f_insert .)
+    RNOT            reduce using rule 9 (instruccion -> f_insert .)
+    NINT            reduce using rule 9 (instruccion -> f_insert .)
+    NBIT            reduce using rule 9 (instruccion -> f_insert .)
+    NDECIMAL        reduce using rule 9 (instruccion -> f_insert .)
+    FECHA           reduce using rule 9 (instruccion -> f_insert .)
+    FECHAHORA       reduce using rule 9 (instruccion -> f_insert .)
+    CADENA          reduce using rule 9 (instruccion -> f_insert .)
+    $end            reduce using rule 9 (instruccion -> f_insert .)
+
+
+state 10
+
+    (10) instruccion -> f_delete .
+
+    SELECT          reduce using rule 10 (instruccion -> f_delete .)
+    CREATE          reduce using rule 10 (instruccion -> f_delete .)
+    INSERT          reduce using rule 10 (instruccion -> f_delete .)
+    DELETE          reduce using rule 10 (instruccion -> f_delete .)
+    RNOT            reduce using rule 10 (instruccion -> f_delete .)
+    NINT            reduce using rule 10 (instruccion -> f_delete .)
+    NBIT            reduce using rule 10 (instruccion -> f_delete .)
+    NDECIMAL        reduce using rule 10 (instruccion -> f_delete .)
+    FECHA           reduce using rule 10 (instruccion -> f_delete .)
+    FECHAHORA       reduce using rule 10 (instruccion -> f_delete .)
+    CADENA          reduce using rule 10 (instruccion -> f_delete .)
+    $end            reduce using rule 10 (instruccion -> f_delete .)
+
+
+state 11
+
+    (11) f_sistema -> SELECT . operacion_sis
+    (12) operacion_sis -> . func_concatena
+    (13) operacion_sis -> . func_substraer
+    (14) operacion_sis -> . func_hoy
+    (15) operacion_sis -> . func_contar
+    (16) operacion_sis -> . func_suma
+    (17) operacion_sis -> . func_cas
+    (18) operacion_sis -> . select_dato
+    (19) func_concatena -> . CONCATENAR PARABRE expresion COMA expresion PARCIERRA
+    (20) func_substraer -> . SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA
+    (21) func_hoy -> . HOY PARABRE PARCIERRA
+    (22) func_contar -> . CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
+    (23) func_suma -> . SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion
+    (24) func_cas -> . CAST PARABRE ARROBA name AS tipo_dato PARCIERRA
+    (25) select_dato -> . MULTIPLICACION FROM name
+    (26) select_dato -> . FROM name
+    (27) select_dato -> . FROM name WHERE condiciones
+
+    CONCATENAR      shift and go to state 44
+    SUBSTRAER       shift and go to state 45
+    HOY             shift and go to state 46
+    CONTAR          shift and go to state 47
+    SUMA            shift and go to state 50
+    CAST            shift and go to state 51
+    MULTIPLICACION  shift and go to state 48
+    FROM            shift and go to state 49
+
+    operacion_sis                  shift and go to state 36
+    func_concatena                 shift and go to state 37
+    func_substraer                 shift and go to state 38
+    func_hoy                       shift and go to state 39
+    func_contar                    shift and go to state 40
+    func_suma                      shift and go to state 41
+    func_cas                       shift and go to state 42
+    select_dato                    shift and go to state 43
+
+state 12
+
+    (31) exp_aritmetica -> op_suma .
+
+    SELECT          reduce using rule 31 (exp_aritmetica -> op_suma .)
+    CREATE          reduce using rule 31 (exp_aritmetica -> op_suma .)
+    INSERT          reduce using rule 31 (exp_aritmetica -> op_suma .)
+    DELETE          reduce using rule 31 (exp_aritmetica -> op_suma .)
+    RNOT            reduce using rule 31 (exp_aritmetica -> op_suma .)
+    NINT            reduce using rule 31 (exp_aritmetica -> op_suma .)
+    NBIT            reduce using rule 31 (exp_aritmetica -> op_suma .)
+    NDECIMAL        reduce using rule 31 (exp_aritmetica -> op_suma .)
+    FECHA           reduce using rule 31 (exp_aritmetica -> op_suma .)
+    FECHAHORA       reduce using rule 31 (exp_aritmetica -> op_suma .)
+    CADENA          reduce using rule 31 (exp_aritmetica -> op_suma .)
+    $end            reduce using rule 31 (exp_aritmetica -> op_suma .)
+
+
+state 13
+
+    (32) exp_aritmetica -> op_resta .
+
+    SELECT          reduce using rule 32 (exp_aritmetica -> op_resta .)
+    CREATE          reduce using rule 32 (exp_aritmetica -> op_resta .)
+    INSERT          reduce using rule 32 (exp_aritmetica -> op_resta .)
+    DELETE          reduce using rule 32 (exp_aritmetica -> op_resta .)
+    RNOT            reduce using rule 32 (exp_aritmetica -> op_resta .)
+    NINT            reduce using rule 32 (exp_aritmetica -> op_resta .)
+    NBIT            reduce using rule 32 (exp_aritmetica -> op_resta .)
+    NDECIMAL        reduce using rule 32 (exp_aritmetica -> op_resta .)
+    FECHA           reduce using rule 32 (exp_aritmetica -> op_resta .)
+    FECHAHORA       reduce using rule 32 (exp_aritmetica -> op_resta .)
+    CADENA          reduce using rule 32 (exp_aritmetica -> op_resta .)
+    $end            reduce using rule 32 (exp_aritmetica -> op_resta .)
+
+
+state 14
+
+    (33) exp_aritmetica -> op_multiplicacion .
+
+    SELECT          reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    CREATE          reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    INSERT          reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    DELETE          reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    RNOT            reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    NINT            reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    NBIT            reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    NDECIMAL        reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    FECHA           reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    FECHAHORA       reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    CADENA          reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+    $end            reduce using rule 33 (exp_aritmetica -> op_multiplicacion .)
+
+
+state 15
+
+    (34) exp_aritmetica -> op_division .
+
+    SELECT          reduce using rule 34 (exp_aritmetica -> op_division .)
+    CREATE          reduce using rule 34 (exp_aritmetica -> op_division .)
+    INSERT          reduce using rule 34 (exp_aritmetica -> op_division .)
+    DELETE          reduce using rule 34 (exp_aritmetica -> op_division .)
+    RNOT            reduce using rule 34 (exp_aritmetica -> op_division .)
+    NINT            reduce using rule 34 (exp_aritmetica -> op_division .)
+    NBIT            reduce using rule 34 (exp_aritmetica -> op_division .)
+    NDECIMAL        reduce using rule 34 (exp_aritmetica -> op_division .)
+    FECHA           reduce using rule 34 (exp_aritmetica -> op_division .)
+    FECHAHORA       reduce using rule 34 (exp_aritmetica -> op_division .)
+    CADENA          reduce using rule 34 (exp_aritmetica -> op_division .)
+    $end            reduce using rule 34 (exp_aritmetica -> op_division .)
+
+
+state 16
+
+    (39) exp_relacional -> exr_igual .
+
+    SELECT          reduce using rule 39 (exp_relacional -> exr_igual .)
+    CREATE          reduce using rule 39 (exp_relacional -> exr_igual .)
+    INSERT          reduce using rule 39 (exp_relacional -> exr_igual .)
+    DELETE          reduce using rule 39 (exp_relacional -> exr_igual .)
+    RNOT            reduce using rule 39 (exp_relacional -> exr_igual .)
+    NINT            reduce using rule 39 (exp_relacional -> exr_igual .)
+    NBIT            reduce using rule 39 (exp_relacional -> exr_igual .)
+    NDECIMAL        reduce using rule 39 (exp_relacional -> exr_igual .)
+    FECHA           reduce using rule 39 (exp_relacional -> exr_igual .)
+    FECHAHORA       reduce using rule 39 (exp_relacional -> exr_igual .)
+    CADENA          reduce using rule 39 (exp_relacional -> exr_igual .)
+    $end            reduce using rule 39 (exp_relacional -> exr_igual .)
+
+
+state 17
+
+    (40) exp_relacional -> exr_diferente .
+
+    SELECT          reduce using rule 40 (exp_relacional -> exr_diferente .)
+    CREATE          reduce using rule 40 (exp_relacional -> exr_diferente .)
+    INSERT          reduce using rule 40 (exp_relacional -> exr_diferente .)
+    DELETE          reduce using rule 40 (exp_relacional -> exr_diferente .)
+    RNOT            reduce using rule 40 (exp_relacional -> exr_diferente .)
+    NINT            reduce using rule 40 (exp_relacional -> exr_diferente .)
+    NBIT            reduce using rule 40 (exp_relacional -> exr_diferente .)
+    NDECIMAL        reduce using rule 40 (exp_relacional -> exr_diferente .)
+    FECHA           reduce using rule 40 (exp_relacional -> exr_diferente .)
+    FECHAHORA       reduce using rule 40 (exp_relacional -> exr_diferente .)
+    CADENA          reduce using rule 40 (exp_relacional -> exr_diferente .)
+    $end            reduce using rule 40 (exp_relacional -> exr_diferente .)
+
+
+state 18
+
+    (41) exp_relacional -> exr_menorque .
+
+    SELECT          reduce using rule 41 (exp_relacional -> exr_menorque .)
+    CREATE          reduce using rule 41 (exp_relacional -> exr_menorque .)
+    INSERT          reduce using rule 41 (exp_relacional -> exr_menorque .)
+    DELETE          reduce using rule 41 (exp_relacional -> exr_menorque .)
+    RNOT            reduce using rule 41 (exp_relacional -> exr_menorque .)
+    NINT            reduce using rule 41 (exp_relacional -> exr_menorque .)
+    NBIT            reduce using rule 41 (exp_relacional -> exr_menorque .)
+    NDECIMAL        reduce using rule 41 (exp_relacional -> exr_menorque .)
+    FECHA           reduce using rule 41 (exp_relacional -> exr_menorque .)
+    FECHAHORA       reduce using rule 41 (exp_relacional -> exr_menorque .)
+    CADENA          reduce using rule 41 (exp_relacional -> exr_menorque .)
+    $end            reduce using rule 41 (exp_relacional -> exr_menorque .)
+
+
+state 19
+
+    (42) exp_relacional -> exr_mayorque .
+
+    SELECT          reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    CREATE          reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    INSERT          reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    DELETE          reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    RNOT            reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    NINT            reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    NBIT            reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    NDECIMAL        reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    FECHA           reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    FECHAHORA       reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    CADENA          reduce using rule 42 (exp_relacional -> exr_mayorque .)
+    $end            reduce using rule 42 (exp_relacional -> exr_mayorque .)
+
+
+state 20
+
+    (43) exp_relacional -> exr_menorigual .
+
+    SELECT          reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    CREATE          reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    INSERT          reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    DELETE          reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    RNOT            reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    NINT            reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    NBIT            reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    NDECIMAL        reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    FECHA           reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    FECHAHORA       reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    CADENA          reduce using rule 43 (exp_relacional -> exr_menorigual .)
+    $end            reduce using rule 43 (exp_relacional -> exr_menorigual .)
+
+
+state 21
+
+    (44) exp_relacional -> exr_mayorigual .
+
+    SELECT          reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    CREATE          reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    INSERT          reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    DELETE          reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    RNOT            reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    NINT            reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    NBIT            reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    NDECIMAL        reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    FECHA           reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    FECHAHORA       reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    CADENA          reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+    $end            reduce using rule 44 (exp_relacional -> exr_mayorigual .)
+
+
+state 22
+
+    (51) exp_logica -> exl_and .
+
+    SELECT          reduce using rule 51 (exp_logica -> exl_and .)
+    CREATE          reduce using rule 51 (exp_logica -> exl_and .)
+    INSERT          reduce using rule 51 (exp_logica -> exl_and .)
+    DELETE          reduce using rule 51 (exp_logica -> exl_and .)
+    RNOT            reduce using rule 51 (exp_logica -> exl_and .)
+    NINT            reduce using rule 51 (exp_logica -> exl_and .)
+    NBIT            reduce using rule 51 (exp_logica -> exl_and .)
+    NDECIMAL        reduce using rule 51 (exp_logica -> exl_and .)
+    FECHA           reduce using rule 51 (exp_logica -> exl_and .)
+    FECHAHORA       reduce using rule 51 (exp_logica -> exl_and .)
+    CADENA          reduce using rule 51 (exp_logica -> exl_and .)
+    $end            reduce using rule 51 (exp_logica -> exl_and .)
+
+
+state 23
+
+    (55) sent_create_database -> CREATE . DATA BASE name PTCOMA
+    (56) sent_create_table -> CREATE . TABLE name PARABRE datos PARCIERRA PTCOMA
+
+    DATA            shift and go to state 52
+    TABLE           shift and go to state 53
+
+
+state 24
+
+    (67) f_insert -> INSERT . INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+
+    INTO            shift and go to state 54
+
+
+state 25
+
+    (68) f_delete -> DELETE . FROM name WHERE name IGUAL expresion PTCOMA
+
+    FROM            shift and go to state 55
+
+
+state 26
+
+    (45) exr_igual -> expresion . IGUALIGUAL expresion
+    (46) exr_diferente -> expresion . DIFERENTE expresion
+    (47) exr_menorque -> expresion . MENORQUE expresion
+    (48) exr_mayorque -> expresion . MAYORQUE expresion
+    (49) exr_menorigual -> expresion . MENORIGUAL expresion
+    (50) exr_mayorigual -> expresion . MAYORIGUAL expresion
+    (52) exl_and -> expresion . AND expresion
+    (53) exl_and -> expresion . OR expresion
+
+    IGUALIGUAL      shift and go to state 56
+    DIFERENTE       shift and go to state 57
+    MENORQUE        shift and go to state 58
+    MAYORQUE        shift and go to state 59
+    MENORIGUAL      shift and go to state 60
+    MAYORIGUAL      shift and go to state 61
+    AND             shift and go to state 62
+    OR              shift and go to state 63
+
+
+state 27
+
+    (35) op_suma -> numero . MAS numero
+    (36) op_resta -> numero . RESTA numero
+    (37) op_multiplicacion -> numero . MULTIPLICACION numero
+    (38) op_division -> numero . DIVISION numero
+    (82) expresion -> numero .
+
+    MAS             shift and go to state 64
+    RESTA           shift and go to state 65
+    MULTIPLICACION  shift and go to state 66
+    DIVISION        shift and go to state 67
+    IGUALIGUAL      reduce using rule 82 (expresion -> numero .)
+    DIFERENTE       reduce using rule 82 (expresion -> numero .)
+    MENORQUE        reduce using rule 82 (expresion -> numero .)
+    MAYORQUE        reduce using rule 82 (expresion -> numero .)
+    MENORIGUAL      reduce using rule 82 (expresion -> numero .)
+    MAYORIGUAL      reduce using rule 82 (expresion -> numero .)
+    AND             reduce using rule 82 (expresion -> numero .)
+    OR              reduce using rule 82 (expresion -> numero .)
+
+
+state 28
+
+    (54) exl_and -> RNOT . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 68
+    numero                         shift and go to state 69
+
+state 29
+
+    (86) numero -> NINT .
+
+    MAS             reduce using rule 86 (numero -> NINT .)
+    RESTA           reduce using rule 86 (numero -> NINT .)
+    MULTIPLICACION  reduce using rule 86 (numero -> NINT .)
+    DIVISION        reduce using rule 86 (numero -> NINT .)
+    IGUALIGUAL      reduce using rule 86 (numero -> NINT .)
+    DIFERENTE       reduce using rule 86 (numero -> NINT .)
+    MENORQUE        reduce using rule 86 (numero -> NINT .)
+    MAYORQUE        reduce using rule 86 (numero -> NINT .)
+    MENORIGUAL      reduce using rule 86 (numero -> NINT .)
+    MAYORIGUAL      reduce using rule 86 (numero -> NINT .)
+    AND             reduce using rule 86 (numero -> NINT .)
+    OR              reduce using rule 86 (numero -> NINT .)
+    SELECT          reduce using rule 86 (numero -> NINT .)
+    CREATE          reduce using rule 86 (numero -> NINT .)
+    INSERT          reduce using rule 86 (numero -> NINT .)
+    DELETE          reduce using rule 86 (numero -> NINT .)
+    RNOT            reduce using rule 86 (numero -> NINT .)
+    NINT            reduce using rule 86 (numero -> NINT .)
+    NBIT            reduce using rule 86 (numero -> NINT .)
+    NDECIMAL        reduce using rule 86 (numero -> NINT .)
+    FECHA           reduce using rule 86 (numero -> NINT .)
+    FECHAHORA       reduce using rule 86 (numero -> NINT .)
+    CADENA          reduce using rule 86 (numero -> NINT .)
+    $end            reduce using rule 86 (numero -> NINT .)
+    COMA            reduce using rule 86 (numero -> NINT .)
+    PARCIERRA       reduce using rule 86 (numero -> NINT .)
+    PTCOMA          reduce using rule 86 (numero -> NINT .)
+
+
+state 30
+
+    (87) numero -> NBIT .
+
+    MAS             reduce using rule 87 (numero -> NBIT .)
+    RESTA           reduce using rule 87 (numero -> NBIT .)
+    MULTIPLICACION  reduce using rule 87 (numero -> NBIT .)
+    DIVISION        reduce using rule 87 (numero -> NBIT .)
+    IGUALIGUAL      reduce using rule 87 (numero -> NBIT .)
+    DIFERENTE       reduce using rule 87 (numero -> NBIT .)
+    MENORQUE        reduce using rule 87 (numero -> NBIT .)
+    MAYORQUE        reduce using rule 87 (numero -> NBIT .)
+    MENORIGUAL      reduce using rule 87 (numero -> NBIT .)
+    MAYORIGUAL      reduce using rule 87 (numero -> NBIT .)
+    AND             reduce using rule 87 (numero -> NBIT .)
+    OR              reduce using rule 87 (numero -> NBIT .)
+    SELECT          reduce using rule 87 (numero -> NBIT .)
+    CREATE          reduce using rule 87 (numero -> NBIT .)
+    INSERT          reduce using rule 87 (numero -> NBIT .)
+    DELETE          reduce using rule 87 (numero -> NBIT .)
+    RNOT            reduce using rule 87 (numero -> NBIT .)
+    NINT            reduce using rule 87 (numero -> NBIT .)
+    NBIT            reduce using rule 87 (numero -> NBIT .)
+    NDECIMAL        reduce using rule 87 (numero -> NBIT .)
+    FECHA           reduce using rule 87 (numero -> NBIT .)
+    FECHAHORA       reduce using rule 87 (numero -> NBIT .)
+    CADENA          reduce using rule 87 (numero -> NBIT .)
+    $end            reduce using rule 87 (numero -> NBIT .)
+    COMA            reduce using rule 87 (numero -> NBIT .)
+    PARCIERRA       reduce using rule 87 (numero -> NBIT .)
+    PTCOMA          reduce using rule 87 (numero -> NBIT .)
+
+
+state 31
+
+    (88) numero -> NDECIMAL .
+
+    MAS             reduce using rule 88 (numero -> NDECIMAL .)
+    RESTA           reduce using rule 88 (numero -> NDECIMAL .)
+    MULTIPLICACION  reduce using rule 88 (numero -> NDECIMAL .)
+    DIVISION        reduce using rule 88 (numero -> NDECIMAL .)
+    IGUALIGUAL      reduce using rule 88 (numero -> NDECIMAL .)
+    DIFERENTE       reduce using rule 88 (numero -> NDECIMAL .)
+    MENORQUE        reduce using rule 88 (numero -> NDECIMAL .)
+    MAYORQUE        reduce using rule 88 (numero -> NDECIMAL .)
+    MENORIGUAL      reduce using rule 88 (numero -> NDECIMAL .)
+    MAYORIGUAL      reduce using rule 88 (numero -> NDECIMAL .)
+    AND             reduce using rule 88 (numero -> NDECIMAL .)
+    OR              reduce using rule 88 (numero -> NDECIMAL .)
+    SELECT          reduce using rule 88 (numero -> NDECIMAL .)
+    CREATE          reduce using rule 88 (numero -> NDECIMAL .)
+    INSERT          reduce using rule 88 (numero -> NDECIMAL .)
+    DELETE          reduce using rule 88 (numero -> NDECIMAL .)
+    RNOT            reduce using rule 88 (numero -> NDECIMAL .)
+    NINT            reduce using rule 88 (numero -> NDECIMAL .)
+    NBIT            reduce using rule 88 (numero -> NDECIMAL .)
+    NDECIMAL        reduce using rule 88 (numero -> NDECIMAL .)
+    FECHA           reduce using rule 88 (numero -> NDECIMAL .)
+    FECHAHORA       reduce using rule 88 (numero -> NDECIMAL .)
+    CADENA          reduce using rule 88 (numero -> NDECIMAL .)
+    $end            reduce using rule 88 (numero -> NDECIMAL .)
+    COMA            reduce using rule 88 (numero -> NDECIMAL .)
+    PARCIERRA       reduce using rule 88 (numero -> NDECIMAL .)
+    PTCOMA          reduce using rule 88 (numero -> NDECIMAL .)
+
+
+state 32
+
+    (83) expresion -> FECHA .
+
+    IGUALIGUAL      reduce using rule 83 (expresion -> FECHA .)
+    DIFERENTE       reduce using rule 83 (expresion -> FECHA .)
+    MENORQUE        reduce using rule 83 (expresion -> FECHA .)
+    MAYORQUE        reduce using rule 83 (expresion -> FECHA .)
+    MENORIGUAL      reduce using rule 83 (expresion -> FECHA .)
+    MAYORIGUAL      reduce using rule 83 (expresion -> FECHA .)
+    AND             reduce using rule 83 (expresion -> FECHA .)
+    OR              reduce using rule 83 (expresion -> FECHA .)
+    SELECT          reduce using rule 83 (expresion -> FECHA .)
+    CREATE          reduce using rule 83 (expresion -> FECHA .)
+    INSERT          reduce using rule 83 (expresion -> FECHA .)
+    DELETE          reduce using rule 83 (expresion -> FECHA .)
+    RNOT            reduce using rule 83 (expresion -> FECHA .)
+    NINT            reduce using rule 83 (expresion -> FECHA .)
+    NBIT            reduce using rule 83 (expresion -> FECHA .)
+    NDECIMAL        reduce using rule 83 (expresion -> FECHA .)
+    FECHA           reduce using rule 83 (expresion -> FECHA .)
+    FECHAHORA       reduce using rule 83 (expresion -> FECHA .)
+    CADENA          reduce using rule 83 (expresion -> FECHA .)
+    $end            reduce using rule 83 (expresion -> FECHA .)
+    COMA            reduce using rule 83 (expresion -> FECHA .)
+    PARCIERRA       reduce using rule 83 (expresion -> FECHA .)
+    PTCOMA          reduce using rule 83 (expresion -> FECHA .)
+
+
+state 33
+
+    (84) expresion -> FECHAHORA .
+
+    IGUALIGUAL      reduce using rule 84 (expresion -> FECHAHORA .)
+    DIFERENTE       reduce using rule 84 (expresion -> FECHAHORA .)
+    MENORQUE        reduce using rule 84 (expresion -> FECHAHORA .)
+    MAYORQUE        reduce using rule 84 (expresion -> FECHAHORA .)
+    MENORIGUAL      reduce using rule 84 (expresion -> FECHAHORA .)
+    MAYORIGUAL      reduce using rule 84 (expresion -> FECHAHORA .)
+    AND             reduce using rule 84 (expresion -> FECHAHORA .)
+    OR              reduce using rule 84 (expresion -> FECHAHORA .)
+    SELECT          reduce using rule 84 (expresion -> FECHAHORA .)
+    CREATE          reduce using rule 84 (expresion -> FECHAHORA .)
+    INSERT          reduce using rule 84 (expresion -> FECHAHORA .)
+    DELETE          reduce using rule 84 (expresion -> FECHAHORA .)
+    RNOT            reduce using rule 84 (expresion -> FECHAHORA .)
+    NINT            reduce using rule 84 (expresion -> FECHAHORA .)
+    NBIT            reduce using rule 84 (expresion -> FECHAHORA .)
+    NDECIMAL        reduce using rule 84 (expresion -> FECHAHORA .)
+    FECHA           reduce using rule 84 (expresion -> FECHAHORA .)
+    FECHAHORA       reduce using rule 84 (expresion -> FECHAHORA .)
+    CADENA          reduce using rule 84 (expresion -> FECHAHORA .)
+    $end            reduce using rule 84 (expresion -> FECHAHORA .)
+    COMA            reduce using rule 84 (expresion -> FECHAHORA .)
+    PARCIERRA       reduce using rule 84 (expresion -> FECHAHORA .)
+    PTCOMA          reduce using rule 84 (expresion -> FECHAHORA .)
+
+
+state 34
+
+    (85) expresion -> CADENA .
+
+    IGUALIGUAL      reduce using rule 85 (expresion -> CADENA .)
+    DIFERENTE       reduce using rule 85 (expresion -> CADENA .)
+    MENORQUE        reduce using rule 85 (expresion -> CADENA .)
+    MAYORQUE        reduce using rule 85 (expresion -> CADENA .)
+    MENORIGUAL      reduce using rule 85 (expresion -> CADENA .)
+    MAYORIGUAL      reduce using rule 85 (expresion -> CADENA .)
+    AND             reduce using rule 85 (expresion -> CADENA .)
+    OR              reduce using rule 85 (expresion -> CADENA .)
+    SELECT          reduce using rule 85 (expresion -> CADENA .)
+    CREATE          reduce using rule 85 (expresion -> CADENA .)
+    INSERT          reduce using rule 85 (expresion -> CADENA .)
+    DELETE          reduce using rule 85 (expresion -> CADENA .)
+    RNOT            reduce using rule 85 (expresion -> CADENA .)
+    NINT            reduce using rule 85 (expresion -> CADENA .)
+    NBIT            reduce using rule 85 (expresion -> CADENA .)
+    NDECIMAL        reduce using rule 85 (expresion -> CADENA .)
+    FECHA           reduce using rule 85 (expresion -> CADENA .)
+    FECHAHORA       reduce using rule 85 (expresion -> CADENA .)
+    CADENA          reduce using rule 85 (expresion -> CADENA .)
+    $end            reduce using rule 85 (expresion -> CADENA .)
+    COMA            reduce using rule 85 (expresion -> CADENA .)
+    PARCIERRA       reduce using rule 85 (expresion -> CADENA .)
+    PTCOMA          reduce using rule 85 (expresion -> CADENA .)
+
+
+state 35
+
+    (1) instrucciones -> instruccion instrucciones .
+
+    $end            reduce using rule 1 (instrucciones -> instruccion instrucciones .)
+
+
+state 36
+
+    (11) f_sistema -> SELECT operacion_sis .
+
+    SELECT          reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    CREATE          reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    INSERT          reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    DELETE          reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    RNOT            reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    NINT            reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    NBIT            reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    NDECIMAL        reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    FECHA           reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    FECHAHORA       reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    CADENA          reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+    $end            reduce using rule 11 (f_sistema -> SELECT operacion_sis .)
+
+
+state 37
+
+    (12) operacion_sis -> func_concatena .
+
+    SELECT          reduce using rule 12 (operacion_sis -> func_concatena .)
+    CREATE          reduce using rule 12 (operacion_sis -> func_concatena .)
+    INSERT          reduce using rule 12 (operacion_sis -> func_concatena .)
+    DELETE          reduce using rule 12 (operacion_sis -> func_concatena .)
+    RNOT            reduce using rule 12 (operacion_sis -> func_concatena .)
+    NINT            reduce using rule 12 (operacion_sis -> func_concatena .)
+    NBIT            reduce using rule 12 (operacion_sis -> func_concatena .)
+    NDECIMAL        reduce using rule 12 (operacion_sis -> func_concatena .)
+    FECHA           reduce using rule 12 (operacion_sis -> func_concatena .)
+    FECHAHORA       reduce using rule 12 (operacion_sis -> func_concatena .)
+    CADENA          reduce using rule 12 (operacion_sis -> func_concatena .)
+    $end            reduce using rule 12 (operacion_sis -> func_concatena .)
+
+
+state 38
+
+    (13) operacion_sis -> func_substraer .
+
+    SELECT          reduce using rule 13 (operacion_sis -> func_substraer .)
+    CREATE          reduce using rule 13 (operacion_sis -> func_substraer .)
+    INSERT          reduce using rule 13 (operacion_sis -> func_substraer .)
+    DELETE          reduce using rule 13 (operacion_sis -> func_substraer .)
+    RNOT            reduce using rule 13 (operacion_sis -> func_substraer .)
+    NINT            reduce using rule 13 (operacion_sis -> func_substraer .)
+    NBIT            reduce using rule 13 (operacion_sis -> func_substraer .)
+    NDECIMAL        reduce using rule 13 (operacion_sis -> func_substraer .)
+    FECHA           reduce using rule 13 (operacion_sis -> func_substraer .)
+    FECHAHORA       reduce using rule 13 (operacion_sis -> func_substraer .)
+    CADENA          reduce using rule 13 (operacion_sis -> func_substraer .)
+    $end            reduce using rule 13 (operacion_sis -> func_substraer .)
+
+
+state 39
+
+    (14) operacion_sis -> func_hoy .
+
+    SELECT          reduce using rule 14 (operacion_sis -> func_hoy .)
+    CREATE          reduce using rule 14 (operacion_sis -> func_hoy .)
+    INSERT          reduce using rule 14 (operacion_sis -> func_hoy .)
+    DELETE          reduce using rule 14 (operacion_sis -> func_hoy .)
+    RNOT            reduce using rule 14 (operacion_sis -> func_hoy .)
+    NINT            reduce using rule 14 (operacion_sis -> func_hoy .)
+    NBIT            reduce using rule 14 (operacion_sis -> func_hoy .)
+    NDECIMAL        reduce using rule 14 (operacion_sis -> func_hoy .)
+    FECHA           reduce using rule 14 (operacion_sis -> func_hoy .)
+    FECHAHORA       reduce using rule 14 (operacion_sis -> func_hoy .)
+    CADENA          reduce using rule 14 (operacion_sis -> func_hoy .)
+    $end            reduce using rule 14 (operacion_sis -> func_hoy .)
+
+
+state 40
+
+    (15) operacion_sis -> func_contar .
+
+    SELECT          reduce using rule 15 (operacion_sis -> func_contar .)
+    CREATE          reduce using rule 15 (operacion_sis -> func_contar .)
+    INSERT          reduce using rule 15 (operacion_sis -> func_contar .)
+    DELETE          reduce using rule 15 (operacion_sis -> func_contar .)
+    RNOT            reduce using rule 15 (operacion_sis -> func_contar .)
+    NINT            reduce using rule 15 (operacion_sis -> func_contar .)
+    NBIT            reduce using rule 15 (operacion_sis -> func_contar .)
+    NDECIMAL        reduce using rule 15 (operacion_sis -> func_contar .)
+    FECHA           reduce using rule 15 (operacion_sis -> func_contar .)
+    FECHAHORA       reduce using rule 15 (operacion_sis -> func_contar .)
+    CADENA          reduce using rule 15 (operacion_sis -> func_contar .)
+    $end            reduce using rule 15 (operacion_sis -> func_contar .)
+
+
+state 41
+
+    (16) operacion_sis -> func_suma .
+
+    SELECT          reduce using rule 16 (operacion_sis -> func_suma .)
+    CREATE          reduce using rule 16 (operacion_sis -> func_suma .)
+    INSERT          reduce using rule 16 (operacion_sis -> func_suma .)
+    DELETE          reduce using rule 16 (operacion_sis -> func_suma .)
+    RNOT            reduce using rule 16 (operacion_sis -> func_suma .)
+    NINT            reduce using rule 16 (operacion_sis -> func_suma .)
+    NBIT            reduce using rule 16 (operacion_sis -> func_suma .)
+    NDECIMAL        reduce using rule 16 (operacion_sis -> func_suma .)
+    FECHA           reduce using rule 16 (operacion_sis -> func_suma .)
+    FECHAHORA       reduce using rule 16 (operacion_sis -> func_suma .)
+    CADENA          reduce using rule 16 (operacion_sis -> func_suma .)
+    $end            reduce using rule 16 (operacion_sis -> func_suma .)
+
+
+state 42
+
+    (17) operacion_sis -> func_cas .
+
+    SELECT          reduce using rule 17 (operacion_sis -> func_cas .)
+    CREATE          reduce using rule 17 (operacion_sis -> func_cas .)
+    INSERT          reduce using rule 17 (operacion_sis -> func_cas .)
+    DELETE          reduce using rule 17 (operacion_sis -> func_cas .)
+    RNOT            reduce using rule 17 (operacion_sis -> func_cas .)
+    NINT            reduce using rule 17 (operacion_sis -> func_cas .)
+    NBIT            reduce using rule 17 (operacion_sis -> func_cas .)
+    NDECIMAL        reduce using rule 17 (operacion_sis -> func_cas .)
+    FECHA           reduce using rule 17 (operacion_sis -> func_cas .)
+    FECHAHORA       reduce using rule 17 (operacion_sis -> func_cas .)
+    CADENA          reduce using rule 17 (operacion_sis -> func_cas .)
+    $end            reduce using rule 17 (operacion_sis -> func_cas .)
+
+
+state 43
+
+    (18) operacion_sis -> select_dato .
+
+    SELECT          reduce using rule 18 (operacion_sis -> select_dato .)
+    CREATE          reduce using rule 18 (operacion_sis -> select_dato .)
+    INSERT          reduce using rule 18 (operacion_sis -> select_dato .)
+    DELETE          reduce using rule 18 (operacion_sis -> select_dato .)
+    RNOT            reduce using rule 18 (operacion_sis -> select_dato .)
+    NINT            reduce using rule 18 (operacion_sis -> select_dato .)
+    NBIT            reduce using rule 18 (operacion_sis -> select_dato .)
+    NDECIMAL        reduce using rule 18 (operacion_sis -> select_dato .)
+    FECHA           reduce using rule 18 (operacion_sis -> select_dato .)
+    FECHAHORA       reduce using rule 18 (operacion_sis -> select_dato .)
+    CADENA          reduce using rule 18 (operacion_sis -> select_dato .)
+    $end            reduce using rule 18 (operacion_sis -> select_dato .)
+
+
+state 44
+
+    (19) func_concatena -> CONCATENAR . PARABRE expresion COMA expresion PARCIERRA
+
+    PARABRE         shift and go to state 70
+
+
+state 45
+
+    (20) func_substraer -> SUBSTRAER . PARABRE cadenas COMA numero COMA numero PARCIERRA
+
+    PARABRE         shift and go to state 71
+
+
+state 46
+
+    (21) func_hoy -> HOY . PARABRE PARCIERRA
+
+    PARABRE         shift and go to state 72
+
+
+state 47
+
+    (22) func_contar -> CONTAR . PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
+
+    PARABRE         shift and go to state 73
+
+
+state 48
+
+    (25) select_dato -> MULTIPLICACION . FROM name
+
+    FROM            shift and go to state 74
+
+
+state 49
+
+    (26) select_dato -> FROM . name
+    (27) select_dato -> FROM . name WHERE condiciones
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 75
+
+state 50
+
+    (23) func_suma -> SUMA . PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion
+
+    PARABRE         shift and go to state 77
+
+
+state 51
+
+    (24) func_cas -> CAST . PARABRE ARROBA name AS tipo_dato PARCIERRA
+
+    PARABRE         shift and go to state 78
+
+
+state 52
+
+    (55) sent_create_database -> CREATE DATA . BASE name PTCOMA
+
+    BASE            shift and go to state 79
+
+
+state 53
+
+    (56) sent_create_table -> CREATE TABLE . name PARABRE datos PARCIERRA PTCOMA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 80
+
+state 54
+
+    (67) f_insert -> INSERT INTO . name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 81
+
+state 55
+
+    (68) f_delete -> DELETE FROM . name WHERE name IGUAL expresion PTCOMA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 82
+
+state 56
+
+    (45) exr_igual -> expresion IGUALIGUAL . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 83
+    numero                         shift and go to state 69
+
+state 57
+
+    (46) exr_diferente -> expresion DIFERENTE . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 84
+    numero                         shift and go to state 69
+
+state 58
+
+    (47) exr_menorque -> expresion MENORQUE . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 85
+    numero                         shift and go to state 69
+
+state 59
+
+    (48) exr_mayorque -> expresion MAYORQUE . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 86
+    numero                         shift and go to state 69
+
+state 60
+
+    (49) exr_menorigual -> expresion MENORIGUAL . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 87
+    numero                         shift and go to state 69
+
+state 61
+
+    (50) exr_mayorigual -> expresion MAYORIGUAL . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 88
+    numero                         shift and go to state 69
+
+state 62
+
+    (52) exl_and -> expresion AND . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 89
+    numero                         shift and go to state 69
+
+state 63
+
+    (53) exl_and -> expresion OR . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 90
+    numero                         shift and go to state 69
+
+state 64
+
+    (35) op_suma -> numero MAS . numero
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 91
+
+state 65
+
+    (36) op_resta -> numero RESTA . numero
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 92
+
+state 66
+
+    (37) op_multiplicacion -> numero MULTIPLICACION . numero
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 93
+
+state 67
+
+    (38) op_division -> numero DIVISION . numero
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 94
+
+state 68
+
+    (54) exl_and -> RNOT expresion .
+
+    SELECT          reduce using rule 54 (exl_and -> RNOT expresion .)
+    CREATE          reduce using rule 54 (exl_and -> RNOT expresion .)
+    INSERT          reduce using rule 54 (exl_and -> RNOT expresion .)
+    DELETE          reduce using rule 54 (exl_and -> RNOT expresion .)
+    RNOT            reduce using rule 54 (exl_and -> RNOT expresion .)
+    NINT            reduce using rule 54 (exl_and -> RNOT expresion .)
+    NBIT            reduce using rule 54 (exl_and -> RNOT expresion .)
+    NDECIMAL        reduce using rule 54 (exl_and -> RNOT expresion .)
+    FECHA           reduce using rule 54 (exl_and -> RNOT expresion .)
+    FECHAHORA       reduce using rule 54 (exl_and -> RNOT expresion .)
+    CADENA          reduce using rule 54 (exl_and -> RNOT expresion .)
+    $end            reduce using rule 54 (exl_and -> RNOT expresion .)
+
+
+state 69
+
+    (82) expresion -> numero .
+
+    SELECT          reduce using rule 82 (expresion -> numero .)
+    CREATE          reduce using rule 82 (expresion -> numero .)
+    INSERT          reduce using rule 82 (expresion -> numero .)
+    DELETE          reduce using rule 82 (expresion -> numero .)
+    RNOT            reduce using rule 82 (expresion -> numero .)
+    NINT            reduce using rule 82 (expresion -> numero .)
+    NBIT            reduce using rule 82 (expresion -> numero .)
+    NDECIMAL        reduce using rule 82 (expresion -> numero .)
+    FECHA           reduce using rule 82 (expresion -> numero .)
+    FECHAHORA       reduce using rule 82 (expresion -> numero .)
+    CADENA          reduce using rule 82 (expresion -> numero .)
+    $end            reduce using rule 82 (expresion -> numero .)
+    COMA            reduce using rule 82 (expresion -> numero .)
+    AND             reduce using rule 82 (expresion -> numero .)
+    OR              reduce using rule 82 (expresion -> numero .)
+    PARCIERRA       reduce using rule 82 (expresion -> numero .)
+    PTCOMA          reduce using rule 82 (expresion -> numero .)
+
+
+state 70
+
+    (19) func_concatena -> CONCATENAR PARABRE . expresion COMA expresion PARCIERRA
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 95
+    numero                         shift and go to state 69
+
+state 71
+
+    (20) func_substraer -> SUBSTRAER PARABRE . cadenas COMA numero COMA numero PARCIERRA
+    (90) cadenas -> . CADENA
+
+    CADENA          shift and go to state 97
+
+    cadenas                        shift and go to state 96
+
+state 72
+
+    (21) func_hoy -> HOY PARABRE . PARCIERRA
+
+    PARCIERRA       shift and go to state 98
+
+
+state 73
+
+    (22) func_contar -> CONTAR PARABRE . MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
+
+    MULTIPLICACION  shift and go to state 99
+
+
+state 74
+
+    (25) select_dato -> MULTIPLICACION FROM . name
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 100
+
+state 75
+
+    (26) select_dato -> FROM name .
+    (27) select_dato -> FROM name . WHERE condiciones
+
+    SELECT          reduce using rule 26 (select_dato -> FROM name .)
+    CREATE          reduce using rule 26 (select_dato -> FROM name .)
+    INSERT          reduce using rule 26 (select_dato -> FROM name .)
+    DELETE          reduce using rule 26 (select_dato -> FROM name .)
+    RNOT            reduce using rule 26 (select_dato -> FROM name .)
+    NINT            reduce using rule 26 (select_dato -> FROM name .)
+    NBIT            reduce using rule 26 (select_dato -> FROM name .)
+    NDECIMAL        reduce using rule 26 (select_dato -> FROM name .)
+    FECHA           reduce using rule 26 (select_dato -> FROM name .)
+    FECHAHORA       reduce using rule 26 (select_dato -> FROM name .)
+    CADENA          reduce using rule 26 (select_dato -> FROM name .)
+    $end            reduce using rule 26 (select_dato -> FROM name .)
+    WHERE           shift and go to state 101
+
+
+state 76
+
+    (89) name -> NOMBRE .
+
+    WHERE           reduce using rule 89 (name -> NOMBRE .)
+    SELECT          reduce using rule 89 (name -> NOMBRE .)
+    CREATE          reduce using rule 89 (name -> NOMBRE .)
+    INSERT          reduce using rule 89 (name -> NOMBRE .)
+    DELETE          reduce using rule 89 (name -> NOMBRE .)
+    RNOT            reduce using rule 89 (name -> NOMBRE .)
+    NINT            reduce using rule 89 (name -> NOMBRE .)
+    NBIT            reduce using rule 89 (name -> NOMBRE .)
+    NDECIMAL        reduce using rule 89 (name -> NOMBRE .)
+    FECHA           reduce using rule 89 (name -> NOMBRE .)
+    FECHAHORA       reduce using rule 89 (name -> NOMBRE .)
+    CADENA          reduce using rule 89 (name -> NOMBRE .)
+    $end            reduce using rule 89 (name -> NOMBRE .)
+    PARABRE         reduce using rule 89 (name -> NOMBRE .)
+    PARCIERRA       reduce using rule 89 (name -> NOMBRE .)
+    PTCOMA          reduce using rule 89 (name -> NOMBRE .)
+    AS              reduce using rule 89 (name -> NOMBRE .)
+    INT             reduce using rule 89 (name -> NOMBRE .)
+    BIT             reduce using rule 89 (name -> NOMBRE .)
+    DECIMAL         reduce using rule 89 (name -> NOMBRE .)
+    DATE            reduce using rule 89 (name -> NOMBRE .)
+    DATETIME        reduce using rule 89 (name -> NOMBRE .)
+    NCHAR           reduce using rule 89 (name -> NOMBRE .)
+    NVARCHAR        reduce using rule 89 (name -> NOMBRE .)
+    COMA            reduce using rule 89 (name -> NOMBRE .)
+    IGUAL           reduce using rule 89 (name -> NOMBRE .)
+
+
+state 77
+
+    (23) func_suma -> SUMA PARABRE . name PARCIERRA FROM name WHERE name IGUAL expresion
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 102
+
+state 78
+
+    (24) func_cas -> CAST PARABRE . ARROBA name AS tipo_dato PARCIERRA
+
+    ARROBA          shift and go to state 103
+
+
+state 79
+
+    (55) sent_create_database -> CREATE DATA BASE . name PTCOMA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 104
+
+state 80
+
+    (56) sent_create_table -> CREATE TABLE name . PARABRE datos PARCIERRA PTCOMA
+
+    PARABRE         shift and go to state 105
+
+
+state 81
+
+    (67) f_insert -> INSERT INTO name . PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+
+    PARABRE         shift and go to state 106
+
+
+state 82
+
+    (68) f_delete -> DELETE FROM name . WHERE name IGUAL expresion PTCOMA
+
+    WHERE           shift and go to state 107
+
+
+state 83
+
+    (45) exr_igual -> expresion IGUALIGUAL expresion .
+
+    SELECT          reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    CREATE          reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    INSERT          reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    DELETE          reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    RNOT            reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    NINT            reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    NBIT            reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    NDECIMAL        reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    FECHA           reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    FECHAHORA       reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    CADENA          reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+    $end            reduce using rule 45 (exr_igual -> expresion IGUALIGUAL expresion .)
+
+
+state 84
+
+    (46) exr_diferente -> expresion DIFERENTE expresion .
+
+    SELECT          reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    CREATE          reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    INSERT          reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    DELETE          reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    RNOT            reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    NINT            reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    NBIT            reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    NDECIMAL        reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    FECHA           reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    FECHAHORA       reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    CADENA          reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+    $end            reduce using rule 46 (exr_diferente -> expresion DIFERENTE expresion .)
+
+
+state 85
+
+    (47) exr_menorque -> expresion MENORQUE expresion .
+
+    SELECT          reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    CREATE          reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    INSERT          reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    DELETE          reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    RNOT            reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    NINT            reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    NBIT            reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    NDECIMAL        reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    FECHA           reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    FECHAHORA       reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    CADENA          reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+    $end            reduce using rule 47 (exr_menorque -> expresion MENORQUE expresion .)
+
+
+state 86
+
+    (48) exr_mayorque -> expresion MAYORQUE expresion .
+
+    SELECT          reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    CREATE          reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    INSERT          reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    DELETE          reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    RNOT            reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    NINT            reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    NBIT            reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    NDECIMAL        reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    FECHA           reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    FECHAHORA       reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    CADENA          reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+    $end            reduce using rule 48 (exr_mayorque -> expresion MAYORQUE expresion .)
+
+
+state 87
+
+    (49) exr_menorigual -> expresion MENORIGUAL expresion .
+
+    SELECT          reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    CREATE          reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    INSERT          reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    DELETE          reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    RNOT            reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    NINT            reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    NBIT            reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    NDECIMAL        reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    FECHA           reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    FECHAHORA       reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    CADENA          reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+    $end            reduce using rule 49 (exr_menorigual -> expresion MENORIGUAL expresion .)
+
+
+state 88
+
+    (50) exr_mayorigual -> expresion MAYORIGUAL expresion .
+
+    SELECT          reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    CREATE          reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    INSERT          reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    DELETE          reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    RNOT            reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    NINT            reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    NBIT            reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    NDECIMAL        reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    FECHA           reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    FECHAHORA       reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    CADENA          reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+    $end            reduce using rule 50 (exr_mayorigual -> expresion MAYORIGUAL expresion .)
+
+
+state 89
+
+    (52) exl_and -> expresion AND expresion .
+
+    SELECT          reduce using rule 52 (exl_and -> expresion AND expresion .)
+    CREATE          reduce using rule 52 (exl_and -> expresion AND expresion .)
+    INSERT          reduce using rule 52 (exl_and -> expresion AND expresion .)
+    DELETE          reduce using rule 52 (exl_and -> expresion AND expresion .)
+    RNOT            reduce using rule 52 (exl_and -> expresion AND expresion .)
+    NINT            reduce using rule 52 (exl_and -> expresion AND expresion .)
+    NBIT            reduce using rule 52 (exl_and -> expresion AND expresion .)
+    NDECIMAL        reduce using rule 52 (exl_and -> expresion AND expresion .)
+    FECHA           reduce using rule 52 (exl_and -> expresion AND expresion .)
+    FECHAHORA       reduce using rule 52 (exl_and -> expresion AND expresion .)
+    CADENA          reduce using rule 52 (exl_and -> expresion AND expresion .)
+    $end            reduce using rule 52 (exl_and -> expresion AND expresion .)
+
+
+state 90
+
+    (53) exl_and -> expresion OR expresion .
+
+    SELECT          reduce using rule 53 (exl_and -> expresion OR expresion .)
+    CREATE          reduce using rule 53 (exl_and -> expresion OR expresion .)
+    INSERT          reduce using rule 53 (exl_and -> expresion OR expresion .)
+    DELETE          reduce using rule 53 (exl_and -> expresion OR expresion .)
+    RNOT            reduce using rule 53 (exl_and -> expresion OR expresion .)
+    NINT            reduce using rule 53 (exl_and -> expresion OR expresion .)
+    NBIT            reduce using rule 53 (exl_and -> expresion OR expresion .)
+    NDECIMAL        reduce using rule 53 (exl_and -> expresion OR expresion .)
+    FECHA           reduce using rule 53 (exl_and -> expresion OR expresion .)
+    FECHAHORA       reduce using rule 53 (exl_and -> expresion OR expresion .)
+    CADENA          reduce using rule 53 (exl_and -> expresion OR expresion .)
+    $end            reduce using rule 53 (exl_and -> expresion OR expresion .)
+
+
+state 91
+
+    (35) op_suma -> numero MAS numero .
+
+    SELECT          reduce using rule 35 (op_suma -> numero MAS numero .)
+    CREATE          reduce using rule 35 (op_suma -> numero MAS numero .)
+    INSERT          reduce using rule 35 (op_suma -> numero MAS numero .)
+    DELETE          reduce using rule 35 (op_suma -> numero MAS numero .)
+    RNOT            reduce using rule 35 (op_suma -> numero MAS numero .)
+    NINT            reduce using rule 35 (op_suma -> numero MAS numero .)
+    NBIT            reduce using rule 35 (op_suma -> numero MAS numero .)
+    NDECIMAL        reduce using rule 35 (op_suma -> numero MAS numero .)
+    FECHA           reduce using rule 35 (op_suma -> numero MAS numero .)
+    FECHAHORA       reduce using rule 35 (op_suma -> numero MAS numero .)
+    CADENA          reduce using rule 35 (op_suma -> numero MAS numero .)
+    $end            reduce using rule 35 (op_suma -> numero MAS numero .)
+
+
+state 92
+
+    (36) op_resta -> numero RESTA numero .
+
+    SELECT          reduce using rule 36 (op_resta -> numero RESTA numero .)
+    CREATE          reduce using rule 36 (op_resta -> numero RESTA numero .)
+    INSERT          reduce using rule 36 (op_resta -> numero RESTA numero .)
+    DELETE          reduce using rule 36 (op_resta -> numero RESTA numero .)
+    RNOT            reduce using rule 36 (op_resta -> numero RESTA numero .)
+    NINT            reduce using rule 36 (op_resta -> numero RESTA numero .)
+    NBIT            reduce using rule 36 (op_resta -> numero RESTA numero .)
+    NDECIMAL        reduce using rule 36 (op_resta -> numero RESTA numero .)
+    FECHA           reduce using rule 36 (op_resta -> numero RESTA numero .)
+    FECHAHORA       reduce using rule 36 (op_resta -> numero RESTA numero .)
+    CADENA          reduce using rule 36 (op_resta -> numero RESTA numero .)
+    $end            reduce using rule 36 (op_resta -> numero RESTA numero .)
+
+
+state 93
+
+    (37) op_multiplicacion -> numero MULTIPLICACION numero .
+
+    SELECT          reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    CREATE          reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    INSERT          reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    DELETE          reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    RNOT            reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    NINT            reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    NBIT            reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    NDECIMAL        reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    FECHA           reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    FECHAHORA       reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    CADENA          reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+    $end            reduce using rule 37 (op_multiplicacion -> numero MULTIPLICACION numero .)
+
+
+state 94
+
+    (38) op_division -> numero DIVISION numero .
+
+    SELECT          reduce using rule 38 (op_division -> numero DIVISION numero .)
+    CREATE          reduce using rule 38 (op_division -> numero DIVISION numero .)
+    INSERT          reduce using rule 38 (op_division -> numero DIVISION numero .)
+    DELETE          reduce using rule 38 (op_division -> numero DIVISION numero .)
+    RNOT            reduce using rule 38 (op_division -> numero DIVISION numero .)
+    NINT            reduce using rule 38 (op_division -> numero DIVISION numero .)
+    NBIT            reduce using rule 38 (op_division -> numero DIVISION numero .)
+    NDECIMAL        reduce using rule 38 (op_division -> numero DIVISION numero .)
+    FECHA           reduce using rule 38 (op_division -> numero DIVISION numero .)
+    FECHAHORA       reduce using rule 38 (op_division -> numero DIVISION numero .)
+    CADENA          reduce using rule 38 (op_division -> numero DIVISION numero .)
+    $end            reduce using rule 38 (op_division -> numero DIVISION numero .)
+
+
+state 95
+
+    (19) func_concatena -> CONCATENAR PARABRE expresion . COMA expresion PARCIERRA
+
+    COMA            shift and go to state 108
+
+
+state 96
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas . COMA numero COMA numero PARCIERRA
+
+    COMA            shift and go to state 109
+
+
+state 97
+
+    (90) cadenas -> CADENA .
+
+    COMA            reduce using rule 90 (cadenas -> CADENA .)
+
+
+state 98
+
+    (21) func_hoy -> HOY PARABRE PARCIERRA .
+
+    SELECT          reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    CREATE          reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    INSERT          reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    DELETE          reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    RNOT            reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    NINT            reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    NBIT            reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    NDECIMAL        reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    FECHA           reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    FECHAHORA       reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    CADENA          reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+    $end            reduce using rule 21 (func_hoy -> HOY PARABRE PARCIERRA .)
+
+
+state 99
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION . PARCIERRA FROM name WHERE name IGUAL expresion
+
+    PARCIERRA       shift and go to state 110
+
+
+state 100
+
+    (25) select_dato -> MULTIPLICACION FROM name .
+
+    SELECT          reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    CREATE          reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    INSERT          reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    DELETE          reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    RNOT            reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    NINT            reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    NBIT            reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    NDECIMAL        reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    FECHA           reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    FECHAHORA       reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    CADENA          reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+    $end            reduce using rule 25 (select_dato -> MULTIPLICACION FROM name .)
+
+
+state 101
+
+    (27) select_dato -> FROM name WHERE . condiciones
+    (28) condiciones -> . expresion
+    (29) condiciones -> . expresion AND condiciones
+    (30) condiciones -> . expresion OR condiciones
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    condiciones                    shift and go to state 111
+    expresion                      shift and go to state 112
+    numero                         shift and go to state 69
+
+state 102
+
+    (23) func_suma -> SUMA PARABRE name . PARCIERRA FROM name WHERE name IGUAL expresion
+
+    PARCIERRA       shift and go to state 113
+
+
+state 103
+
+    (24) func_cas -> CAST PARABRE ARROBA . name AS tipo_dato PARCIERRA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 114
+
+state 104
+
+    (55) sent_create_database -> CREATE DATA BASE name . PTCOMA
+
+    PTCOMA          shift and go to state 115
+
+
+state 105
+
+    (56) sent_create_table -> CREATE TABLE name PARABRE . datos PARCIERRA PTCOMA
+    (57) datos -> . name tipo_dato
+    (58) datos -> . name tipo_dato caracteristicas
+    (59) datos -> . foreign_key
+    (60) datos -> . datos COMA datos
+    (89) name -> . NOMBRE
+    (61) foreign_key -> . FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+
+    NOMBRE          shift and go to state 76
+    FOREIGN         shift and go to state 119
+
+    name                           shift and go to state 116
+    datos                          shift and go to state 117
+    foreign_key                    shift and go to state 118
+
+state 106
+
+    (67) f_insert -> INSERT INTO name PARABRE . columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+    (69) columnas -> . name
+    (70) columnas -> . name COMA columnas
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 120
+    columnas                       shift and go to state 121
+
+state 107
+
+    (68) f_delete -> DELETE FROM name WHERE . name IGUAL expresion PTCOMA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 122
+
+state 108
+
+    (19) func_concatena -> CONCATENAR PARABRE expresion COMA . expresion PARCIERRA
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 123
+    numero                         shift and go to state 69
+
+state 109
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas COMA . numero COMA numero PARCIERRA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 124
+
+state 110
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA . FROM name WHERE name IGUAL expresion
+
+    FROM            shift and go to state 125
+
+
+state 111
+
+    (27) select_dato -> FROM name WHERE condiciones .
+
+    SELECT          reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    CREATE          reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    INSERT          reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    DELETE          reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    RNOT            reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    NINT            reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    NBIT            reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    NDECIMAL        reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    FECHA           reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    FECHAHORA       reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    CADENA          reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+    $end            reduce using rule 27 (select_dato -> FROM name WHERE condiciones .)
+
+
+state 112
+
+    (28) condiciones -> expresion .
+    (29) condiciones -> expresion . AND condiciones
+    (30) condiciones -> expresion . OR condiciones
+
+    SELECT          reduce using rule 28 (condiciones -> expresion .)
+    CREATE          reduce using rule 28 (condiciones -> expresion .)
+    INSERT          reduce using rule 28 (condiciones -> expresion .)
+    DELETE          reduce using rule 28 (condiciones -> expresion .)
+    RNOT            reduce using rule 28 (condiciones -> expresion .)
+    NINT            reduce using rule 28 (condiciones -> expresion .)
+    NBIT            reduce using rule 28 (condiciones -> expresion .)
+    NDECIMAL        reduce using rule 28 (condiciones -> expresion .)
+    FECHA           reduce using rule 28 (condiciones -> expresion .)
+    FECHAHORA       reduce using rule 28 (condiciones -> expresion .)
+    CADENA          reduce using rule 28 (condiciones -> expresion .)
+    $end            reduce using rule 28 (condiciones -> expresion .)
+    AND             shift and go to state 126
+    OR              shift and go to state 127
+
+
+state 113
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA . FROM name WHERE name IGUAL expresion
+
+    FROM            shift and go to state 128
+
+
+state 114
+
+    (24) func_cas -> CAST PARABRE ARROBA name . AS tipo_dato PARCIERRA
+
+    AS              shift and go to state 129
+
+
+state 115
+
+    (55) sent_create_database -> CREATE DATA BASE name PTCOMA .
+
+    SELECT          reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    CREATE          reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    INSERT          reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    DELETE          reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    RNOT            reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    NINT            reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    NBIT            reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    NDECIMAL        reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    FECHA           reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    FECHAHORA       reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    CADENA          reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+    $end            reduce using rule 55 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
+
+
+state 116
+
+    (57) datos -> name . tipo_dato
+    (58) datos -> name . tipo_dato caracteristicas
+    (73) tipo_dato -> . INT
+    (74) tipo_dato -> . BIT
+    (75) tipo_dato -> . DECIMAL
+    (76) tipo_dato -> . DATE
+    (77) tipo_dato -> . DATETIME
+    (78) tipo_dato -> . dato_nchar
+    (79) tipo_dato -> . dato_nvarchar
+    (80) dato_nchar -> . NCHAR PARABRE NINT PARCIERRA
+    (81) dato_nvarchar -> . NVARCHAR PARABRE NINT PARCIERRA
+
+    INT             shift and go to state 131
+    BIT             shift and go to state 132
+    DECIMAL         shift and go to state 133
+    DATE            shift and go to state 134
+    DATETIME        shift and go to state 135
+    NCHAR           shift and go to state 138
+    NVARCHAR        shift and go to state 139
+
+    tipo_dato                      shift and go to state 130
+    dato_nchar                     shift and go to state 136
+    dato_nvarchar                  shift and go to state 137
+
+state 117
+
+    (56) sent_create_table -> CREATE TABLE name PARABRE datos . PARCIERRA PTCOMA
+    (60) datos -> datos . COMA datos
+
+    PARCIERRA       shift and go to state 140
+    COMA            shift and go to state 141
+
+
+state 118
+
+    (59) datos -> foreign_key .
+
+    PARCIERRA       reduce using rule 59 (datos -> foreign_key .)
+    COMA            reduce using rule 59 (datos -> foreign_key .)
+
+
+state 119
+
+    (61) foreign_key -> FOREIGN . KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+
+    KEY             shift and go to state 142
+
+
+state 120
+
+    (69) columnas -> name .
+    (70) columnas -> name . COMA columnas
+
+    PARCIERRA       reduce using rule 69 (columnas -> name .)
+    COMA            shift and go to state 143
+
+
+state 121
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas . PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+
+    PARCIERRA       shift and go to state 144
+
+
+state 122
+
+    (68) f_delete -> DELETE FROM name WHERE name . IGUAL expresion PTCOMA
+
+    IGUAL           shift and go to state 145
+
+
+state 123
+
+    (19) func_concatena -> CONCATENAR PARABRE expresion COMA expresion . PARCIERRA
+
+    PARCIERRA       shift and go to state 146
+
+
+state 124
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero . COMA numero PARCIERRA
+
+    COMA            shift and go to state 147
+
+
+state 125
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM . name WHERE name IGUAL expresion
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 148
+
+state 126
+
+    (29) condiciones -> expresion AND . condiciones
+    (28) condiciones -> . expresion
+    (29) condiciones -> . expresion AND condiciones
+    (30) condiciones -> . expresion OR condiciones
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 112
+    condiciones                    shift and go to state 149
+    numero                         shift and go to state 69
+
+state 127
+
+    (30) condiciones -> expresion OR . condiciones
+    (28) condiciones -> . expresion
+    (29) condiciones -> . expresion AND condiciones
+    (30) condiciones -> . expresion OR condiciones
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 112
+    condiciones                    shift and go to state 150
+    numero                         shift and go to state 69
+
+state 128
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM . name WHERE name IGUAL expresion
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 151
+
+state 129
+
+    (24) func_cas -> CAST PARABRE ARROBA name AS . tipo_dato PARCIERRA
+    (73) tipo_dato -> . INT
+    (74) tipo_dato -> . BIT
+    (75) tipo_dato -> . DECIMAL
+    (76) tipo_dato -> . DATE
+    (77) tipo_dato -> . DATETIME
+    (78) tipo_dato -> . dato_nchar
+    (79) tipo_dato -> . dato_nvarchar
+    (80) dato_nchar -> . NCHAR PARABRE NINT PARCIERRA
+    (81) dato_nvarchar -> . NVARCHAR PARABRE NINT PARCIERRA
+
+    INT             shift and go to state 131
+    BIT             shift and go to state 132
+    DECIMAL         shift and go to state 133
+    DATE            shift and go to state 134
+    DATETIME        shift and go to state 135
+    NCHAR           shift and go to state 138
+    NVARCHAR        shift and go to state 139
+
+    tipo_dato                      shift and go to state 152
+    dato_nchar                     shift and go to state 136
+    dato_nvarchar                  shift and go to state 137
+
+state 130
+
+    (57) datos -> name tipo_dato .
+    (58) datos -> name tipo_dato . caracteristicas
+    (62) caracteristicas -> . NULL
+    (63) caracteristicas -> . NOT NULL
+    (64) caracteristicas -> . PRIMARY KEY
+    (65) caracteristicas -> . NOT NULL PRIMARY KEY
+    (66) caracteristicas -> . NULL PRIMARY KEY
+
+    PARCIERRA       reduce using rule 57 (datos -> name tipo_dato .)
+    COMA            reduce using rule 57 (datos -> name tipo_dato .)
+    NULL            shift and go to state 154
+    NOT             shift and go to state 155
+    PRIMARY         shift and go to state 156
+
+    caracteristicas                shift and go to state 153
+
+state 131
+
+    (73) tipo_dato -> INT .
+
+    NULL            reduce using rule 73 (tipo_dato -> INT .)
+    NOT             reduce using rule 73 (tipo_dato -> INT .)
+    PRIMARY         reduce using rule 73 (tipo_dato -> INT .)
+    PARCIERRA       reduce using rule 73 (tipo_dato -> INT .)
+    COMA            reduce using rule 73 (tipo_dato -> INT .)
+
+
+state 132
+
+    (74) tipo_dato -> BIT .
+
+    NULL            reduce using rule 74 (tipo_dato -> BIT .)
+    NOT             reduce using rule 74 (tipo_dato -> BIT .)
+    PRIMARY         reduce using rule 74 (tipo_dato -> BIT .)
+    PARCIERRA       reduce using rule 74 (tipo_dato -> BIT .)
+    COMA            reduce using rule 74 (tipo_dato -> BIT .)
+
+
+state 133
+
+    (75) tipo_dato -> DECIMAL .
+
+    NULL            reduce using rule 75 (tipo_dato -> DECIMAL .)
+    NOT             reduce using rule 75 (tipo_dato -> DECIMAL .)
+    PRIMARY         reduce using rule 75 (tipo_dato -> DECIMAL .)
+    PARCIERRA       reduce using rule 75 (tipo_dato -> DECIMAL .)
+    COMA            reduce using rule 75 (tipo_dato -> DECIMAL .)
+
+
+state 134
+
+    (76) tipo_dato -> DATE .
+
+    NULL            reduce using rule 76 (tipo_dato -> DATE .)
+    NOT             reduce using rule 76 (tipo_dato -> DATE .)
+    PRIMARY         reduce using rule 76 (tipo_dato -> DATE .)
+    PARCIERRA       reduce using rule 76 (tipo_dato -> DATE .)
+    COMA            reduce using rule 76 (tipo_dato -> DATE .)
+
+
+state 135
+
+    (77) tipo_dato -> DATETIME .
+
+    NULL            reduce using rule 77 (tipo_dato -> DATETIME .)
+    NOT             reduce using rule 77 (tipo_dato -> DATETIME .)
+    PRIMARY         reduce using rule 77 (tipo_dato -> DATETIME .)
+    PARCIERRA       reduce using rule 77 (tipo_dato -> DATETIME .)
+    COMA            reduce using rule 77 (tipo_dato -> DATETIME .)
+
+
+state 136
+
+    (78) tipo_dato -> dato_nchar .
+
+    NULL            reduce using rule 78 (tipo_dato -> dato_nchar .)
+    NOT             reduce using rule 78 (tipo_dato -> dato_nchar .)
+    PRIMARY         reduce using rule 78 (tipo_dato -> dato_nchar .)
+    PARCIERRA       reduce using rule 78 (tipo_dato -> dato_nchar .)
+    COMA            reduce using rule 78 (tipo_dato -> dato_nchar .)
+
+
+state 137
+
+    (79) tipo_dato -> dato_nvarchar .
+
+    NULL            reduce using rule 79 (tipo_dato -> dato_nvarchar .)
+    NOT             reduce using rule 79 (tipo_dato -> dato_nvarchar .)
+    PRIMARY         reduce using rule 79 (tipo_dato -> dato_nvarchar .)
+    PARCIERRA       reduce using rule 79 (tipo_dato -> dato_nvarchar .)
+    COMA            reduce using rule 79 (tipo_dato -> dato_nvarchar .)
+
+
+state 138
+
+    (80) dato_nchar -> NCHAR . PARABRE NINT PARCIERRA
+
+    PARABRE         shift and go to state 157
+
+
+state 139
+
+    (81) dato_nvarchar -> NVARCHAR . PARABRE NINT PARCIERRA
+
+    PARABRE         shift and go to state 158
+
+
+state 140
+
+    (56) sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA . PTCOMA
+
+    PTCOMA          shift and go to state 159
+
+
+state 141
+
+    (60) datos -> datos COMA . datos
+    (57) datos -> . name tipo_dato
+    (58) datos -> . name tipo_dato caracteristicas
+    (59) datos -> . foreign_key
+    (60) datos -> . datos COMA datos
+    (89) name -> . NOMBRE
+    (61) foreign_key -> . FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+
+    NOMBRE          shift and go to state 76
+    FOREIGN         shift and go to state 119
+
+    datos                          shift and go to state 160
+    name                           shift and go to state 116
+    foreign_key                    shift and go to state 118
+
+state 142
+
+    (61) foreign_key -> FOREIGN KEY . PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+
+    PARABRE         shift and go to state 161
+
+
+state 143
+
+    (70) columnas -> name COMA . columnas
+    (69) columnas -> . name
+    (70) columnas -> . name COMA columnas
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 120
+    columnas                       shift and go to state 162
+
+state 144
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA . VALUES PARABRE valores PARCIERRA PTCOMA
+
+    VALUES          shift and go to state 163
+
+
+state 145
+
+    (68) f_delete -> DELETE FROM name WHERE name IGUAL . expresion PTCOMA
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 164
+    numero                         shift and go to state 69
+
+state 146
+
+    (19) func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .
+
+    SELECT          reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    CREATE          reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    INSERT          reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    DELETE          reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    RNOT            reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    NINT            reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    NBIT            reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    NDECIMAL        reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    FECHA           reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    FECHAHORA       reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    CADENA          reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+    $end            reduce using rule 19 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
+
+
+state 147
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA . numero PARCIERRA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    numero                         shift and go to state 165
+
+state 148
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name . WHERE name IGUAL expresion
+
+    WHERE           shift and go to state 166
+
+
+state 149
+
+    (29) condiciones -> expresion AND condiciones .
+
+    SELECT          reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    CREATE          reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    INSERT          reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    DELETE          reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    RNOT            reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    NINT            reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    NBIT            reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    NDECIMAL        reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    FECHA           reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    FECHAHORA       reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    CADENA          reduce using rule 29 (condiciones -> expresion AND condiciones .)
+    $end            reduce using rule 29 (condiciones -> expresion AND condiciones .)
+
+
+state 150
+
+    (30) condiciones -> expresion OR condiciones .
+
+    SELECT          reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    CREATE          reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    INSERT          reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    DELETE          reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    RNOT            reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    NINT            reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    NBIT            reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    NDECIMAL        reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    FECHA           reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    FECHAHORA       reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    CADENA          reduce using rule 30 (condiciones -> expresion OR condiciones .)
+    $end            reduce using rule 30 (condiciones -> expresion OR condiciones .)
+
+
+state 151
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM name . WHERE name IGUAL expresion
+
+    WHERE           shift and go to state 167
+
+
+state 152
+
+    (24) func_cas -> CAST PARABRE ARROBA name AS tipo_dato . PARCIERRA
+
+    PARCIERRA       shift and go to state 168
+
+
+state 153
+
+    (58) datos -> name tipo_dato caracteristicas .
+
+    PARCIERRA       reduce using rule 58 (datos -> name tipo_dato caracteristicas .)
+    COMA            reduce using rule 58 (datos -> name tipo_dato caracteristicas .)
+
+
+state 154
+
+    (62) caracteristicas -> NULL .
+    (66) caracteristicas -> NULL . PRIMARY KEY
+
+    PARCIERRA       reduce using rule 62 (caracteristicas -> NULL .)
+    COMA            reduce using rule 62 (caracteristicas -> NULL .)
+    PRIMARY         shift and go to state 169
+
+
+state 155
+
+    (63) caracteristicas -> NOT . NULL
+    (65) caracteristicas -> NOT . NULL PRIMARY KEY
+
+    NULL            shift and go to state 170
+
+
+state 156
+
+    (64) caracteristicas -> PRIMARY . KEY
+
+    KEY             shift and go to state 171
+
+
+state 157
+
+    (80) dato_nchar -> NCHAR PARABRE . NINT PARCIERRA
+
+    NINT            shift and go to state 172
+
+
+state 158
+
+    (81) dato_nvarchar -> NVARCHAR PARABRE . NINT PARCIERRA
+
+    NINT            shift and go to state 173
+
+
+state 159
+
+    (56) sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .
+
+    SELECT          reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    CREATE          reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    INSERT          reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    DELETE          reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    RNOT            reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    NINT            reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    NBIT            reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    NDECIMAL        reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    FECHA           reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    FECHAHORA       reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    CADENA          reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+    $end            reduce using rule 56 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
+
+
+state 160
+
+    (60) datos -> datos COMA datos .
+    (60) datos -> datos . COMA datos
+
+  ! shift/reduce conflict for COMA resolved as shift
+    PARCIERRA       reduce using rule 60 (datos -> datos COMA datos .)
+    COMA            shift and go to state 141
+
+  ! COMA            [ reduce using rule 60 (datos -> datos COMA datos .) ]
+
+
+state 161
+
+    (61) foreign_key -> FOREIGN KEY PARABRE . name PARCIERRA REFERENCE name PARABRE name PARCIERRA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 174
+
+state 162
+
+    (70) columnas -> name COMA columnas .
+
+    PARCIERRA       reduce using rule 70 (columnas -> name COMA columnas .)
+
+
+state 163
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES . PARABRE valores PARCIERRA PTCOMA
+
+    PARABRE         shift and go to state 175
+
+
+state 164
+
+    (68) f_delete -> DELETE FROM name WHERE name IGUAL expresion . PTCOMA
+
+    PTCOMA          shift and go to state 176
+
+
+state 165
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero . PARCIERRA
+
+    PARCIERRA       shift and go to state 177
+
+
+state 166
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE . name IGUAL expresion
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 178
+
+state 167
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE . name IGUAL expresion
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 179
+
+state 168
+
+    (24) func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .
+
+    SELECT          reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    CREATE          reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    INSERT          reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    DELETE          reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    RNOT            reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    NINT            reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    NBIT            reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    NDECIMAL        reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    FECHA           reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    FECHAHORA       reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    CADENA          reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+    $end            reduce using rule 24 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
+
+
+state 169
+
+    (66) caracteristicas -> NULL PRIMARY . KEY
+
+    KEY             shift and go to state 180
+
+
+state 170
+
+    (63) caracteristicas -> NOT NULL .
+    (65) caracteristicas -> NOT NULL . PRIMARY KEY
+
+    PARCIERRA       reduce using rule 63 (caracteristicas -> NOT NULL .)
+    COMA            reduce using rule 63 (caracteristicas -> NOT NULL .)
+    PRIMARY         shift and go to state 181
+
+
+state 171
+
+    (64) caracteristicas -> PRIMARY KEY .
+
+    PARCIERRA       reduce using rule 64 (caracteristicas -> PRIMARY KEY .)
+    COMA            reduce using rule 64 (caracteristicas -> PRIMARY KEY .)
+
+
+state 172
+
+    (80) dato_nchar -> NCHAR PARABRE NINT . PARCIERRA
+
+    PARCIERRA       shift and go to state 182
+
+
+state 173
+
+    (81) dato_nvarchar -> NVARCHAR PARABRE NINT . PARCIERRA
+
+    PARCIERRA       shift and go to state 183
+
+
+state 174
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name . PARCIERRA REFERENCE name PARABRE name PARCIERRA
+
+    PARCIERRA       shift and go to state 184
+
+
+state 175
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE . valores PARCIERRA PTCOMA
+    (71) valores -> . expresion
+    (72) valores -> . expresion COMA valores
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    valores                        shift and go to state 185
+    expresion                      shift and go to state 186
+    numero                         shift and go to state 69
+
+state 176
+
+    (68) f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .
+
+    SELECT          reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    CREATE          reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    INSERT          reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    DELETE          reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    RNOT            reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    NINT            reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    NBIT            reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    NDECIMAL        reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    FECHA           reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    FECHAHORA       reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    CADENA          reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+    $end            reduce using rule 68 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
+
+
+state 177
+
+    (20) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .
+
+    SELECT          reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    CREATE          reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    INSERT          reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    DELETE          reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    RNOT            reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    NINT            reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    NBIT            reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    NDECIMAL        reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    FECHA           reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    FECHAHORA       reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    CADENA          reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+    $end            reduce using rule 20 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
+
+
+state 178
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name . IGUAL expresion
+
+    IGUAL           shift and go to state 187
+
+
+state 179
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name . IGUAL expresion
+
+    IGUAL           shift and go to state 188
+
+
+state 180
+
+    (66) caracteristicas -> NULL PRIMARY KEY .
+
+    PARCIERRA       reduce using rule 66 (caracteristicas -> NULL PRIMARY KEY .)
+    COMA            reduce using rule 66 (caracteristicas -> NULL PRIMARY KEY .)
+
+
+state 181
+
+    (65) caracteristicas -> NOT NULL PRIMARY . KEY
+
+    KEY             shift and go to state 189
+
+
+state 182
+
+    (80) dato_nchar -> NCHAR PARABRE NINT PARCIERRA .
+
+    NULL            reduce using rule 80 (dato_nchar -> NCHAR PARABRE NINT PARCIERRA .)
+    NOT             reduce using rule 80 (dato_nchar -> NCHAR PARABRE NINT PARCIERRA .)
+    PRIMARY         reduce using rule 80 (dato_nchar -> NCHAR PARABRE NINT PARCIERRA .)
+    PARCIERRA       reduce using rule 80 (dato_nchar -> NCHAR PARABRE NINT PARCIERRA .)
+    COMA            reduce using rule 80 (dato_nchar -> NCHAR PARABRE NINT PARCIERRA .)
+
+
+state 183
+
+    (81) dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .
+
+    NULL            reduce using rule 81 (dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .)
+    NOT             reduce using rule 81 (dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .)
+    PRIMARY         reduce using rule 81 (dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .)
+    PARCIERRA       reduce using rule 81 (dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .)
+    COMA            reduce using rule 81 (dato_nvarchar -> NVARCHAR PARABRE NINT PARCIERRA .)
+
+
+state 184
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA . REFERENCE name PARABRE name PARCIERRA
+
+    REFERENCE       shift and go to state 190
+
+
+state 185
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores . PARCIERRA PTCOMA
+
+    PARCIERRA       shift and go to state 191
+
+
+state 186
+
+    (71) valores -> expresion .
+    (72) valores -> expresion . COMA valores
+
+    PARCIERRA       reduce using rule 71 (valores -> expresion .)
+    COMA            shift and go to state 192
+
+
+state 187
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 193
+    numero                         shift and go to state 69
+
+state 188
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL . expresion
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 194
+    numero                         shift and go to state 69
+
+state 189
+
+    (65) caracteristicas -> NOT NULL PRIMARY KEY .
+
+    PARCIERRA       reduce using rule 65 (caracteristicas -> NOT NULL PRIMARY KEY .)
+    COMA            reduce using rule 65 (caracteristicas -> NOT NULL PRIMARY KEY .)
+
+
+state 190
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE . name PARABRE name PARCIERRA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 195
+
+state 191
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA . PTCOMA
+
+    PTCOMA          shift and go to state 196
+
+
+state 192
+
+    (72) valores -> expresion COMA . valores
+    (71) valores -> . expresion
+    (72) valores -> . expresion COMA valores
+    (82) expresion -> . numero
+    (83) expresion -> . FECHA
+    (84) expresion -> . FECHAHORA
+    (85) expresion -> . CADENA
+    (86) numero -> . NINT
+    (87) numero -> . NBIT
+    (88) numero -> . NDECIMAL
+
+    FECHA           shift and go to state 32
+    FECHAHORA       shift and go to state 33
+    CADENA          shift and go to state 34
+    NINT            shift and go to state 29
+    NBIT            shift and go to state 30
+    NDECIMAL        shift and go to state 31
+
+    expresion                      shift and go to state 186
+    valores                        shift and go to state 197
+    numero                         shift and go to state 69
+
+state 193
+
+    (22) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .
+
+    SELECT          reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    CREATE          reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    INSERT          reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    DELETE          reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    RNOT            reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NINT            reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NBIT            reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NDECIMAL        reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    FECHA           reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    FECHAHORA       reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    CADENA          reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+    $end            reduce using rule 22 (func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .)
+
+
+state 194
+
+    (23) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .
+
+    SELECT          reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    CREATE          reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    INSERT          reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    DELETE          reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    RNOT            reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NINT            reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NBIT            reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    NDECIMAL        reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    FECHA           reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    FECHAHORA       reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    CADENA          reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+    $end            reduce using rule 23 (func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .)
+
+
+state 195
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name . PARABRE name PARCIERRA
+
+    PARABRE         shift and go to state 198
+
+
+state 196
+
+    (67) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .
+
+    SELECT          reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    CREATE          reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    INSERT          reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    DELETE          reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    RNOT            reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    NINT            reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    NBIT            reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    NDECIMAL        reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    FECHA           reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    FECHAHORA       reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    CADENA          reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+    $end            reduce using rule 67 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
+
+
+state 197
+
+    (72) valores -> expresion COMA valores .
+
+    PARCIERRA       reduce using rule 72 (valores -> expresion COMA valores .)
+
+
+state 198
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE . name PARCIERRA
+    (89) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 76
+
+    name                           shift and go to state 199
+
+state 199
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name . PARCIERRA
+
+    PARCIERRA       shift and go to state 200
+
+
+state 200
+
+    (61) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .
+
+    PARCIERRA       reduce using rule 61 (foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .)
+    COMA            reduce using rule 61 (foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for COMA in state 160 resolved as shift

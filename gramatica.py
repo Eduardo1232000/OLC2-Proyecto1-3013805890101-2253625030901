@@ -1,6 +1,8 @@
 from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
+from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
+
 tokens = (
     'SELECT', 'FROM', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENAR', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
@@ -162,6 +164,7 @@ precedence = (
     ('right','RNOT')
 )
 
+
 listado_instrucciones = []      #LISTA GLOBAL
 
 #DEFINICION DE LA GRAMATICA
@@ -201,13 +204,13 @@ def p_operacion_sistema(t):
 
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
-    #print("CONCATENAR -> "+str(t[3] +" , "+str(t[5])))
     t[0] = CONCATENAR(t[3],t[5],lexer.lineno,0)
     
 
 def p_substraer(t):
-    'func_substraer : SUBSTRAER PARABRE CADENA COMA NINT COMA NINT PARCIERRA'
-    print("SUBSTRAER -> "+str(t[3]) +" , "+ str(t[5])+" , "+str(t[7]))
+    'func_substraer : SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA'
+    #print("SUBSTRAER -> "+str(t[3]) +" , "+ str(t[5])+" , "+str(t[7]))
+    t[0] = SUBSTRAER(t[3],t[5],t[7],lexer.lineno,0)
 
 def p_hoy(t):
     'func_hoy : HOY PARABRE PARCIERRA'
@@ -407,6 +410,10 @@ def p_name(t):
     '''name : NOMBRE'''     
     t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
 
+def p_cadena(t):
+    '''cadenas : CADENA'''     
+    t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
+
 def p_error(t):
     print("Error sintáctico en '%s'" % t.value)
 
@@ -417,8 +424,10 @@ def p_error(t):
 import ply.yacc as yacc
 parser = yacc.yacc()
 
-#pruebas
-#f = open("./entrada.txt", "r")      #ABRIR ARCHIVO
-#input = f.read()                    #LEER CONTENIDO
-#print(input)                        #MOSTRAR EL CONTENIDO
-#parser.parse(input)                 #ANALIZARLO
+def parses(data):
+    global listado_instrucciones
+    listado_instrucciones = []
+    parser = yacc.yacc()
+    
+    result = parser.parse(data)
+    return result

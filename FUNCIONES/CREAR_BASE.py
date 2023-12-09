@@ -1,19 +1,27 @@
 import xml.etree.ElementTree as ET
 from tkinter import simpledialog
 import xml.dom.minidom
+import os
 
 def crear_base_vacia(nombre):
-    doc = xml.dom.minidom.Document()
 
-    database = doc.createElement("database")
-    doc.appendChild(database)    
+    #VALIDACION DE QUE EXISTE EL ARCHIVO
+    if os.path.exists("BASE_DATOS/"+str(nombre) +".xml"):   #SI YA EXISTE LA BASE DE DATOS
+        return False
+    else:
 
-    base = doc.createElement("base")
-    base.setAttribute("name", str(nombre))
+        doc = xml.dom.minidom.Document()
 
-    database.appendChild(base)
+        database = doc.createElement("database")
+        doc.appendChild(database)    
 
-    xml_con_formato = doc.toprettyxml(indent="\t")
+        base = doc.createElement("base")
+        base.setAttribute("name", str(nombre))
 
-    with open("BASE_DATOS/"+str(nombre)+".xml", "w") as archivo:
-        archivo.write(xml_con_formato)
+        database.appendChild(base)
+
+        xml_con_formato = doc.toprettyxml(indent="\t")
+
+        with open("BASE_DATOS/"+str(nombre)+".xml", "w") as archivo:
+            archivo.write(xml_con_formato)
+            return True

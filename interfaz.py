@@ -132,9 +132,12 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
     if(opcion == "crear_base"):
         nombre = simpledialog.askstring("Ingresar Nombre", "Por favor, ingresa el nombre de tu base de datos:")
         if nombre:
-            crear_base_vacia(str(nombre))
-            cargar_datos_arbol()
-            messagebox.showinfo("Exito", "Base de Datos: "+str(nombre) + " Creada!")
+            respuesta = crear_base_vacia(str(nombre))
+            if(respuesta == True):
+                cargar_datos_arbol()
+                messagebox.showinfo("Exito", "Base de Datos: "+str(nombre) + " Creada!")
+            else:
+                messagebox.showerror("Error", "Ya existe una Base de Datos con ese nombre !")
     elif(opcion == "eliminar_base"):
         nombre = simpledialog.askstring("Ingresar Nombre", "Por favor, ingresa el nombre de tu base de datos:")
         if nombre:
@@ -163,23 +166,19 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
         contenido = contenido_texto.get("1.0", END)
         
-        #salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
-        #salida.delete(1.0, END) 
-        #salida.insert(END, contenido)  
-        #salida.config(state='disabled')
         #ANALIZAR CONTENIDO
-        analizador = gramatica.parser
-        respuesta = analizador.parse(contenido)     #YA DEBE RETORNAR LISTA DE OBJETOS
+        listado_instrucciones = []
+        respuesta = gramatica.parses(contenido)
+
         arbol_sintactico = AST(respuesta)
         arbol_sintactico.ejecutar()
         #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
-        
         salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
         salida.delete(1.0, END) 
         salida.insert(END, arbol_sintactico.obtener_salida())  
         salida.config(state='disabled')
-        cargar_datos_arbol()
+        cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
     
 
     elif(opcion == "exportar"):
@@ -187,6 +186,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
 
     elif(opcion == "importar"):
         print("Herramientas - Importar")
+
     else:
         ventana_principal.destroy()
 

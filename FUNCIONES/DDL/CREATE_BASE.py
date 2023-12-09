@@ -10,5 +10,8 @@ class CREATE_BASE(Instruccion):
 
     def ejecutar(self, actual, globa, ast):
         if(isinstance(self.nombre,VALOR)):
-            crear_base_vacia(self.nombre.obtener_valor(actual,globa,ast))
-            ast.escribir_en_consola("BASE DE DATOS CREADA!\n")
+            respuesta = crear_base_vacia(self.nombre.obtener_valor(actual,globa,ast))
+            if(respuesta == False):
+                ast.escribir_en_consola("ERROR: Ya existe una base de datos con ese nombre!\n")
+            else:
+                ast.escribir_en_consola("BASE DE DATOS CREADA!\n")
