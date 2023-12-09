@@ -167,18 +167,22 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         contenido = contenido_texto.get("1.0", END)
         
         #ANALIZAR CONTENIDO
-        listado_instrucciones = []
         respuesta = gramatica.parses(contenido)
+        respuesta_invertida=""
+        if(respuesta == None or respuesta == "" or respuesta == []):
+            print("",end="")
+        else:
+            respuesta_invertida = respuesta[::-1]
 
-        arbol_sintactico = AST(respuesta)
-        arbol_sintactico.ejecutar()
-        #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
+            arbol_sintactico = AST(respuesta_invertida)
+            arbol_sintactico.ejecutar()
+            #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
-        salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
-        salida.delete(1.0, END) 
-        salida.insert(END, arbol_sintactico.obtener_salida())  
-        salida.config(state='disabled')
-        cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
+            salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
+            salida.delete(1.0, END) 
+            salida.insert(END, arbol_sintactico.obtener_salida())  
+            salida.config(state='disabled')
+            cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
     
 
     elif(opcion == "exportar"):

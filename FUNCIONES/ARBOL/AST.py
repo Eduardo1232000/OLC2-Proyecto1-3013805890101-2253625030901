@@ -5,6 +5,8 @@ class AST:
         self.salida_cadena = ""  #SALIDA DE TEXTO QUE SE MUESTRA EN CONSOLA
         self.codigo_grafica=""   #CODIGO DE GRAPHVIZ DEL ARBOL
         self.tabla_simbolos=[]   #TABLA DE SIMBOLOS DEL CODIGO
+        self.base_actual = ""
+        self.tabla_actual = ""
     
     def ejecutar(self):
         for instr in self.EJECUCIONES:
@@ -25,6 +27,17 @@ class AST:
     def obtener_salida(self):
         return(self.salida_cadena)
     
+    def usar_base(self, nombre):
+        self.base_actual = nombre
+
+    def obtener_base_activa(self):
+        return(str(self.base_actual))
+    
+    def usar_tabla(self,nombre):
+        self.tabla_actual = nombre
+
+    def obtener_tabla_activa(self):
+        return(str(self.tabla_actual))
     def graficar(nodos):
         print("NO IMPLEMENTADO")
 

@@ -1,17 +1,39 @@
 from FUNCIONES.ARBOL.VALOR import *
+from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
+from FUNCIONES.DDL.USE_BASE import *
+from FUNCIONES.DDL.CREATE_TABLE import * 
+
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
+from FUNCIONES.FUNCIONES_SISTEMA.HOY import *
+
+from FUNCIONES.OPERACIONES_ARITMETICAS.SUMA import *
+from FUNCIONES.OPERACIONES_ARITMETICAS.RESTA import *
+from FUNCIONES.OPERACIONES_ARITMETICAS.MULTIPLICACION import *
+from FUNCIONES.OPERACIONES_ARITMETICAS.DIVISION import *
+
+from FUNCIONES.OPERACIONES_RELACIONAL.IGUAL import *
+from FUNCIONES.OPERACIONES_RELACIONAL.DIFERENTE import *
+from FUNCIONES.OPERACIONES_RELACIONAL.MENOR_QUE import *
+from FUNCIONES.OPERACIONES_RELACIONAL.MAYOR_QUE import *
+from FUNCIONES.OPERACIONES_RELACIONAL.MENOR_IGUAL import *
+from FUNCIONES.OPERACIONES_RELACIONAL.MAYOR_IGUAL import *
+
+from FUNCIONES.OPERACIONES_LOGICAS.AND import *
+from FUNCIONES.OPERACIONES_LOGICAS.OR import *
+from FUNCIONES.OPERACIONES_LOGICAS.NOT import *
+
 
 tokens = (
-    'SELECT', 'FROM', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
+    'SELECT', 'FROM','USE', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENAR', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
     'CAST', 'MAS', 'RESTA', 'MULTIPLICACION', 'DIVISION', 
     'IGUAL', 'IGUALIGUAL', 'DIFERENTE', 'MAYORQUE', 'MENORQUE', 'MAYORIGUAL', 'MENORIGUAL', 
     'OR', 'AND', 'RNOT',
     'PARABRE', 'PARCIERRA', 'COMA', 'ARROBA', 'PTCOMA',
     'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
-    'NOMBRE', 'INT', 'BIT', 'DECIMAL', 'DATE', 'DATETIME', 'NCHAR', 'NVARCHAR',
+    'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'CHAR', 'VARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
     'INSERT', 'INTO', 'VALUES', 'DELETE'
 )
@@ -20,10 +42,10 @@ tokens = (
 t_INT               =   r'(?i)INT'
 t_BIT               =   r'(?i)BIT'
 t_DECIMAL           =   r'(?i)DECIMAL'
-t_DATE              =   r'(?i)DATE'
 t_DATETIME          =   r'(?i)DATETIME'
-t_NCHAR             =   r'(?i)NCHAR'
-t_NVARCHAR          =   r'(?i)NVARCHAR'
+t_DATE              =   r'(?i)DATE'
+t_CHAR             =   r'(?i)CHAR'
+t_VARCHAR          =   r'(?i)VARCHAR'
 t_NOT               =   r'(?i)NOT'
 t_NULL              =   r'(?i)NULL'
 t_PRIMARY           =   r'(?i)PRIMARY'
@@ -32,6 +54,7 @@ t_REFERENCE         =   r'(?i)REFERENCE'
 t_KEY               =   r'(?i)KEY'
 t_SELECT            =   r'(?i)SELECT' 
 t_FROM              =   r'(?i)FROM'
+t_USE               =   r'(?i)USE'
 t_WHERE             =   r'(?i)WHERE'
 t_CAST              =   r'(?i)CAST'
 t_AS                =   r'(?i)AS'
@@ -69,6 +92,24 @@ t_ARROBA            =   r'\@'
 t_PTCOMA            =   r'\;'
 
 
+def t_FECHAHORA(t):
+    r'\d{2}-\d{2}-\d{4}\s\d{2}:\d{2}'
+    try:
+        t.value = t.value
+    except ValueError:
+        print("VALOR FECHA HORA INCORRECTO %s", t.value)
+    return t
+
+def t_FECHA(t):
+    #r'\d\d\-\d\d\-\d\d\d\d'
+    r'\d{2}-\d{2}-\d{4}'
+    try:
+        t.value = str(t.value)
+    except ValueError:
+        print("VALOR FECHA INCORRECTO %d",t.value)
+    return t
+
+
 def t_NDECIMAL(t):
     r'-?\d+\.\d+'
     try:
@@ -99,21 +140,8 @@ def t_NBIT(t):
 
 
 
-def t_FECHA(t):
-    r'\d\d\-\d\d\-\d\d\d\d'
-    try:
-        t.value = t.value
-    except ValueError:
-        print("VALOR FECHA INCORRECTO %d",t.value)
-    return t.value
 
-def t_FECHAHORA(t):
-    r'\d\d\-\d\d\-\d\d\d\d\-\d\d\:\d\d'
-    try:
-        t.value = t.value
-    except ValueError:
-        print("VALOR FECHA HORA INCORRECTO %d",t.value)
-    return t.value
+
 
 def t_CADENA(t):
     r'\"([^"]*)\"'
@@ -166,6 +194,8 @@ precedence = (
 
 
 listado_instrucciones = []      #LISTA GLOBAL
+listado_temporal = []          #LISTADO TEMPORAL POR EJEMPLO TABLAS
+listado_temporal2 = []          #LISTADO TEMPORAL POR EJEMPLO TABLAS
 
 #DEFINICION DE LA GRAMATICA
 def p_instrucciones_lista(t):
@@ -176,14 +206,15 @@ def p_instrucciones_lista(t):
     
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
-                    | exp_aritmetica 
-                    | exp_relacional
                     | exp_logica
                     | sent_create_database
                     | sent_create_table
+                    | use_base
                     | f_insert 
                     | f_delete
+                    | expresion 
                     '''
+    #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
 
 
@@ -205,7 +236,6 @@ def p_operacion_sistema(t):
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
     t[0] = CONCATENAR(t[3],t[5],lexer.lineno,0)
-    
 
 def p_substraer(t):
     'func_substraer : SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA'
@@ -214,7 +244,7 @@ def p_substraer(t):
 
 def p_hoy(t):
     'func_hoy : HOY PARABRE PARCIERRA'
-    print("HOY -> HOY")
+    t[0] = HOY(lexer.lineno,0)
 
 def p_contar(t):
     'func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion'
@@ -244,22 +274,23 @@ def p_expresion_aritmetica(t):
                         | op_resta
                         | op_multiplicacion
                         | op_division'''
+    t[0] = t[1]
     
 def p_adicion(t):
-    '''op_suma : numero MAS numero '''
-    print("SUMA ENTRE: "+str(t[1]) + " y "+ str(t[3]))
+    '''op_suma : expresion MAS expresion '''
+    t[0] = SUMA(t[1],t[3],lexer.lineno,0)
 
 def p_resta(t):
-    '''op_resta : numero RESTA numero '''
-    print("RESTA ENTRE: "+str(t[1]) + " y "+ str(t[3]))
+    '''op_resta : expresion RESTA expresion '''
+    t[0] = RESTA(t[1],t[3],lexer.lineno,0)
 
 def p_multiplicacion(t):
-    '''op_multiplicacion : numero MULTIPLICACION numero '''
-    print("MULTIPLICACION ENTRE: "+str(t[1]) + " y "+ str(t[3]))
+    '''op_multiplicacion : expresion MULTIPLICACION expresion '''
+    t[0] = MULTIPLICACION(t[1],t[3],lexer.lineno,0)
 
 def p_division(t):
-    '''op_division : numero DIVISION numero '''
-    print("DIVISION ENTRE: "+str(t[1]) + " y "+ str(t[3]))
+    '''op_division : expresion DIVISION expresion '''
+    t[0] = DIVISION(t[1],t[3],lexer.lineno,0)
 
 
 
@@ -270,47 +301,49 @@ def p_expresion_relacional(t):
                         | exr_mayorque
                         | exr_menorigual
                         | exr_mayorigual'''
+    t[0] = t[1]
 
 def p_igual(t):
     '''exr_igual : expresion IGUALIGUAL expresion'''
-    print("RELACIONAL IGUAL -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = IGUAL(t[1],t[3],lexer.lineno,0)
 
 def p_diferente(t):
     '''exr_diferente : expresion DIFERENTE expresion'''
-    print("RELACIONAL DIFERENTE -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = DIFERENTE(t[1],t[3],lexer.lineno,0)
 
 def p_menorque(t):
     '''exr_menorque : expresion MENORQUE expresion'''
-    print("RELACIONAL MENOR QUE -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = MENOR_QUE(t[1],t[3],lexer.lineno,0)
 
 def p_mayorque(t):
     '''exr_mayorque : expresion MAYORQUE expresion'''
-    print("RELACIONAL MAYOR QUE -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = MAYOR_QUE(t[1],t[3],lexer.lineno,0)
 
 def p_menorigual(t):
     '''exr_menorigual : expresion MENORIGUAL expresion'''
-    print("RELACIONAL MENOR O IGUAL QUE -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = MENOR_IGUAL(t[1],t[3],lexer.lineno,0)
 
 def p_mayorigual(t):
     '''exr_mayorigual : expresion MAYORIGUAL expresion'''
-    print("RELACIONAL MAYOR O IGUAL QUE -> "+str(t[1]) +" , "+str(t[3]))
+    t[0] = MAYOR_IGUAL(t[1],t[3],lexer.lineno,0)
 
 
 
 def p_expresion_logica(t):
     '''exp_logica : exl_and'''
+    t[0] = t[1]
 
 def p_and(t):
     '''exl_and : expresion AND expresion'''
-    print("LOGICA AND -> "+str(t[1])+" , "+str(t[3]))
+    t[0] = EXP_AND(t[1],t[3],lexer.lineno,0)
 
 def p_or(t):
     '''exl_and : expresion OR expresion'''
-    print("LOGICA OR -> "+str(t[1])+" , "+str(t[3]))
+    t[0] = EXP_OR(t[1],t[3],lexer.lineno,0)
 
 def p_not(t):
     '''exl_and : RNOT expresion %prec RNOT'''
-    print("LOGICA NOT -> "+str(t[2]))
+    t[0] = EXP_NOT(t[2],lexer.lineno,0)
 
 
 
@@ -321,30 +354,89 @@ def p_sentencia_create_database(t):
 
 def p_sentencia_create_table(t):
     '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
-    print("SE VA A CREAR UNA TABLE")
+    tabla_temp = t[5]
+    if(len(tabla_temp)>1):
+        t[5] = tabla_temp[::-1] 
+    t[0] = CREATE_TABLE(t[3],t[5],lexer.lineno,0)
+
 
 def p_datos(t):
-    '''datos : name tipo_dato
-             | name tipo_dato caracteristicas
-             | foreign_key
-             | datos COMA datos '''
-    try:
-        if(t[1]!=None):
-            print(t[1])
-    except:
-        print("")     
+    '''datos : dato COMA datos
+             | dato '''
+    listado_temporal.append(t[1])#INSERTA EL CAMPO 
+    t[0] = listado_temporal #ES UNA LISTA CON LISTAS U OBJETOS
+
+def p_dato(t):
+    '''dato : dato_con_caract
+            | dato_sin_caract
+            | foreign_key'''
+    
+    #print("reconoci campo")
+    t[0] = t[1]     #PUEDE SER UN OBJETO O UNA LISTA
+
+def p_dato_sin_caract(t):
+    '''dato_sin_caract : name tipo_dato '''
+    #print("campo sin caracteristicas")
+    lista_dato = []
+    lista_vacia = []
+    lista_dato.append(t[1])#NOMBRE
+    lista_dato.append(t[2])#TIPO
+    lista_dato.append(lista_vacia)#LISTA DE CARACTERISTICAS
+    t[0] = lista_dato
+    lista_dato = []
+
+def p_dato_con_caract(t):
+    '''dato_con_caract : name tipo_dato caracteristicas'''
+    #print("campo con caracteristicas")
+    lista_dato = []
+    lista_dato.append(t[1])#NOMBRE
+    lista_dato.append(t[2])#TIPO
+    lista_dato.append(t[3])#LISTA DE CARACTERISTICAS
+    t[0] = lista_dato
+    lista_dato = []
+    global listado_temporal2
+    listado_temporal2 = []
+
+
+
+def p_user_base(t):
+    '''use_base : USE name PTCOMA'''
+    t[0] = USE_BASE(t[2],lexer.lineno,0)
+         
     
 def p_foreign_key(t):
     '''foreign_key : FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA'''
-    print("HAY UN FOREIGN KEY")
+    #print("HAY UN FOREIGN KEY")
+    t[0] = FORANEA(t[7],t[4],t[9],lexer.lineno,0)
 
 def p_caracteristicas(t):
-    '''caracteristicas : NULL
-                        | NOT NULL
-                        | PRIMARY KEY
-                        | NOT NULL PRIMARY KEY
-                        | NULL PRIMARY KEY
+    '''caracteristicas : caracteristica caracteristicas
+                       | caracteristica
                         '''
+    listado_temporal2.append(t[1])  #AGREGA A LA LISTA LA CARACTERISTICA DEL CAMPO
+    t[0] = listado_temporal2        #SALIDA = LISTA
+
+def p_caracteristica(t):
+    '''caracteristica :  caract_nulo
+                        | caract_no_nulo
+                        | caract_primary_key
+                        '''
+    t[0] = t[1]
+
+def p_caract_nulo(t):
+    '''caract_nulo : NULL'''
+    t[0] = TIPODATO(TIPO.NULL)
+
+def p_caract_no_nulo(t):
+    '''caract_no_nulo : NOT NULL'''
+    t[0] = TIPODATO(TIPO.NOT_NULL)
+
+def p_caract_primary_key(t):
+    '''caract_primary_key : PRIMARY KEY'''
+    t[0] = TIPODATO(TIPO.PRIMARY_KEY)
+
+    
+    
 
 def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
@@ -368,19 +460,36 @@ def p_tipodato(t):
                  | DECIMAL
                  | DATE
                  | DATETIME
-                 | dato_nchar
-                 | dato_nvarchar'''
-    t[0] = t[1]
+                 | dato_char
+                 | dato_varchar'''
+    if(t.slice[1].type == "INT"):
+        t[0] = TIPODATO(TIPO.INT)
+    elif(t.slice[1].type == "BIT"):
+        t[0] = TIPODATO(TIPO.BIT)
+    elif(t.slice[1].type == "DECIMAL"):
+        t[0] = TIPODATO(TIPO.DECIMAL)
+    elif(t.slice[1].type == "DATE"):
+        t[0] = TIPODATO(TIPO.DATE)
+    elif(t.slice[1].type == "DATETIME"):
+        t[0] = TIPODATO(TIPO.DATETIME)
+    else:
+        t[0] = t[1]
     
-def p_dato_nchar(t):
-    '''dato_nchar : NCHAR PARABRE NINT PARCIERRA'''
+def p_dato_char(t):
+    '''dato_char : CHAR PARABRE NINT PARCIERRA'''
+    t[0] = TIPODATO(TIPO.CHAR,t[3]) #PARA EL TIPODATO ES EL UNICO DONDE NO MANEJA OBJETO PARA EL NUMERO DEL CHAR O VARCHAR
 
-def p_dato_nvarchar(t):
-    '''dato_nvarchar : NVARCHAR PARABRE NINT PARCIERRA'''
+
+def p_dato_varchar(t):
+    '''dato_varchar : VARCHAR PARABRE NINT PARCIERRA'''
+    t[0] = TIPODATO(TIPO.VARCHAR,t[3])
     
 
 def p_expresion(t):
-    '''expresion : numero
+    '''expresion : exp_aritmetica
+                 | exp_relacional
+                 | parentesis
+                 | numero
                  | FECHA
                  | FECHAHORA
                  | CADENA'''
@@ -393,6 +502,11 @@ def p_expresion(t):
         t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
     else:
         t[0] = t[1]
+
+def p_parentesisop(t):
+    '''parentesis : PARABRE expresion PARCIERRA'''
+    t[0] = t[2]
+
 def p_numero(t):
     '''numero : NINT
              | NBIT
@@ -415,7 +529,10 @@ def p_cadena(t):
     t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
 
 def p_error(t):
-    print("Error sintáctico en '%s'" % t.value)
+    if t is not None:
+        print("Error sintáctico en '%s'" % t.value)
+    else:
+        print("Error: Vacio")
 
 
 
@@ -426,7 +543,11 @@ parser = yacc.yacc()
 
 def parses(data):
     global listado_instrucciones
-    listado_instrucciones = []
+    global listado_temporal
+    global listado_temporal2
+    listado_instrucciones = []  #EN CADA ANALISIS SE VACIA
+    listado_temporal = []
+    listado_temporal2 = []          
     parser = yacc.yacc()
     
     result = parser.parse(data)

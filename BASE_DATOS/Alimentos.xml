@@ -1,25 +1,31 @@
 <?xml version="1.0" ?>
 <database>
     <base name="Alimentos">
-        <tabla name="comidas">
+        <tabla name="products">
             <campo>
-                <nombre>id_comida</nombre>
-                <tipo>int</tipo>
+                <nombre>product_no</nombre>
+                <tipo>INT</tipo>
                 <nulo>false</nulo>
                 <primarykey>true</primarykey>
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
             <campo>
-                <nombre>id_comida</nombre>
-                <tipo>char(100)</tipo>
+                <nombre>name</nombre>
+                <tipo>CHAR(5)</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>Identificaciones</foreignkey>
+                <reference>nombre</reference>
+            </campo>
+            <campo>
+                <nombre>id_producto</nombre>
+                <tipo>INT</tipo>
                 <nulo>false</nulo>
-                <primarykey>true</primarykey>
+                <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
         </tabla>
-        <tabla name="para"/>
-        <tabla name="personas"/>
     </base>
 </database>

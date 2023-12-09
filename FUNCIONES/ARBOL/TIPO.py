@@ -8,6 +8,10 @@ class TIPO:
     VARCHAR = "VARCHAR"
     ERROR = "ERROR"
 
+    NULL = "NULL"
+    NOT_NULL = "NOT NULL"
+    PRIMARY_KEY = "PRIMARY KEY"
+
 class TIPODATO:
     def __init__(self,tipo,size=0) -> None:
         self.tipo = tipo

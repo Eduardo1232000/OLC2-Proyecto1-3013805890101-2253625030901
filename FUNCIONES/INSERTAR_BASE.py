@@ -1,6 +1,7 @@
 
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
+import os
 
 def base_agregar_tabla(nombre_base, nombre_tabla):
     try:
@@ -82,10 +83,15 @@ def base_agregar_campo(nombre_base, nombre_tabla,nombre_campo,tipo_campo,nulo,pr
     except:
         return False
 
+def validar_existe_tabla(nombre_base, nombre_tabla):
+    ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
+    if os.path.exists(ruta):   #SI YA EXISTE LA BASE DE DATOS
+        return False
+    
 #PRUEBAS
 #base_agregar_tabla("Alimentos","comidas")
-base_agregar_tabla("Personas","Hombres")
-base_agregar_tabla("Personas","Mujeres")
+#base_agregar_tabla("Personas","Hombres")
+#base_agregar_tabla("Personas","Mujeres")
 #base_agregar_tabla("Alimentos","personas")
 #base_agregar_campo("Alimentos","comidas","id_comida","int","false","true","false","false")
 #base_agregar_campo("Alimentos","comidas","id_comida","char(100)","false","true","false","false")
