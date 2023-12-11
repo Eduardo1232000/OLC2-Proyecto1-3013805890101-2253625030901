@@ -3,7 +3,7 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
-from FUNCIONES.DDL.DROP_BASE import*
+from FUNCIONES.DDL.DROP import*
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
@@ -407,13 +407,14 @@ def p_alter_modify(t):
 
 def p_sent_drop(t):
     '''sent_drop : DROP drop_type name PTCOMA'''
-    t[0] = DROP_BASE(t[2], t[3], lexer.lineno,0)
-    print("DROP -> ")
+    t[0] = DROP(t[2], t[3], lexer.lineno,0)
+    #print("DROP -> ")
 
 def p_drop_type(t):
     '''drop_type : TABLE
-                | DATA BASE''' #DATABASE o DATA BASE
-    print("DROP TYPE -> " +str(t[2]))
+                | DATA BASE'''
+    t[0] = t[1]  # Usar t[1] (TABLE) o t[2] (DATA BASE) según la gramática
+    #print("DROP TYPE -> " + str(t[0]))
 
 #TRUNCATE TABLE nombre_tabla
 def p_sent_truncate(t):
