@@ -167,22 +167,23 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         contenido = contenido_texto.get("1.0", END)
         
         #ANALIZAR CONTENIDO
-        respuesta = gramatica.parses(contenido)
-        respuesta_invertida=""
-        if(respuesta == None or respuesta == "" or respuesta == []):
-            print("",end="")
-        else:
-            respuesta_invertida = respuesta[::-1]
+        respuesta_parser = gramatica.parses(contenido)
+        if(respuesta_parser is not None):
+            respuesta = respuesta_parser[0]
+        
+            if(respuesta == None or respuesta == "" or respuesta == []):
+                print("",end="")
+            else:
+                arbol_sintactico = AST(respuesta,respuesta_parser[1],respuesta_parser[2])
+                arbol_sintactico.ejecutar()
+                #arbol_sintactico.graficar_reporte_errores()
+                #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
-            arbol_sintactico = AST(respuesta_invertida)
-            arbol_sintactico.ejecutar()
-            #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
-
-            salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
-            salida.delete(1.0, END) 
-            salida.insert(END, arbol_sintactico.obtener_salida())  
-            salida.config(state='disabled')
-            cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
+                salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
+                salida.delete(1.0, END) 
+                salida.insert(END, arbol_sintactico.obtener_salida())  
+                salida.config(state='disabled')
+                cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
     
 
     elif(opcion == "exportar"):

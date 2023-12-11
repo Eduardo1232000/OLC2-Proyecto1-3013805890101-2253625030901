@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
+from FUNCIONES.DDL.INSERT_INTO import *
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
@@ -23,6 +24,8 @@ from FUNCIONES.OPERACIONES_RELACIONAL.MAYOR_IGUAL import *
 from FUNCIONES.OPERACIONES_LOGICAS.AND import *
 from FUNCIONES.OPERACIONES_LOGICAS.OR import *
 from FUNCIONES.OPERACIONES_LOGICAS.NOT import *
+
+from FUNCIONES.ERROR_LSS import *
 
 
 tokens = (
@@ -172,9 +175,17 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
 
+def t_NULLL(t):
+    r'NULL'
+    pass  # No hace nada, simplemente ignora el token 'NULL'
+
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    #print("Illegal character '%s'" % t.value[0])
+    er = ERROR_LSS("LEXICO",str(t.value[0])+" No pertenece al lenguaje",lexer.lineno)
+    lista_error_lexico.append(er)
+    
     t.lexer.skip(1)
+    
 
 #CONSTRUYENDO EL ANALIZADOR LEXICO
 import ply.lex as lex
@@ -194,15 +205,23 @@ precedence = (
 
 
 listado_instrucciones = []      #LISTA GLOBAL
-listado_temporal = []          #LISTADO TEMPORAL POR EJEMPLO TABLAS
-listado_temporal2 = []          #LISTADO TEMPORAL POR EJEMPLO TABLAS
+lista_error_sintactico = []      
+lista_error_lexico = []
+
 
 #DEFINICION DE LA GRAMATICA
 def p_instrucciones_lista(t):
     '''instrucciones   : instruccion instrucciones 
                        | instruccion '''
-    listado_instrucciones.append(t[1])  #GUARDA CADA INSTRUCCION (DEBEN SER OBJETOS)
-    t[0] = listado_instrucciones        #PARA DEVOLVER LA LISTA ACTUALIZADA
+
+    if len(t) == 2:
+        t[0] = [[t[1]], lista_error_lexico, lista_error_sintactico]
+    else:
+
+        t[2][0].insert(0, t[1])
+        t[0] = t[2]
+        #AGREGAR LOS ERRORES LEXICOS Y SINTACTICOS
+
     
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
@@ -354,24 +373,26 @@ def p_sentencia_create_database(t):
 
 def p_sentencia_create_table(t):
     '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
-    tabla_temp = t[5]
-    if(len(tabla_temp)>1):
-        t[5] = tabla_temp[::-1] 
     t[0] = CREATE_TABLE(t[3],t[5],lexer.lineno,0)
 
 
 def p_datos(t):
     '''datos : dato COMA datos
              | dato '''
-    listado_temporal.append(t[1])#INSERTA EL CAMPO 
-    t[0] = listado_temporal #ES UNA LISTA CON LISTAS U OBJETOS
+
+    if len(t) == 2:
+        # Solo hay una expresión
+        t[0] = [t[1]]
+    else:
+        # Hay más de una expresión
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+
 
 def p_dato(t):
     '''dato : dato_con_caract
             | dato_sin_caract
             | foreign_key'''
-    
-    #print("reconoci campo")
     t[0] = t[1]     #PUEDE SER UN OBJETO O UNA LISTA
 
 def p_dato_sin_caract(t):
@@ -394,10 +415,6 @@ def p_dato_con_caract(t):
     lista_dato.append(t[3])#LISTA DE CARACTERISTICAS
     t[0] = lista_dato
     lista_dato = []
-    global listado_temporal2
-    listado_temporal2 = []
-
-
 
 def p_user_base(t):
     '''use_base : USE name PTCOMA'''
@@ -413,8 +430,11 @@ def p_caracteristicas(t):
     '''caracteristicas : caracteristica caracteristicas
                        | caracteristica
                         '''
-    listado_temporal2.append(t[1])  #AGREGA A LA LISTA LA CARACTERISTICA DEL CAMPO
-    t[0] = listado_temporal2        #SALIDA = LISTA
+    if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
+        t[0] = [t[1]]
+    else:               #SI ES MAS DE 1 CARACTERISTICA
+        t[2].insert(0, t[1])
+        t[0] = t[2]
 
 def p_caracteristica(t):
     '''caracteristica :  caract_nulo
@@ -440,7 +460,8 @@ def p_caract_primary_key(t):
 
 def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
-    print("INSERTAR -> " +str(t[3]) )
+    t[0] = INSERT_INTO(t[3],t[5],t[9],lexer.lineno,0)
+
     
 
 def p_f_delete(t):
@@ -450,9 +471,28 @@ def p_f_delete(t):
 def p_columnas(t):
     ''' columnas : name
                 | name COMA columnas'''
+    if len(t) == 2:
+        # Solo hay una expresión
+        t[0] = [t[1]]
+    else:
+        # Hay más de una expresión
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+                
+
+    
+
 def p_valores(t):
     ''' valores : expresion
                 | expresion COMA valores'''
+    
+    if len(t) == 2:
+        # Solo hay una expresión
+        t[0] = [t[1]]
+    else:
+        # Hay más de una expresión
+        t[3].insert(0, t[1])
+        t[0] = t[3]
 
 def p_tipodato(t):
     '''tipo_dato : INT 
@@ -531,10 +571,24 @@ def p_cadena(t):
 def p_error(t):
     if t is not None:
         print("Error sintáctico en '%s'" % t.value)
+        er = ERROR_LSS("SINTACTICO",str(t.value)+" Genera un error en la sintaxis",lexer.lineno)
+        lista_error_sintactico.append(er)
+
+        reiniciar_parser()
+        while True:
+            tok = lexer.token()
+            if not tok or tok.type == 'PTCOMA'or tok.type == 'NULL':
+                break
     else:
         print("Error: Vacio")
 
+def reiniciar_parser():
+    global parser
+    parser = yacc.yacc()
 
+def reiniciar_lexer():
+    global lexer
+    lexer = lex.lex()
 
 
 
@@ -543,11 +597,12 @@ parser = yacc.yacc()
 
 def parses(data):
     global listado_instrucciones
-    global listado_temporal
-    global listado_temporal2
-    listado_instrucciones = []  #EN CADA ANALISIS SE VACIA
-    listado_temporal = []
-    listado_temporal2 = []          
+    global lista_error_sintactico
+    global lista_error_lexico
+    listado_instrucciones = []  #EN CADA ANALISIS SE VACIA  
+    lista_error_sintactico = []
+    lista_error_lexico = []
+ 
     parser = yacc.yacc()
     
     result = parser.parse(data)

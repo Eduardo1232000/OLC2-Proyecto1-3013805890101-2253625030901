@@ -79,7 +79,6 @@ class FORANEA(Expresion):
     def obtener_valor(self, actual, globa, ast):
         return(self.nombre_tabla)
         
-    
 class CAMPO_TABLA(Expresion):
     def __init__(self,nombre_tabla,tipo,nulo,primary_key,foreign_key,reference,linea,columna):
         super().__init__(linea, columna, "TABLA")
@@ -125,4 +124,3 @@ class CAMPO_TABLA(Expresion):
     def obtener_reference(self):
         return self.reference
 
-    
