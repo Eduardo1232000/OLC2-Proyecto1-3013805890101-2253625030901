@@ -3,12 +3,12 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
-<<<<<<< HEAD
+
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
-=======
+
 from FUNCIONES.DDL.INSERT_INTO import *
->>>>>>> 95d8af94e86340d2e857a3bdf8adb064efbca029
+
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
@@ -82,15 +82,12 @@ t_INSERT            =   r'INSERT'
 t_INTO              =   r'INTO'
 t_VALUES            =   r'VALUES'
 t_DELETE            =   r'DELETE'
-<<<<<<< HEAD
 t_ALTER             =   r'ALTER'    #Agregado
 t_DROP              =   r'DROP'     #Agregado   
 t_TRUNCATE          =   r'TRUNCATE' #Add
 t_ADD               =   r'ADD'
 t_MODIFY            =   r'MODIFY'
 
-=======
->>>>>>> 95d8af94e86340d2e857a3bdf8adb064efbca029
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
 t_MULTIPLICACION    =   r'\*'
