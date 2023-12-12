@@ -18,7 +18,7 @@ class DROP(Instruccion):
                 nombre = nombre_objeto.obtener_valor(actual, globa, ast)
                 if self.drop_type == 'TABLE':
                     # Accede al nombre de la base de datos actual a través de base_activa
-                    #aqui debería de existir una instruccion para ver si hay una foreign key
+                    #aqui debería de existir una instruccion para ver si hay una foreign key que haga relacion 
                     nombre_base_actual = base_activa
                     borrar_tabla(nombre, nombre_base_actual, ast)
                 elif self.drop_type == 'DATA':
@@ -27,3 +27,5 @@ class DROP(Instruccion):
                     ast.escribir_en_consola("Error: DROP no valido: " + str(self.drop_type))
             else:
                 ast.escribir_en_consola("Error: Nombre de objeto no valido")
+
+                

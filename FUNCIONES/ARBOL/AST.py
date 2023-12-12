@@ -1,12 +1,20 @@
 from FUNCIONES.ARBOL.EJECUCION import *
+from FUNCIONES.ERROR_LSS import *
 class AST:
-    def __init__(self, ejecuciones):
+    def __init__(self, ejecuciones,errores_lexicos,errores_sintacticos):
         self.EJECUCIONES = ejecuciones   #LISTADO DE OBJETOS PARA EJECUTAR
         self.salida_cadena = ""  #SALIDA DE TEXTO QUE SE MUESTRA EN CONSOLA
         self.codigo_grafica=""   #CODIGO DE GRAPHVIZ DEL ARBOL
         self.tabla_simbolos=[]   #TABLA DE SIMBOLOS DEL CODIGO
+        self.errores_codigo =[]
+        for error in errores_lexicos:
+            self.errores_codigo.append(error)
+        for error in errores_sintacticos:
+            self.errores_codigo.append(error)
+
         self.base_actual = ""
         self.tabla_actual = ""
+
     
     def ejecutar(self):
         for instr in self.EJECUCIONES:
@@ -47,5 +55,7 @@ class AST:
     def graficar_tabla_simbolos():
         print("NO IMPLEMENTADO")
 
-    def graficar_reporte_errores(lista_errores):
-        print("NO IMPLEMENTADO")
+    def graficar_reporte_errores(self): #POR AHORA SOLO MUESTRA LOS ERRORES
+        for error in self.errores_codigo:
+            if(isinstance(error,ERROR_LSS)):
+                print(str(error.tipo) + ": "+str(error.descripcion) + " , "+str(error.linea))

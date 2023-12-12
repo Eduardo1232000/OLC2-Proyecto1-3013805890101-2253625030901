@@ -83,6 +83,43 @@ def base_agregar_campo(nombre_base, nombre_tabla,nombre_campo,tipo_campo,nulo,pr
     except:
         return False
 
+def base_agregar_dato(nombre_base,nombre_tabla,valores):
+    try:
+        ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
+        tree = ET.parse(ruta)
+        root = tree.getroot()
+        base_existente = None
+        for base in root.findall('base'):
+            if base.attrib['name'] == nombre_base:
+                for tabla in base:
+                    if tabla.attrib['name'] == nombre_tabla:
+                        base_existente = tabla
+                        break
+                if base_existente is not None:
+                    break
+
+        if base_existente is not None:
+            nuevo_campo = ET.SubElement(base_existente, 'dato')
+            for valor in valores:
+                dato_campo = ET.SubElement(nuevo_campo, 'valor')
+                dato_campo.text = str(valor)
+
+
+            xml_string = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
+
+            # Eliminar líneas en blanco
+            lines = xml_string.split('\n')
+            xml_string = '\n'.join(line for line in lines if line.strip())
+
+            with open(ruta, 'w', encoding='utf-8') as archivo:
+                archivo.write(xml_string)
+                return True
+
+        else:
+            return False
+    except:
+        return False
+    
 def validar_existe_tabla(nombre_base, nombre_tabla):
     ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
     if os.path.exists(ruta):   #SI YA EXISTE LA BASE DE DATOS
@@ -97,4 +134,10 @@ def validar_existe_tabla(nombre_base, nombre_tabla):
 #base_agregar_campo("Alimentos","comidas","id_comida","char(100)","false","true","false","false")
 #base_agregar_campo("Personas","Hombres","id_hombre","int","false","true","false","false")
 #base_agregar_campo("Personas","Hombres","nombre","char(100)","false","false","false","false")
+'''lista = []
+lista.append("1")
+lista.append("Pera")
+lista.append("1")
+
+base_agregar_dato("Alimentos", "products",lista)'''
 
