@@ -246,6 +246,8 @@ def p_operacion_sistema(t):
                     '''
     t[0] = t[1]
 
+
+
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
     t[0] = CONCATENAR(t[3],t[5],lexer.lineno,0)
