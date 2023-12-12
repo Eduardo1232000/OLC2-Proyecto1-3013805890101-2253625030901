@@ -278,7 +278,7 @@ def p_cas(t):
     print("CAST -> "+str(t[4]) + " -> " +str(t[6]))
 
 def p_select_dato(t):
-    '''select_dato : MULTIPLICACION FROM name
+    '''select_dato : MULTIPLICACION FROM name PTCOMA
                     | FROM name
                     | FROM name WHERE condiciones'''
     print("SELECCIONANDO TODOS LOS DATOS DE: " +str(t[3]))

@@ -102,7 +102,7 @@ def base_agregar_dato(nombre_base,nombre_tabla,valores):
             nuevo_campo = ET.SubElement(base_existente, 'dato')
             for valor in valores:
                 dato_campo = ET.SubElement(nuevo_campo, 'valor')
-                dato_campo.text = valor
+                dato_campo.text = str(valor)
 
 
             xml_string = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")

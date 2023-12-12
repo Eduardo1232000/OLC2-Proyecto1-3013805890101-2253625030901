@@ -3,14 +3,16 @@ from tkinter import ttk
 from tkinter import filedialog      #ABRIR ARCHIVOS
 from tkinter import messagebox      #MOSTRAR UN MENSAJE AL USUARIO
 import os       #PARA OBTENER EL NOMBRE DEL ARCHIVO
+
+
 from FUNCIONES.LECTURA_XML import *
 from FUNCIONES.RESALTADO import *
 from FUNCIONES.CREAR_BASE import *
 
 from FUNCIONES.ARBOL.AST import *
 
+from FUNCIONES.EXPORTAR_IMPORTAR.EXPORTAR import *
 import gramatica
-
 
 contador_querys  = 1
 ruta_query_actual = ""
@@ -19,13 +21,18 @@ class interfaz:
         self.ventana = ventana  #INICIALIZAMOS LA VENTANA
         self.ventana.title("PROYECTO - COMPILADORES 2") #TITULO DE VENTANA
         self.ventana.geometry("1280x720")    #TAMAÑO DE LA VENTANA
-        self.ventana.configure(bg='white')#color de fondo ventana
+        self.ventana.configure(bg="#1A1C2F")#color de fondo ventana
+
+        self.ventana.resizable(width=False, height=False)
+
         
 def crear_pestana(notebook,texto_prueba):
     pestana = Frame(notebook)
     notebook.add(pestana, text = texto_prueba)
-    contenido = Text(pestana)
+    contenido = Text(pestana,font=("Helvetica", 12))
+    contenido.configure(bg="#ECEEF1")
     contenido.place(x=0,y=0,width=1000,height=300)
+
 
     contenido = Label(pestana,text="",state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
 
@@ -187,7 +194,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
     
 
     elif(opcion == "exportar"):
-        print("Herramientas - Exportar")
+        mostrar_bases(ventana_principal)
 
     elif(opcion == "importar"):
         print("Herramientas - Importar")
@@ -208,9 +215,11 @@ ventana_principal = Tk()    #CREAMOS LA VENTANA PRINCIPAL
 programa = interfaz(ventana_principal)
 
 titulo = Label(ventana_principal, text="XSQL-IDE", font=("Helvetica", 16))          #TITULO
+titulo.configure(bg="#252950",fg="white")
 titulo.place(x=0,y=0,width=1280,height=60)
 
-boton_archivo = Button(ventana_principal, text="Archivo",font=("Helvetica", 12),command=mostrar_menu_archivo)
+
+boton_archivo = Button(ventana_principal, text="Archivo",bg="#4F5C7C", fg="white",font=("Helvetica", 12),command=mostrar_menu_archivo)
 boton_archivo.place(x=10,y=65, width=100, height=30)
 menu_archivo = Menu(boton_archivo, tearoff=0)
 menu_archivo.add_command(label="Nuevo",command=lambda:accion_menu_archivo("nuevo"))
@@ -222,7 +231,7 @@ menu_archivo.add_command(label="Salir",command=lambda:accion_menu_archivo("salir
 
 boton_archivo.bind("<Button-1>",lambda event: None) 
 
-boton_herramientas = Button(ventana_principal, text="Herramientas",font=("Helvetica", 12),command=mostrar_menu_herramientas)
+boton_herramientas = Button(ventana_principal, text="Herramientas",bg="#4F5C7C", fg="white",font=("Helvetica", 12),command=mostrar_menu_herramientas)
 boton_herramientas.place(x=110,y=65, width=100, height=30)
 
 menu_herramientas = Menu(boton_archivo, tearoff=0)
@@ -247,13 +256,16 @@ vista_arbol = Frame(ventana_principal)  #CREAMOS EL CONTENEDOR DE LA VISTA DE AR
 vista_arbol.configure(bg='red')
 vista_arbol.place(x=10,y=100,width=230,height=600)
 
+
 arbol = ttk.Treeview(vista_arbol)
 arbol.pack(side="left", fill="both", expand=True)
 
+
+
 scrollbar = ttk.Scrollbar(vista_arbol, orient="vertical", command=arbol.yview)  #SCROLLBAR PARA EL ARBOL
 scrollbar.pack(side="right", fill="y")
-arbol.configure(yscrollcommand=scrollbar.set)
-
+arbol.configure(yscrollcommand=scrollbar.set )
+arbol
 cargar_datos_arbol()
 
 area_query = Frame(ventana_principal)       #CREAMOS EL CONTENEDOR DE pestanaS
@@ -267,6 +279,7 @@ label_salida = Label(ventana_principal, text="Salida de Datos",font=("Helvetica"
 label_salida.place(x=250,y=425,height=25)
 
 salida= Text(ventana_principal,state='disabled',font=("Helvetica", 12))
+salida.configure(bg="#ECEEF1")
 salida.place(x=250, y=450, width=1000, height=250)
 
 #VINCULAR FUNCION RESALTAR PALABRAS CLAVE
