@@ -36,6 +36,11 @@
                 <valor>Manza</valor>
                 <valor>1</valor>
             </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
         </tabla>
         <tabla name="Identificaciones">
             <campo>
@@ -89,5 +94,7 @@
                 <reference>false</reference>
             </campo>
         </tabla>
+        <funcion name="FUNCIONES">
+        </funcion>
     </base>
 </database>

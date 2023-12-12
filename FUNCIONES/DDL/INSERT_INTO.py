@@ -19,8 +19,14 @@ class INSERT_INTO(Instruccion):
             nombre_tabla = self.nombre.obtener_valor(actual,globa,ast)
             lista_columnas = self.columnas
             lista_valores = self.valores
-            lista_tipos_columna = []
+
             lista_nombres_valor = []
+
+            lst_nombre = []
+            lst_tipo = []
+            lst_nulo = []
+            lst_foreign = []
+            lst_reference = []
             ruta = "BASE_DATOS/"+str(base_activa)+".xml"
 
             #VALIDACION QUE EXISTA LA TABLA
@@ -33,60 +39,117 @@ class INSERT_INTO(Instruccion):
                         nombre = str(tabla.attrib['name'])
                         if nombre == nombre_tabla:
                             tabla_existente = True
+                            #OBTENCION DE COLUMNAS
+                            for campo in tabla.findall('campo'):            #RECORRE CADA CAMPO Y AGREGA A CADA LISTA SU DATO
+                                for dato in campo.findall('nombre'):
+                                    lst_nombre.append(dato.text)
+
+                                for dato in campo.findall('tipo'):  #TIPO
+                                    lst_tipo.append(dato.text)
+
+                                for dato in campo.findall('nulo'):  #NULO
+                                    lst_nulo.append(dato.text)
+
+                                for dato in campo.findall('foreignkey'):  #FOREIGN
+                                    lst_foreign.append(dato.text)
+                                
+                                for dato in campo.findall('reference'):  #REFERENCE
+                                    lst_reference.append(dato.text)
                             break
                     if tabla_existente == True:
                         break
+
             if(tabla_existente == False):   #SI NO EXISTE LA TABLA
                 ast.escribir_en_consola("ERROR: La Tabla "+str(nombre_tabla) +" no existe en la base "+str(base_activa)+"!\n")
                 return
-            if(tabla != ""):
-                for campo in tabla:
-                    if(campo.tag == "campo"):
-                        lst = []
-                        nombre = campo[0].text
-                        tipo = campo[1].text
-                        lst.append(nombre)
-                        lst.append(tipo)
-                        lista_tipos_columna.append(lst)
+            
+            '''#COLUMNAS TABLA
+            print(lst_nombre)
+            print(lst_tipo)
+            print(lst_nulo)
+            print(lst_foreign)
+            print(lst_reference)
+
+            print(lista_columnas)'''
+
+
+
 
             #VALIDACION ORDEN COLUMNAS
-            for i in range(len(lista_columnas)):
-                dato_columna = lista_columnas[i]
-                if(isinstance(dato_columna,VALOR)):
-                    nom = dato_columna.obtener_valor(actual,globa,ast)
-                    dato_columna = lista_tipos_columna[i]
-                    dato_columna = dato_columna[0]
-                    if(str(nom) != str(dato_columna)):  #NO ESTAN ORDENADAS LAS TABLAS
-                        ast.escribir_en_consola("ERROR: El orden de las columnas no es el correcto\n")
-                        return
+            if(len(lista_columnas)> len(lst_nombre)):
+                ast.escribir_en_consola("ERROR: El numero de columnas es mayor a la de la tabla")
+                return
             
-            #VALIDACION TIPO DE VALOR
-            #try:
-            for i in range(len(lista_valores)):
-                dato_valor = lista_valores[i]
-                if(isinstance(dato_valor,VALOR)):
-                    nom = dato_valor.obtener_valor(actual,globa,ast)
-                    tipo = dato_valor.tipo.tipo
-                    dato_columna = lista_tipos_columna[i]
-                    dato_columna = dato_columna[1]                        
-                    if((dato_columna == "INT" and (tipo == TIPO.INT or tipo == TIPO.BIT)) or (dato_columna == "BIT" and tipo == TIPO.BIT) or (dato_columna == "DECIMAL" and tipo == TIPO.DECIMAL) or(dato_columna == "DATE" and tipo == TIPO.DATE) or (dato_columna == "DATETIME" and tipo == TIPO.DATETIME) or ("VARCHAR" in dato_columna and (tipo == TIPO.VARCHAR or tipo == TIPO.CHAR))):
-                        print("",end="")
-                    elif("CHAR" in dato_columna and (tipo == TIPO.VARCHAR or tipo == TIPO.CHAR)):
-                        inicio_parentesis = dato_columna.find('(')
-                        fin_parentesis = dato_columna.find(')')
-                        if inicio_parentesis != -1 and fin_parentesis != -1 and inicio_parentesis < fin_parentesis:
-                            numero = int(dato_columna[inicio_parentesis + 1:fin_parentesis])
-                            nuevo_nom = ""
-                            if(len(nom)> numero):
-                                for i in range(numero):
-                                    nuevo_nom = nuevo_nom + nom[i]
-                                nom = nuevo_nom
-                    else:   #ALGUN TIPO DE VALOR NO ES EL CORRECTO
-                        ast.escribir_en_consola("ERROR: Los tipos de los valores no coinciden con los de la tabla\n")
+            if(len(lista_columnas) != len(lista_valores)):
+                ast.escribir_en_consola("ERROR: El numero de datos no coincide al numero de columnas")
+                return
+            
+            
+            avanza = 0
+            for i in range(len(lst_nombre)):            #RECORRE LAS COLUMNAS
+                nombre_columna = lst_nombre[i]
+                tipo_columna = lst_tipo[i]
+                nulo_columna = lst_nulo[i]
+                foreign_columna = lst_foreign[i]
+                reference_columna = lst_reference[i]
+
+                if((i-avanza) <= (len(lista_columnas)-1)):
+                    valor_columna = lista_columnas[i - avanza]
+
+                    valor_insertar = lista_valores[i - avanza]
+
+                    if(isinstance(valor_columna,VALOR) and isinstance(valor_insertar,VALOR)):
+                        nombre_columna_insert = valor_columna.obtener_valor(actual,globa,ast)
+                        valor_dato = valor_insertar.obtener_valor(actual,globa,ast)
+                        tipo_valor_dato = valor_insertar.tipo.tipo
+                        #print(nombre_columna_insert)
+                        #print(valor_dato)
+                        #print("---")
+
+                        
+                        if(nombre_columna_insert == nombre_columna):    #CUMPLE CON EL ORDEN
+                            #VALIDAR EL TIPO DEL VALOR
+
+                            if((tipo_columna == "INT" and (tipo_valor_dato == TIPO.INT or tipo_valor_dato == TIPO.BIT)) or (tipo_columna == "BIT" and tipo_valor_dato == TIPO.BIT) or (tipo_columna == "DECIMAL" and tipo_valor_dato == TIPO.DECIMAL) or(tipo_columna == "DATE" and tipo_valor_dato == TIPO.DATE) or (tipo_columna == "DATETIME" and tipo_valor_dato == TIPO.DATETIME) or ("VARCHAR" in tipo_columna and (tipo_valor_dato == TIPO.VARCHAR or tipo_valor_dato == TIPO.CHAR))):
+                                print("",end="")
+                            elif("CHAR" in tipo_columna and (tipo_valor_dato == TIPO.VARCHAR or tipo_valor_dato == TIPO.CHAR)):
+                                inicio_parentesis = tipo_columna.find('(')
+                                fin_parentesis = tipo_columna.find(')')
+                                if inicio_parentesis != -1 and fin_parentesis != -1 and inicio_parentesis < fin_parentesis:
+                                    numero = int(tipo_columna[inicio_parentesis + 1:fin_parentesis])
+                                    nuevo_nom = ""
+                                    if(len(valor_dato)> numero):
+                                        for i in range(numero):
+                                            nuevo_nom = nuevo_nom + valor_dato[i]
+                                        valor_dato = nuevo_nom
+                            else:   #ALGUN TIPO DE VALOR NO ES EL CORRECTO
+                                ast.escribir_en_consola("ERROR: Los tipos de los valores no coinciden con los de la tabla\n")
+                                return
+                            #GUARDARLO EN LA LISTA
+                            lista_nombres_valor.append(valor_dato)
+                            
+                        else:
+                            if(nulo_columna == "true"):
+                                lista_nombres_valor.append("")
+                            else:
+                                ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
+                                return
+                            avanza+=1
+                            #GUARDAR UN DATO VACIO EN LA LISTA
+
+                else:   #LAS DEMAS COLUMNAS DEBEN SER NULO O ES ERROR
+                    #print("VALIDAR SI ES NULO")
+                    if(nulo_columna == "true"):
+                        lista_nombres_valor.append("")
+                    else:
+                        ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
                         return
-                    lista_nombres_valor.append(str(nom))
-            #AGREGAR DATO A LA BASE
-            base_agregar_dato(str(base_activa),str(nombre_tabla),lista_nombres_valor)
-            ast.escribir_en_consola(" Dato Insertado! \n")
-            #except:
-            #    ast.escribir_en_consola("ERROR: Un tipo de dato no coincide con el tipo")
+
+             #AGREGAR DATO A LA BASE
+            salida = base_agregar_dato(str(base_activa),str(nombre_tabla),lista_nombres_valor)
+            if(salida == True):
+                ast.escribir_en_consola(" Dato Insertado! \n")
+            else:
+                ast.escribir_en_consola(" ERROR AL INSERTAR \n")
+
+            
