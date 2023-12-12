@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
+from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
@@ -379,9 +380,12 @@ def p_sentencia_create_table(t):
 #ALTER TABLE nombre_tabla DROP COLUMN nombre_columna
 #ALTER TABLE nombre_tabla 'MODIFY' COLUMN nombre_columna name
 
+
 def p_alter_table(t):
     '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
-    print("funciona")
+    
+    t[0] = ALTER_TABLE(t[3], t[4][0], lexer.lineno, 0)
+
     
 
 def p_alter_action(t):
@@ -393,16 +397,16 @@ def p_alter_action(t):
 def p_alter_add(t):
     '''alter_add : ADD COLUMN name tipo_dato
                  | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
-    t[0] = ("ALTER ADD", t[3], t[4])
+    t[0] = ("ADD", t[3], t[4])
 
 def p_alter_drop(t):
     '''alter_drop : DROP COLUMN name
                   | DROP CONSTRAINT name'''
-    t[0] = ("ALTER DROP", t[3]) 
+    t[0] = ("DROP", t[3]) 
 
 def p_alter_modify(t):
     '''alter_modify : MODIFY COLUMN name tipo_dato'''
-    t[0] = ("ALTER MODIFY", t[4])
+    t[0] = ("MODIFY", t[4])
 
 #DROP TABLE nombre_tabla
 #DROP DATABASE nombre_database

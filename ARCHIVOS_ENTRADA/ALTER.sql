@@ -13,7 +13,7 @@ def p_f_insert(t):
 INSERT INTO products (product_no, name, id_producto)
 VALUES (1,"Manzana",1);
 
-ALTER TABLE table_name ADD COLUMN column_name tipo_dato;
+ALTER TABLE table_name ADD COLUMN column_name INT;
 ALTER TABLE table_name ADD CONSTRAINT constraint_name FOREIGN KEY (column_name) REFERENCES reference_table(reference_column);
 ALTER TABLE table_name DROP COLUMN column_name;
 ALTER TABLE table_name DROP CONSTRAINT constraint_name;
