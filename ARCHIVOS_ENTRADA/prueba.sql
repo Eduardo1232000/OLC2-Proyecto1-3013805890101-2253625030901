@@ -9,4 +9,9 @@ CREATE TABLE persona(
 
 INSERT INTO persona VALUES ('2253','paco');
 
+DROP DATA BASE nombre_base;
+
+
+USE perrito
+DROP TABLE raza;
 

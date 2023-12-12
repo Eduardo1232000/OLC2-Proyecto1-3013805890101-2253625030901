@@ -1,0 +1,3 @@
+DROP DATA BASE Juguetes;
+
+DROP TABLE 

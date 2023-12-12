@@ -3,7 +3,12 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
+
+from FUNCIONES.DDL.ALTER_TABLE import *
+from FUNCIONES.DDL.DROP import*
+
 from FUNCIONES.DDL.INSERT_INTO import *
+
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
@@ -38,10 +43,14 @@ tokens = (
     'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
     'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'CHAR', 'VARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
-    'INSERT', 'INTO', 'VALUES', 'DELETE'
+    'INSERT', 'INTO', 'VALUES', 'DELETE',
+    'ALTER', 'DROP', 'TRUNCATE',
+    'ADD', 'MODIFY',
+    'COLUMN', 'CONSTRAINT', 'REFERENCES'
 )
 
 #Tokens
+<<<<<<< HEAD
 t_INT               =   r'INT'
 t_BIT               =   r'BIT'
 t_DECIMAL           =   r'DECIMAL'
@@ -74,6 +83,41 @@ t_INSERT            =   r'INSERT'
 t_INTO              =   r'INTO'
 t_VALUES            =   r'VALUES'
 t_DELETE            =   r'DELETE'
+=======
+t_INT               =   r'(?i)INT'
+t_BIT               =   r'(?i)BIT'
+t_DECIMAL           =   r'(?i)DECIMAL'
+t_DATETIME          =   r'(?i)DATETIME'
+t_DATE              =   r'(?i)DATE'
+t_CHAR             =   r'(?i)CHAR'
+t_VARCHAR          =   r'(?i)VARCHAR'
+t_NOT               =   r'(?i)NOT'
+t_NULL              =   r'(?i)NULL'
+t_PRIMARY           =   r'(?i)PRIMARY'
+t_FOREIGN           =   r'(?i)FOREIGN'
+t_REFERENCE         =   r'(?i)REFERENCE'
+t_KEY               =   r'(?i)KEY'
+t_SELECT            =   r'(?i)SELECT' 
+t_FROM              =   r'(?i)FROM'
+t_USE               =   r'(?i)USE'
+t_WHERE             =   r'(?i)WHERE'
+t_CAST              =   r'(?i)CAST'
+t_AS                =   r'(?i)AS'
+t_CREATE            =   r'(?i)CREATE'
+t_TABLE             =   r'(?i)TABLE'
+t_DATA              =   r'(?i)DATA'
+t_BASE              =   r'(?i)BASE'
+t_CONCATENAR        =   r'(?i)CONCATENAR'
+t_SUBSTRAER         =   r'(?i)SUBSTRAER'
+t_HOY               =   r'(?i)HOY'
+t_CONTAR            =   r'(?i)CONTAR'
+t_SUMA              =   r'(?i)SUMA'
+t_INSERT            =   r'(?i)INSERT'
+t_INTO              =   r'(?i)INTO'
+t_VALUES            =   r'(?i)VALUES'
+t_DELETE            =   r'(?i)DELETE'
+
+>>>>>>> 3a1998f37a887999a30758eac4454e7c20b4e1c2
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
 t_MULTIPLICACION    =   r'\*'
@@ -232,6 +276,9 @@ def p_instrucciones_evaluar(t):
                     | f_insert 
                     | f_delete
                     | expresion 
+                    | sent_alter_table
+                    | sent_drop
+                    | sent_truncate
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
@@ -251,6 +298,8 @@ def p_operacion_sistema(t):
                     | select_dato
                     '''
     t[0] = t[1]
+
+
 
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
@@ -374,6 +423,59 @@ def p_sentencia_create_database(t):
 def p_sentencia_create_table(t):
     '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
     t[0] = CREATE_TABLE(t[3],t[5],lexer.lineno,0)
+
+
+#ALTER TABLE nombre_tabla ADD COLUMN new column TIPO DATO
+#ALTER TABLE nombre_tabla DROP COLUMN nombre_columna
+#ALTER TABLE nombre_tabla 'MODIFY' COLUMN nombre_columna name
+
+
+def p_alter_table(t):
+    '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
+    
+    t[0] = ALTER_TABLE(t[3], t[4][0], lexer.lineno, 0)
+
+    
+
+def p_alter_action(t):
+    '''alter_action : alter_add
+                    | alter_drop
+                    | alter_modify'''
+    t[0] = t[1]
+
+def p_alter_add(t):
+    '''alter_add : ADD COLUMN name tipo_dato
+                 | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
+    t[0] = ("ADD", t[3], t[4])
+
+def p_alter_drop(t):
+    '''alter_drop : DROP COLUMN name
+                  | DROP CONSTRAINT name'''
+    t[0] = ("DROP", t[3]) 
+
+def p_alter_modify(t):
+    '''alter_modify : MODIFY COLUMN name tipo_dato'''
+    t[0] = ("MODIFY", t[4])
+
+#DROP TABLE nombre_tabla
+#DROP DATABASE nombre_database
+
+def p_sent_drop(t):
+    '''sent_drop : DROP drop_type name PTCOMA'''
+    t[0] = DROP(t[2], t[3], lexer.lineno,0)
+    #print("DROP -> ")
+
+def p_drop_type(t):
+    '''drop_type : TABLE
+                | DATA BASE'''
+    t[0] = t[1]  # Usar t[1] (TABLE) o t[2] (DATA BASE) según la gramática
+    #print("DROP TYPE -> " + str(t[0]))
+
+#TRUNCATE TABLE nombre_tabla
+def p_sent_truncate(t):
+    '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
+    print("TRUNCATE TABLE -> " + str(t[4]))
+
 
 
 def p_datos(t):
@@ -607,3 +709,6 @@ def parses(data):
     
     result = parser.parse(data)
     return result
+
+#input_text = input("ingrese la expresion: ")
+#parser.parse(input_text)
