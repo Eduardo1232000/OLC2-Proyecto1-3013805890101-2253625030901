@@ -1,39 +1,52 @@
 from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.ARBOL.AST import *
+from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ALTERAR_TABLA import *
 
-class ALTER_TABLE(Instruccion):
-    def __init__(self, nombre, alter_type,  linea, columna):
+class ALTER_TABLE(Instruccion):        
+    def __init__(self, nombre_tabla, operacion, linea, columna):
         super().__init__(linea, columna, "ALTER TABLE")
-        self.alter_type = alter_type #ADD, DROP
-        self.nombre = nombre
+        self.nombre_tabla = nombre_tabla  # ES UN VALOR
+        self.operacion = operacion  # Operación específica (tupla) según la producción de la gramática
         
 
     def ejecutar(self, actual, globa, ast):
-        print("DEBUG: Entrando a la función ejecutar de ALTER_TABLE")
-        print("DEBUG: Tipo de alteración:", self.alter_type)
-        print("DEBUG: Nombre de la tabla:", self.nombre)
-        
         if isinstance(ast, AST):
             base_activa = ast.obtener_base_activa()
-            nombre_tabla = self.nombre
+            if base_activa == "":  # SI NO EXISTE LA BASE
+                ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
+                return
 
-            if isinstance(nombre_tabla, VALOR):
-                nombre_tabla_valor = nombre_tabla.obtener_valor(actual, globa, ast)
-                acciones = self.acciones
+            nombre_tabla = self.nombre_tabla.obtener_valor(actual, globa, ast)
 
-                if self.alter_type == 'ADD':
-                    print("DEBUG: Realizando acción ADD en la tabla", nombre_tabla_valor)
-                    ast.escribir_en_consola("funcionara el Alter TAble")
-                
-                elif self.alter_type == 'DROP':
-                    print('DROP')
-                elif self.alter_type == 'MODIFY':
-                    print('MODIFY')
-                
-                else:
-                    ast.escribir_en_consola("Error: ALTER TABLE incorrecto")
+            # Aquí deberías implementar la lógica específica para cada operación de ALTER TABLE
+            if self.operacion[0] == "ADD":
+                self.ejecutar_add(actual, globa, ast, nombre_tabla)
+            elif self.operacion[0] == "DROP":
+                self.ejecutar_drop(actual, globa, ast, nombre_tabla)
 
+    def ejecutar_add(self, actual, globa, ast, nombre_tabla):
+        if self.operacion[1] == "COLUMN":
+            base_activa = ast.obtener_base_activa()
+            nombre_columna = self.operacion[2].obtener_valor(actual, globa, ast)
+            tipo_dato = self.operacion[3]
+            nombre_tipo_dato = tipo_dato.tipo
+
+            if agregar_columna(base_activa, nombre_tabla, nombre_columna, tipo_dato.tipo, nulo=True, primarykey=False, foreignkey=False, reference=False):
+                ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo {nombre_tipo_dato} a la tabla {nombre_tabla}\n")
             else:
-                ast.escribir_en_consola("Error: TABLA no valida")
+                ast.escribir_en_consola(f"No se pudo agregar la columna {nombre_columna} a la tabla {nombre_tabla}\n")
+
+            #ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo  {tipo_dato} a la tabla {nombre_tabla}\n")
+        elif self.operacion[1] == "CONSTRAINT":
+            # Lógica para procesar la adición de una restricción, por ejemplo, una llave foránea
+            pass
+        # Puedes agregar más lógica según sea necesario
+
+    def ejecutar_drop(self, actual, globa, ast, nombre_tabla):
+        if self.operacion[1] == "COLUMN":
+            base_activa= ast.obtener_base_activa()
+            nombre_columna = self.operacion[2].obtener_valor(actual, globa, ast)
+            if drop_columna(base_activa, nombre_tabla, nombre_columna):
+                ast.escribir_en_consola(f"Se ha eliminado la columna {nombre_columna} de la tabla {nombre_tabla}")
