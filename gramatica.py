@@ -51,38 +51,38 @@ tokens = (
 )
 
 #Tokens
-t_INT               =   r'(?i)INT'
-t_BIT               =   r'(?i)BIT'
-t_DECIMAL           =   r'(?i)DECIMAL'
-t_DATETIME          =   r'(?i)DATETIME'
-t_DATE              =   r'(?i)DATE'
-t_CHAR             =   r'(?i)CHAR'
-t_VARCHAR          =   r'(?i)VARCHAR'
-t_NOT               =   r'(?i)NOT'
-t_NULL              =   r'(?i)NULL'
-t_PRIMARY           =   r'(?i)PRIMARY'
-t_FOREIGN           =   r'(?i)FOREIGN'
-t_REFERENCE         =   r'(?i)REFERENCE'
-t_KEY               =   r'(?i)KEY'
-t_SELECT            =   r'(?i)SELECT' 
-t_FROM              =   r'(?i)FROM'
-t_USE               =   r'(?i)USE'
-t_WHERE             =   r'(?i)WHERE'
-t_CAST              =   r'(?i)CAST'
-t_AS                =   r'(?i)AS'
-t_CREATE            =   r'(?i)CREATE'
-t_TABLE             =   r'(?i)TABLE'
-t_DATA              =   r'(?i)DATA'
-t_BASE              =   r'(?i)BASE'
-t_CONCATENAR        =   r'(?i)CONCATENAR'
-t_SUBSTRAER         =   r'(?i)SUBSTRAER'
-t_HOY               =   r'(?i)HOY'
-t_CONTAR            =   r'(?i)CONTAR'
-t_SUMA              =   r'(?i)SUMA'
-t_INSERT            =   r'(?i)INSERT'
-t_INTO              =   r'(?i)INTO'
-t_VALUES            =   r'(?i)VALUES'
-t_DELETE            =   r'(?i)DELETE'
+t_INT               =   r'INT'
+t_BIT               =   r'BIT'
+t_DECIMAL           =   r'DECIMAL'
+t_DATETIME          =   r'DATETIME'
+t_DATE              =   r'DATE'
+t_CHAR             =   r'CHAR'
+t_VARCHAR          =   r'VARCHAR'
+t_NOT               =   r'NOT'
+t_NULL              =   r'NULL'
+t_PRIMARY           =   r'PRIMARY'
+t_FOREIGN           =   r'FOREIGN'
+t_REFERENCE         =   r'REFERENCE'
+t_KEY               =   r'KEY'
+t_SELECT            =   r'SELECT' 
+t_FROM              =   r'FROM'
+t_USE               =   r'USE'
+t_WHERE             =   r'WHERE'
+t_CAST              =   r'CAST'
+t_AS                =   r'AS'
+t_CREATE            =   r'CREATE'
+t_TABLE             =   r'TABLE'
+t_DATA              =   r'DATA'
+t_BASE              =   r'BASE'
+t_CONCATENAR        =   r'CONCATENAR'
+t_SUBSTRAER         =   r'SUBSTRAER'
+t_HOY               =   r'HOY'
+t_CONTAR            =   r'CONTAR'
+t_SUMA              =   r'SUMA'
+t_INSERT            =   r'INSERT'
+t_INTO              =   r'INTO'
+t_VALUES            =   r'VALUES'
+t_DELETE            =   r'DELETE'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -544,53 +544,14 @@ def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
     t[0] = INSERT_INTO(t[3],t[5],t[9],lexer.lineno,0)
 
-#SELECT
-def p_f_select(t):
-    ''' f_select : SELECT select_list FROM name optional_conditions PTCOMA'''
-    #t[0] = UPDATE(t[2], t[4], t[6], lexer.lineno, 0)    
-    print("INSERT ")
 
-def p_select_list(t):
-    ''' select_list : expresion AS name
-                    | expresion
-                    | MULTIPLICACION '''
-    if len(t) == 2:
-        t[0] = [t[1]]
-    elif len(t) == 3:
-        t[0] = [(t[1], t[3])]
-    else:
-        t[0] = ["*"]
-
-def p_optional_conditions(t):
-    ''' optional_conditions : WHERE condition
-                           | '''
-    if len(t) == 3:
-        t[0] = t[2]
-    else:
-        t[0] = None
 
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
 
-def p_f_update(t):
-    '''f_update: UPDATE name SET set_list_ WHERE condition PTCOMA'''
-    #t[0] = SELECT(t[2], t[4], t[6], lexer.lineno, 0)
-    print("UPDATE")
 
-def p_set_list(t):
-    ''' set_list: asignacion 
-                | asignacion COMA set_list'''
-    if len(t) == 2:
-        t[0] = [t[1]]
-    else:
-        t[3].insert(0, t[1])
-        t[0] = t[3]
-
-def p_asignacion(t):
-    '''asignacion: name IGUAL expresion'''
-    #t[0] = (t[1], t[3])
 
 def p_columnas(t):
     ''' columnas : name

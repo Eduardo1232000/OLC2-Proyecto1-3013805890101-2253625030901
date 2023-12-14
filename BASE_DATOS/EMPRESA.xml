@@ -34,6 +34,12 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>Alex</valor>
+                <valor>25</valor>
+                <valor>123456890</valor>
+            </dato>
         </tabla>
         <tabla name="Tiendas">
             <campo>
@@ -60,16 +66,6 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
-            <dato>
-                <valor>2</valor>
-                <valor>Alex</valor>
-                <valor>En algun lugar</valor>
-            </dato>
-            <dato>
-                <valor>3</valor>
-                <valor>Al</valor>
-                <valor/>
-            </dato>
         </tabla>
     </base>
 </database>
