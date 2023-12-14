@@ -1,3 +1,4 @@
 DROP DATA BASE Juguetes;
 
-DROP TABLE 
+USE Juguetes;
+DROP TABLE nombre_tabla;
