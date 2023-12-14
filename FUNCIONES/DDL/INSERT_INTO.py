@@ -108,6 +108,53 @@ class INSERT_INTO(Instruccion):
 
                         
                         if(nombre_columna_insert == nombre_columna):    #CUMPLE CON EL ORDEN
+                            #VALIDAR SI ES FOREIGN KEY Y VALIDAR LA REFERENCIA
+                            encontre_ref = False
+                            encontre_valor_ref = False
+                            if(foreign_columna != "false"):
+                                
+                                print("validar referencia")
+                                for base in root.findall('base'):
+                                    contador = -1
+                                    for tabla in base:
+                                        nombre = str(tabla.attrib['name'])
+                                        contador +=1
+                                        if nombre == foreign_columna:
+                                            print(foreign_columna)
+                                            #VALIDAR EXISTE EL CAMPO DE REFERENCIA
+                                            for campo in tabla:
+                                                if(campo.tag == "campo"):
+                                                    print("CAMPO")
+                                                    if(encontre_ref == True):
+                                                        continue
+                                                    nombre_campo = campo[0].text
+                                                    if(nombre_campo == reference_columna):
+                                                        print("LO ENCONTRE EL CAMPO DE REFERENCIA")
+                                                        encontre_ref = True
+                                                elif(campo.tag == "dato"):
+                                                    print("DATO")
+                                                    print(contador)
+                                                    print(campo[contador].text)
+                                                    if(encontre_ref == False):
+                                                        ast.escribir_en_consola("ERROR: No existe el campo de referencia")
+                                                        return
+                                                    if(campo[contador].text == valor_dato):
+                                                        encontre_valor_ref = True
+                                print(encontre_valor_ref)                    #for valor in campo:
+                                if(encontre_valor_ref == False):
+                                    ast.escribir_en_consola("ERROR: El valor no existe en la referencia")
+                                    return
+
+                            #VALIDAR QUE EL PRIMARY KEY NO SE REPITA
+
+
+                            
+                            #FIN VALIDACION
+
+
+
+
+
                             #VALIDAR EL TIPO DEL VALOR
 
                             if((tipo_columna == "INT" and (tipo_valor_dato == TIPO.INT or tipo_valor_dato == TIPO.BIT)) or (tipo_columna == "BIT" and tipo_valor_dato == TIPO.BIT) or (tipo_columna == "DECIMAL" and tipo_valor_dato == TIPO.DECIMAL) or(tipo_columna == "DATE" and tipo_valor_dato == TIPO.DATE) or (tipo_columna == "DATETIME" and tipo_valor_dato == TIPO.DATETIME) or ("NVARCHAR" in tipo_columna and (tipo_valor_dato == TIPO.NVARCHAR or tipo_valor_dato == TIPO.NCHAR))):

@@ -5,6 +5,8 @@ from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.DECLARE import *
 
+from FUNCIONES.DDL.TRUNCATE_TABLE import *
+
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
 

@@ -9,6 +9,8 @@ class CREATE_TABLE(Instruccion):
         self.nombre = nombre    #ES UN VALOR
         self.datos = datos      #ES UNA LISTA
 
+        self.primary_campo_ref = ""
+
     def ejecutar(self, actual, globa, ast):
         if(isinstance(ast,AST)):
             base_activa = ast.obtener_base_activa()
@@ -69,24 +71,32 @@ class CREATE_TABLE(Instruccion):
                                                     if(valor.tag == 'nombre'):
                                                         nombre = valor.text
                                                         if(nombre == nom_tabla_referencia):
+                                                            print("ENCONTRE EL CAMPO")
                                                             campo_ref = True
+                                                            self.primary_campo_ref = campo[3].text
                                                             break
-                                    except:
+                                                if(campo_ref == True):
+                                                    break
+                                        if(campo_ref == True):
+                                            break
+                                    except: 
                                         break
                                         
                                     
                             if tabla_ref == True:
                                 break
+                    print(tabla_ref)
+                    print(campo_ref)
                     if(tabla_ref == False):
                         ast.escribir_en_consola("ERROR: La tabla de referencia no existe")
                         return
                     if(campo_ref == False):
                         ast.escribir_en_consola("ERROR: El campo de referencia no existe dentro de la tabla")
                         return
-                    if(nom_tabla_referencia != nom_tabla_base):
-                        ast.escribir_en_consola("ERROR: El campo de referencia no es igual al campo de la tabla")
+                    #print(self.primary_campo_ref)
+                    if(self.primary_campo_ref == "false"):
+                        ast.escribir_en_consola("ERROR: El campo de referencia no es primary key")
                         return
-
 
                     #RECORRER LA LISTA DE CAMPOS EN BUSCA DE LA TABLA BASE
                     for i in range(len(lista_campos)):
