@@ -6,6 +6,7 @@ from FUNCIONES.DDL.CREATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
+from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -450,7 +451,9 @@ def p_drop_type(t):
 #TRUNCATE TABLE nombre_tabla
 def p_sent_truncate(t):
     '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
-    print("TRUNCATE TABLE -> " + str(t[4]))
+    t[0] = TRUNCATE_TABLE(t[3], lexer.lineno, 0)
+    print("Estoy recibiendo la gramatica correcta?")
+    
 
 
 

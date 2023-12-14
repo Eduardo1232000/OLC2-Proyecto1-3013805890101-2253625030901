@@ -34,30 +34,6 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
-            <dato>
-                <valor>1</valor>
-                <valor>Alex</valor>
-                <valor>25</valor>
-                <valor>123456890</valor>
-            </dato>
-            <dato>
-                <valor>2</valor>
-                <valor>Alex</valor>
-                <valor>25</valor>
-                <valor/>
-            </dato>
-            <dato>
-                <valor>3</valor>
-                <valor>Alex</valor>
-                <valor/>
-                <valor>123456890</valor>
-            </dato>
-            <dato>
-                <valor>4</valor>
-                <valor>Alex</valor>
-                <valor/>
-                <valor/>
-            </dato>
         </tabla>
         <tabla name="Tiendas">
             <campo>
