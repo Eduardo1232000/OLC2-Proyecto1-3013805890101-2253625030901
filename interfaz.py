@@ -4,7 +4,6 @@ from tkinter import filedialog      #ABRIR ARCHIVOS
 from tkinter import messagebox      #MOSTRAR UN MENSAJE AL USUARIO
 import os       #PARA OBTENER EL NOMBRE DEL ARCHIVO
 
-
 from FUNCIONES.LECTURA_XML import *
 from FUNCIONES.RESALTADO import *
 from FUNCIONES.CREAR_BASE import *
@@ -12,6 +11,7 @@ from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ARBOL.AST import *
 
 from FUNCIONES.EXPORTAR_IMPORTAR.EXPORTAR import *
+from FUNCIONES.EXPORTAR_IMPORTAR.IMPORTAR import *
 import gramatica
 
 contador_querys  = 1
@@ -197,7 +197,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         mostrar_bases(ventana_principal)
 
     elif(opcion == "importar"):
-        print("Herramientas - Importar")
+        importar_datos()
 
     else:
         ventana_principal.destroy()

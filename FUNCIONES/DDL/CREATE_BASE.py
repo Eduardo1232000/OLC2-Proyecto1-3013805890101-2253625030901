@@ -9,7 +9,7 @@ class CREATE_BASE(Instruccion):
         self.nombre = nombre    #ES UN VALOR
 
     def ejecutar(self, actual, globa, ast):
-        if(isinstance(self.nombre,VALOR)):
+        if(isinstance(self.nombre,Expresion)):
             respuesta = crear_base_vacia(self.nombre.obtener_valor(actual,globa,ast))
             if(respuesta == False):
                 ast.escribir_en_consola("ERROR: Ya existe una base de datos con ese nombre!\n")

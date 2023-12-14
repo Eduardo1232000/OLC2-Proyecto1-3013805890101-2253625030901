@@ -4,8 +4,8 @@ class TIPO:
     DECIMAL = "DECIMAL"
     DATE = "DATE"
     DATETIME = "DATETIME"
-    CHAR = "CHAR"
-    VARCHAR = "VARCHAR"
+    NCHAR = "NCHAR"
+    NVARCHAR = "NVARCHAR"
     ERROR = "ERROR"
 
     NULL = "NULL"
@@ -25,7 +25,7 @@ class TIPODATO:
     
     def modificar_size(self,valor):
         try:
-            if(self.tipo == TIPO.CHAR):
+            if(self.tipo == TIPO.NCHAR):
                 self.size = int(valor)
         except:
             print("EL VALOR NO ES UN NUMERO")

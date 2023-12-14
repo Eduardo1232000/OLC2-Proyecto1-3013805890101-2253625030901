@@ -14,7 +14,7 @@ class DROP(Instruccion):
             base_activa = ast.obtener_base_activa()
             nombre_objeto = self.nombre
 
-            if isinstance(nombre_objeto, VALOR):
+            if isinstance(nombre_objeto, Expresion):
                 nombre = nombre_objeto.obtener_valor(actual, globa, ast)
                 if self.drop_type == 'TABLE':
                     # Accede al nombre de la base de datos actual a través de base_activa

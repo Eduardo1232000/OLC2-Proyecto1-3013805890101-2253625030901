@@ -1,0 +1,7 @@
+DECLARE @IVA INT;
+
+SET @IVA = 3;
+
+@IVA +1
+
+

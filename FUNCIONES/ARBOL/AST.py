@@ -1,5 +1,8 @@
 from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ERROR_LSS import *
+from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
+from FUNCIONES.ARBOL.NODO_TABLA_SIMBOLOS import *
+
 class AST:
     def __init__(self, ejecuciones,errores_lexicos,errores_sintacticos):
         self.EJECUCIONES = ejecuciones   #LISTADO DE OBJETOS PARA EJECUTAR
@@ -17,14 +20,18 @@ class AST:
 
     
     def ejecutar(self):
-        for instr in self.EJECUCIONES:
+        #CREAMOS EL AMBITO ACTUAL Y GLOBAL
+        TABLA_FUNCIONES_Y_VARIABLES_GLOBAL = TABLA_FUNCIONES_Y_VARIABLES(None,"global")     #AMBITO GLOBAL
+        TABLA_FUNCIONES_Y_VARIABLES_ACTUAL = TABLA_FUNCIONES_Y_VARIABLES_GLOBAL             #AMBITO ACTUAL ES EL GLOBAL PORQUE ES EL INICIO
 
+        for instr in self.EJECUCIONES:
+            
             if isinstance(instr,Instruccion):
-                instr.ejecutar("actual","global",self)
+                instr.ejecutar(TABLA_FUNCIONES_Y_VARIABLES_ACTUAL,TABLA_FUNCIONES_Y_VARIABLES_GLOBAL,self)
 
 
             elif(isinstance(instr, Expresion)):                 #SI EN EL ARBOL APARECE UNA EXPRESION SOLO ASI, DA IGUAL EL VALOR PORQUE ASI SE HIZO EN EL IDE
-                instr.obtener_valor("actual","global",self)     # ES DECIR QUE SOLO ESCRIBIERON 1+1 Y NO LO ASIGNARON A ALGUNA VARIABLE
+                instr.obtener_valor(TABLA_FUNCIONES_Y_VARIABLES_ACTUAL,TABLA_FUNCIONES_Y_VARIABLES_GLOBAL,self)     # ES DECIR QUE SOLO ESCRIBIERON 1+1 Y NO LO ASIGNARON A ALGUNA VARIABLE
 
         #YA DEBE TENER LAS RESPUESTAS DE CADA OPERACION 
         print(self.salida_cadena)   #BORRAR SI NO SE QUIERE VER LAS RESPUESTAS DE CONSOLA
@@ -49,8 +56,9 @@ class AST:
     def graficar(nodos):
         print("NO IMPLEMENTADO")
 
-    def guardar_en_tabla_simbolos(identificador,tipo_variable, tipo, entorno,linea,columna):
-        print("NO IMPLEMENTADO")
+    def guardar_en_tabla_simbolos(self,identificador,tipo_variable, tipo, entorno,linea,columna):
+        nodo = NODO_TABLA_SIMBOLOS(identificador,tipo_variable,tipo,entorno,linea,columna)
+        self.tabla_simbolos.append(nodo)
     
     def graficar_tabla_simbolos():
         print("NO IMPLEMENTADO")

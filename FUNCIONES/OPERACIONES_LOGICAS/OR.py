@@ -8,7 +8,7 @@ class EXP_OR(Expresion):
         self.expr2 = expr2
 
     def obtener_valor(self, actual, globa, ast):
-        if(isinstance(self.expr1,VALOR) and isinstance(self.expr2,VALOR)):
+        if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
@@ -24,7 +24,7 @@ class EXP_OR(Expresion):
                     respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)   #0= FALSO
 
             #EXTRA PORQUE NO SE ENTRA TAMBIEN
-            elif((tipo_expr1 == TIPO.CHAR or tipo_expr1 == TIPO.VARCHAR)and (tipo_expr2 == TIPO.CHAR or tipo_expr2 == TIPO.VARCHAR)):
+            elif((tipo_expr1 == TIPO.NCHAR or tipo_expr1 == TIPO.NVARCHAR)and (tipo_expr2 == TIPO.NCHAR or tipo_expr2 == TIPO.NVARCHAR)):
                 if(expr1.lower() == "verdadero" and expr2.lower() == "verdadero"):
                     respuesta = VALOR(1,TIPO.BIT,self.linea,self.columna)
                 elif (expr1.lower() == "verdadero" and expr2.lower() == "falso"):
@@ -42,4 +42,5 @@ class EXP_OR(Expresion):
             respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
         #BORRAR
         ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
-        return respuesta
+        self.tipo = respuesta.tipo
+        return respuesta.obtener_valor(actual,globa,ast)

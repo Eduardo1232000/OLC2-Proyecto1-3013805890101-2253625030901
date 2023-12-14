@@ -101,14 +101,14 @@ class CREATE_TABLE(Instruccion):
                 else: #ES UNA LISTA
                     #RECORRER LA LISTA DEL DATO [NOMBRE, TIPO, CARACTERISTICAS]
                     for dato in lista:
-                        if(isinstance(dato,VALOR)):
+                        if(isinstance(dato,Expresion)):
                             nombre_campo = dato.obtener_valor(actual,globa,ast)
                             table.cambiar_nombre(nombre_campo)
                         elif(isinstance(dato,TIPODATO)):
                             #print("ES UN TIPO")
                             tipo = dato.tipo
                             size = dato.obtener_size()
-                            if(dato.tipo == TIPO.CHAR):
+                            if(dato.tipo == TIPO.NCHAR):
                                 tipo = dato.tipo+ "(" + str(size) + ")"
                             table.cambiar_tipo(tipo)
                             

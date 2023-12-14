@@ -14,4 +14,5 @@ class HOY(Expresion):
 
         #BORRAR
         ast.escribir_en_consola("La fecha de hoy es: "+fecha +"\n")
-        return respuesta
+        self.tipo = respuesta.tipo
+        return fecha

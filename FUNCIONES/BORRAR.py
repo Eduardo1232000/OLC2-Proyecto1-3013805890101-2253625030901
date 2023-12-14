@@ -2,10 +2,6 @@ import os
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 
-class AST:
-    def escribir_en_consola(self, mensaje):
-        print(mensaje)
-
 def borrar_base(nombre_base, ast):
     try:
         ruta = "BASE_DATOS/" + str(nombre_base) + ".xml"

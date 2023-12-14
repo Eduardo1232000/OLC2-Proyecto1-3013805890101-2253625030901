@@ -24,16 +24,19 @@ class VALOR(Expresion):
             self.tipo = TIPODATO(TIPO.DATETIME)
 
         elif(self.tipo_valor == "CADENA"):
-            self.tipo = TIPODATO(TIPO.VARCHAR)
+            self.tipo = TIPODATO(TIPO.NVARCHAR)
             self.tipo.modificar_size(len(self.valor))  
 
-        elif(self.tipo_valor == "CHAR"):   
-            self.tipo = TIPODATO(TIPO.CHAR)
+        elif(self.tipo_valor == "NCHAR"):   
+            self.tipo = TIPODATO(TIPO.NCHAR)
 
-        elif(self.tipo_valor == "VARCHAR"):   
-            self.tipo = TIPODATO(TIPO.VARCHAR)
+        elif(self.tipo_valor == "NVARCHAR"):   
+            self.tipo = TIPODATO(TIPO.NVARCHAR)
+        else:
+            self.tipo = TIPODATO(TIPO.ERROR)
 
     def obtener_valor(self, actual, globa, ast):
+        #print("SOY VALOR")
         try:
             #print(self.tipo_valor)
             if(self.tipo.obtener_tipo_dato() == TIPO.INT):
@@ -51,10 +54,10 @@ class VALOR(Expresion):
             elif(self.tipo.obtener_tipo_dato() ==TIPO.DATETIME):
                 return(str(self.valor))
 
-            elif(self.tipo.obtener_tipo_dato() ==TIPO.VARCHAR):
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.NVARCHAR):
                 return str(self.valor) 
             
-            elif(self.tipo.obtener_tipo_dato() ==TIPO.CHAR):
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.NCHAR):
                 return str(self.valor)  
                 
         except:

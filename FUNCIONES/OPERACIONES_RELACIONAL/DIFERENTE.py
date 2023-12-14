@@ -8,7 +8,7 @@ class DIFERENTE(Expresion):
         self.expr2 = expr2
 
     def obtener_valor(self, actual, globa, ast):
-        if(isinstance(self.expr1,VALOR) and isinstance(self.expr2,VALOR)):
+        if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()

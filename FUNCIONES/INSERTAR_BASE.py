@@ -131,9 +131,9 @@ def validar_existe_tabla(nombre_base, nombre_tabla):
 #base_agregar_tabla("Personas","Mujeres")
 #base_agregar_tabla("Alimentos","personas")
 #base_agregar_campo("Alimentos","comidas","id_comida","int","false","true","false","false")
-#base_agregar_campo("Alimentos","comidas","id_comida","char(100)","false","true","false","false")
+#base_agregar_campo("Alimentos","comidas","id_comida","nchar(100)","false","true","false","false")
 #base_agregar_campo("Personas","Hombres","id_hombre","int","false","true","false","false")
-#base_agregar_campo("Personas","Hombres","nombre","char(100)","false","false","false","false")
+#base_agregar_campo("Personas","Hombres","nombre","nchar(100)","false","false","false","false")
 '''lista = []
 lista.append("1")
 lista.append("Pera")

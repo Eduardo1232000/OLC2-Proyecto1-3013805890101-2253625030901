@@ -3,10 +3,10 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
+from FUNCIONES.DDL.DECLARE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
-from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -14,6 +14,8 @@ from FUNCIONES.DDL.INSERT_INTO import *
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
 from FUNCIONES.FUNCIONES_SISTEMA.HOY import *
+from FUNCIONES.FUNCIONES_SISTEMA.CONTAR import *
+from FUNCIONES.FUNCIONES_SISTEMA.SELECT_SUMA import *
 
 from FUNCIONES.OPERACIONES_ARITMETICAS.SUMA import *
 from FUNCIONES.OPERACIONES_ARITMETICAS.RESTA import *
@@ -42,47 +44,49 @@ tokens = (
     'OR', 'AND', 'RNOT',
     'PARABRE', 'PARCIERRA', 'COMA', 'ARROBA', 'PTCOMA',
     'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
-    'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'CHAR', 'VARCHAR',
+    'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'NCHAR', 'NVARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
     'INSERT', 'INTO', 'VALUES', 'DELETE',
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
-    'COLUMN', 'CONSTRAINT', 'REFERENCES'
+    'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET'
 )
 
 #Tokens
-t_INT               =   r'INT'
-t_BIT               =   r'BIT'
-t_DECIMAL           =   r'DECIMAL'
-t_DATETIME          =   r'DATETIME'
-t_DATE              =   r'DATE'
-t_CHAR             =   r'CHAR'
-t_VARCHAR          =   r'VARCHAR'
-t_NOT               =   r'NOT'
-t_NULL              =   r'NULL'
-t_PRIMARY           =   r'PRIMARY'
-t_FOREIGN           =   r'FOREIGN'
-t_REFERENCE         =   r'REFERENCE'
-t_KEY               =   r'KEY'
-t_SELECT            =   r'SELECT' 
-t_FROM              =   r'FROM'
-t_USE               =   r'USE'
-t_WHERE             =   r'WHERE'
-t_CAST              =   r'CAST'
-t_AS                =   r'AS'
-t_CREATE            =   r'CREATE'
-t_TABLE             =   r'TABLE'
-t_DATA              =   r'DATA'
-t_BASE              =   r'BASE'
-t_CONCATENAR        =   r'CONCATENAR'
-t_SUBSTRAER         =   r'SUBSTRAER'
-t_HOY               =   r'HOY'
-t_CONTAR            =   r'CONTAR'
-t_SUMA              =   r'SUMA'
-t_INSERT            =   r'INSERT'
-t_INTO              =   r'INTO'
-t_VALUES            =   r'VALUES'
-t_DELETE            =   r'DELETE'
+t_INT               =   r'(?i)INT'
+t_BIT               =   r'(?i)BIT'
+t_DECIMAL           =   r'(?i)DECIMAL'
+t_DATETIME          =   r'(?i)DATETIME'
+t_DATE              =   r'(?i)DATE'
+t_NCHAR             =   r'(?i)NCHAR'
+t_NVARCHAR          =   r'(?i)NVARCHAR'
+t_NOT               =   r'(?i)NOT'
+t_NULL              =   r'(?i)NULL'
+t_PRIMARY           =   r'(?i)PRIMARY'
+t_FOREIGN           =   r'(?i)FOREIGN'
+t_REFERENCE         =   r'(?i)REFERENCE'
+t_KEY               =   r'(?i)KEY'
+t_SELECT            =   r'(?i)SELECT' 
+t_FROM              =   r'(?i)FROM'
+t_USE               =   r'(?i)USE'
+t_WHERE             =   r'(?i)WHERE'
+t_CAST              =   r'(?i)CAST'
+t_AS                =   r'(?i)AS'
+t_CREATE            =   r'(?i)CREATE'
+t_TABLE             =   r'(?i)TABLE'
+t_DATA              =   r'(?i)DATA'
+t_BASE              =   r'(?i)BASE'
+t_CONCATENAR        =   r'(?i)CONCATENAR'
+t_SUBSTRAER         =   r'(?i)SUBSTRAER'
+t_HOY               =   r'(?i)HOY'
+t_CONTAR            =   r'(?i)CONTAR'
+t_SUMA              =   r'(?i)SUMA'
+t_INSERT            =   r'(?i)INSERT'
+t_INTO              =   r'(?i)INTO'
+t_VALUES            =   r'(?i)VALUES'
+t_DELETE            =   r'(?i)DELETE'
+t_DECLARE           =   r'(?i)DECLARE'
+t_SET               =   r'(?i)SET'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -245,10 +249,18 @@ def p_instrucciones_evaluar(t):
                     | sent_alter_table
                     | sent_drop
                     | sent_truncate
+                    | declarar_var
+                    | asignacion_variable
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
+def p_declaracion_variable(t):
+    ''' declarar_var : DECLARE ARROBA name tipo_dato PTCOMA'''
+    t[0] = DECLARE(t[3],t[4],lexer.lineno,0)
 
+def p_asignacion_variable(t):
+    ''' asignacion_variable : SET ARROBA name IGUAL expresion PTCOMA'''
+    t[0] = ASIGNAR_VARIABLE(t[3],t[5],lexer.lineno,0)
 
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT operacion_sis'''
@@ -281,12 +293,22 @@ def p_hoy(t):
     t[0] = HOY(lexer.lineno,0)
 
 def p_contar(t):
-    'func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion'
-    print("CONTAR -> "+str(t[6]) + " , "+ str(t[8] + " , " + str(t[10])))
+    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
+                   | CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
+    
+    t[0] = CONTAR(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
 
+def p_signo_relacional(t):
+    '''signo_relacional : DIFERENTE
+                        | MENORQUE
+                        | MAYORQUE
+                        | MENORIGUAL
+                        | MAYORIGUAL'''
+    t[0] = t[1]
 def p_suma(t):
-    'func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion'
-    print("SUMA -> " + str(t[3]) + " , "+str(t[6]) + " , "+ str(t[8]) + " , " + str(t[10]))
+    '''func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
+                 | SUMA PARABRE name PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
+    t[0] = SELECT_SUMA(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
 
 def p_cas(t):
     'func_cas : CAST PARABRE ARROBA name AS tipo_dato PARCIERRA '
@@ -396,7 +418,6 @@ def p_sentencia_create_table(t):
 #ALTER TABLE nombre_tabla 'MODIFY' COLUMN nombre_columna name
 
 
-# Modifica las producciones para ALTER TABLE
 def p_alter_table(t):
     '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
     t[0] = ALTER_TABLE(t[3], t[4], lexer.lineno, 0)
@@ -434,7 +455,6 @@ def p_alter_modify(t):
     '''alter_modify : MODIFY COLUMN name tipo_dato'''
     t[0] = ("MODIFY", "COLUMN", t[4], t[5])
 
-
 #DROP TABLE nombre_tabla
 #DROP DATABASE nombre_database
 
@@ -454,7 +474,6 @@ def p_sent_truncate(t):
     '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
     t[0] = TRUNCATE_TABLE(t[3], lexer.lineno, 0)
     print("Estoy recibiendo la gramatica correcta?")
-    
 
 
 
@@ -544,14 +563,11 @@ def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
     t[0] = INSERT_INTO(t[3],t[5],t[9],lexer.lineno,0)
 
-
-
+    
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
-
-
 
 def p_columnas(t):
     ''' columnas : name
@@ -564,8 +580,8 @@ def p_columnas(t):
         t[3].insert(0, t[1])
         t[0] = t[3]
                 
-
     
+
 
 def p_valores(t):
     ''' valores : expresion
@@ -601,23 +617,25 @@ def p_tipodato(t):
         t[0] = t[1]
     
 def p_dato_char(t):
-    '''dato_char : CHAR PARABRE NINT PARCIERRA'''
-    t[0] = TIPODATO(TIPO.CHAR,t[3]) #PARA EL TIPODATO ES EL UNICO DONDE NO MANEJA OBJETO PARA EL NUMERO DEL CHAR O VARCHAR
+    '''dato_char : NCHAR PARABRE NINT PARCIERRA'''
+    t[0] = TIPODATO(TIPO.NCHAR,t[3]) #PARA EL TIPODATO ES EL UNICO DONDE NO MANEJA OBJETO PARA EL NUMERO DEL CHAR O VARCHAR
 
 
 def p_dato_varchar(t):
-    '''dato_varchar : VARCHAR PARABRE NINT PARCIERRA'''
-    t[0] = TIPODATO(TIPO.VARCHAR,t[3])
+    '''dato_varchar : NVARCHAR PARABRE NINT PARCIERRA'''
+    t[0] = TIPODATO(TIPO.NVARCHAR,t[3])
     
 
 def p_expresion(t):
     '''expresion : exp_aritmetica
                  | exp_relacional
+                 | variable
                  | parentesis
                  | numero
                  | FECHA
                  | FECHAHORA
-                 | CADENA'''
+                 | CADENA
+                 '''
     
     if(t.slice[1].type == "FECHA"):
         t[0] = VALOR(t[1],"FECHA",lexer.lineno,0)
@@ -627,6 +645,12 @@ def p_expresion(t):
         t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
     else:
         t[0] = t[1]
+
+def p_variable(t):
+    '''variable : ARROBA name '''
+    t[0] = VALIDAR_EXISTE_VARIABLE(t[2],lexer.lineno,0)
+
+
 
 def p_parentesisop(t):
     '''parentesis : PARABRE expresion PARCIERRA'''

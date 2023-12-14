@@ -162,7 +162,7 @@ def obtener_seleccion_tablas(ventana_principal,ventana_tablas,lista_tablas,nombr
                                     if(i !=0):
                                         datos += ", "
                                         columnas += ", "
-                                    if("CHAR" in tipo_column or "VARCHAR" in tipo_column):
+                                    if("NCHAR" in tipo_column or "NVARCHAR" in tipo_column):
                                         #comando += '"'+str(valor)+'"'
                                         datos += '"'+str(valor)+'"'
                                         columnas+= str(columna)
@@ -176,16 +176,8 @@ def obtener_seleccion_tablas(ventana_principal,ventana_tablas,lista_tablas,nombr
 
                     with open("DATOS_EXPORTADOS/"+str(nombre_base[:-4])+"_"+str(nombre_tabla_actual)+".sql", "w") as archivo:
                         archivo.write(salida)        
-                        
-                            
-
         #EXPORTAR DATOS
         #print(salida)
         
         ventana_tablas.destroy()
         messagebox.showinfo(message="Tablas exportadas!", title="Exito")
-
-
-
-
-          

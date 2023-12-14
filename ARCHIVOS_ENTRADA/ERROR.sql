@@ -3,16 +3,16 @@ USE Personas;
 
 CREaATE TABLE Trabajador (
  id int PRIMARY KEY ,
- name char(50) NULL ,
+ name nchar(50) NULL ,
  edad int NOT NULL,
- dpi char(13) NULL
+ dpi nchar(13) NULL
 );
 
 CREATE TABLE Independiente (
  id int PRIMARY KEY ,
- name char(10) NOT NULL ,
+ name nchar(10) NOT NULL ,
  edad int NOT NULL,
- email varchar(20) NULL
+ email nvarchar(20) NULL
 );
 
 INSERT INTO Trabajador (id, name, edad,dpi)

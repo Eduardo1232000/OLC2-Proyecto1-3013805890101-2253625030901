@@ -4,7 +4,7 @@ import re
 def resaltar_palabras(contenido_texto):
     palabras_clave = ['select', 'from', 'where', 'as', 'create', 'table', 'data base',
                       'concatenar', 'substraer','hoy','contar','suma',
-                      'cast', 'int','bit','decimal','date','datetime','char','varchar',
+                      'cast', 'int','bit','decimal','date','datetime','nchar','nvarchar',
                       'not','null','primary key','foreign', 'reference',
                       'insert','into','values','delete']
 

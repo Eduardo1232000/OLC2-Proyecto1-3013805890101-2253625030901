@@ -8,7 +8,7 @@ class MULTIPLICACION(Expresion):
         self.numero2 = numero2
 
     def obtener_valor(self, actual, globa, ast):
-        if(isinstance(self.numero1,VALOR) and isinstance(self.numero2,VALOR)):
+        if(isinstance(self.numero1,Expresion) and isinstance(self.numero2,Expresion)):
             numero1 = self.numero1.obtener_valor(actual,globa,ast)
             numero2 = self.numero2.obtener_valor(actual,globa,ast)
             tipo_numero1 = self.numero1.tipo.obtener_tipo_dato()
@@ -45,16 +45,16 @@ class MULTIPLICACION(Expresion):
                     respuesta = VALOR(val,TIPO.DECIMAL,self.linea,self.columna)    
 
             elif((tipo_numero1 == TIPO.DATE or tipo_numero1 == TIPO.DATETIME) ): #CUALQUIER OPERACION CON DATE O DATETIME ES ERROR
-                if(tipo_numero2 == TIPO.CHAR or tipo_numero2 == TIPO.VARCHAR):      #DATE/DATETIME - CHAR/VARCHAR
+                if(tipo_numero2 == TIPO.NCHAR or tipo_numero2 == TIPO.NVARCHAR):      #DATE/DATETIME - CHAR/VARCHAR
                     val = str(numero1) + str(numero2)
-                    respuesta = VALOR(val,TIPO.VARCHAR,self.linea,self.columna)
+                    respuesta = VALOR(val,TIPO.NVARCHAR,self.linea,self.columna)
                 else:
                     respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
 
-            elif((tipo_numero1 == TIPO.CHAR or tipo_numero1 == TIPO.VARCHAR) ): #CUALQUIER OPERACION CON CHAR O VARCHAR ES CONCATENAR
+            elif((tipo_numero1 == TIPO.NCHAR or tipo_numero1 == TIPO.NVARCHAR) ): #CUALQUIER OPERACION CON CHAR O VARCHAR ES CONCATENAR
                 if(tipo_numero2 == TIPO.DATE or tipo_numero2 == TIPO.DATETIME):      #DATE/DATETIME - CHAR/VARCHAR
                     val = str(numero1) + str(numero2)
-                    respuesta = VALOR(val,TIPO.VARCHAR,self.linea,self.columna)
+                    respuesta = VALOR(val,TIPO.NVARCHAR,self.linea,self.columna)
                 else:
                     respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)    
 
@@ -64,4 +64,5 @@ class MULTIPLICACION(Expresion):
             respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
         #BORRAR
         ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
-        return respuesta
+        self.tipo = respuesta.tipo
+        return respuesta.obtener_valor(actual,globa,ast)

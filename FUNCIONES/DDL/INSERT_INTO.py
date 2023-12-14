@@ -11,7 +11,7 @@ class INSERT_INTO(Instruccion):
         self.valores = valores   #ES UNA LISTA
 
     def ejecutar(self, actual, globa, ast):
-        if(isinstance(self.nombre,VALOR) and isinstance(ast, AST)):
+        if(isinstance(self.nombre,Expresion) and isinstance(ast, AST)):
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):  #SI NO EXISTE LA BASE
                 ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
@@ -98,7 +98,7 @@ class INSERT_INTO(Instruccion):
 
                     valor_insertar = lista_valores[i - avanza]
 
-                    if(isinstance(valor_columna,VALOR) and isinstance(valor_insertar,VALOR)):
+                    if(isinstance(valor_columna,Expresion) and isinstance(valor_insertar,Expresion)):
                         nombre_columna_insert = valor_columna.obtener_valor(actual,globa,ast)
                         valor_dato = valor_insertar.obtener_valor(actual,globa,ast)
                         tipo_valor_dato = valor_insertar.tipo.tipo
@@ -110,9 +110,9 @@ class INSERT_INTO(Instruccion):
                         if(nombre_columna_insert == nombre_columna):    #CUMPLE CON EL ORDEN
                             #VALIDAR EL TIPO DEL VALOR
 
-                            if((tipo_columna == "INT" and (tipo_valor_dato == TIPO.INT or tipo_valor_dato == TIPO.BIT)) or (tipo_columna == "BIT" and tipo_valor_dato == TIPO.BIT) or (tipo_columna == "DECIMAL" and tipo_valor_dato == TIPO.DECIMAL) or(tipo_columna == "DATE" and tipo_valor_dato == TIPO.DATE) or (tipo_columna == "DATETIME" and tipo_valor_dato == TIPO.DATETIME) or ("VARCHAR" in tipo_columna and (tipo_valor_dato == TIPO.VARCHAR or tipo_valor_dato == TIPO.CHAR))):
+                            if((tipo_columna == "INT" and (tipo_valor_dato == TIPO.INT or tipo_valor_dato == TIPO.BIT)) or (tipo_columna == "BIT" and tipo_valor_dato == TIPO.BIT) or (tipo_columna == "DECIMAL" and tipo_valor_dato == TIPO.DECIMAL) or(tipo_columna == "DATE" and tipo_valor_dato == TIPO.DATE) or (tipo_columna == "DATETIME" and tipo_valor_dato == TIPO.DATETIME) or ("NVARCHAR" in tipo_columna and (tipo_valor_dato == TIPO.NVARCHAR or tipo_valor_dato == TIPO.NCHAR))):
                                 print("",end="")
-                            elif("CHAR" in tipo_columna and (tipo_valor_dato == TIPO.VARCHAR or tipo_valor_dato == TIPO.CHAR)):
+                            elif("NCHAR" in tipo_columna and (tipo_valor_dato == TIPO.NVARCHAR or tipo_valor_dato == TIPO.NCHAR)):
                                 inicio_parentesis = tipo_columna.find('(')
                                 fin_parentesis = tipo_columna.find(')')
                                 if inicio_parentesis != -1 and fin_parentesis != -1 and inicio_parentesis < fin_parentesis:

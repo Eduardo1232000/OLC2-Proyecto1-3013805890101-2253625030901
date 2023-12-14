@@ -16,5 +16,3 @@ class Expresion(ListaEjecuciones):                      #EXPRESION RETORNA VALOR
     @abstractmethod
     def obtener_valor(self, actual, globa, ast):
         pass
-
-
