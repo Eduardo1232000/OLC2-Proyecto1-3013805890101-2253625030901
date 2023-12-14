@@ -6,6 +6,7 @@ from FUNCIONES.DDL.CREATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
+from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -50,40 +51,6 @@ tokens = (
 )
 
 #Tokens
-<<<<<<< HEAD
-t_INT               =   r'INT'
-t_BIT               =   r'BIT'
-t_DECIMAL           =   r'DECIMAL'
-t_DATETIME          =   r'DATETIME'
-t_DATE              =   r'DATE'
-t_CHAR             =   r'CHAR'
-t_VARCHAR          =   r'VARCHAR'
-t_NOT               =   r'NOT'
-t_NULL              =   r'NULL'
-t_PRIMARY           =   r'PRIMARY'
-t_FOREIGN           =   r'FOREIGN'
-t_REFERENCE         =   r'REFERENCE'
-t_KEY               =   r'KEY'
-t_SELECT            =   r'SELECT' 
-t_FROM              =   r'FROM'
-t_USE               =   r'USE'
-t_WHERE             =   r'WHERE'
-t_CAST              =   r'CAST'
-t_AS                =   r'AS'
-t_CREATE            =   r'CREATE'
-t_TABLE             =   r'TABLE'
-t_DATA              =   r'DATA'
-t_BASE              =   r'BASE'
-t_CONCATENAR        =   r'CONCATENAR'
-t_SUBSTRAER         =   r'SUBSTRAER'
-t_HOY               =   r'HOY'
-t_CONTAR            =   r'CONTAR'
-t_SUMA              =   r'SUMA'
-t_INSERT            =   r'INSERT'
-t_INTO              =   r'INTO'
-t_VALUES            =   r'VALUES'
-t_DELETE            =   r'DELETE'
-=======
 t_INT               =   r'(?i)INT'
 t_BIT               =   r'(?i)BIT'
 t_DECIMAL           =   r'(?i)DECIMAL'
@@ -117,7 +84,6 @@ t_INTO              =   r'(?i)INTO'
 t_VALUES            =   r'(?i)VALUES'
 t_DELETE            =   r'(?i)DELETE'
 
->>>>>>> 3a1998f37a887999a30758eac4454e7c20b4e1c2
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
 t_MULTIPLICACION    =   r'\*'
@@ -430,12 +396,10 @@ def p_sentencia_create_table(t):
 #ALTER TABLE nombre_tabla 'MODIFY' COLUMN nombre_columna name
 
 
+# Modifica las producciones para ALTER TABLE
 def p_alter_table(t):
     '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
-    
-    t[0] = ALTER_TABLE(t[3], t[4][0], lexer.lineno, 0)
-
-    
+    t[0] = ALTER_TABLE(t[3], t[4], lexer.lineno, 0)
 
 def p_alter_action(t):
     '''alter_action : alter_add
@@ -446,16 +410,30 @@ def p_alter_action(t):
 def p_alter_add(t):
     '''alter_add : ADD COLUMN name tipo_dato
                  | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
-    t[0] = ("ADD", t[3], t[4])
+    if len(t) == 5:
+        t[0] = ("ADD", "COLUMN", t[3], t[4])
+        print(f"tipo de dato en p_alter_add: {t[4]}")
+    elif len(t) == 14:
+        t[0] = ("ADD_CONSTRAINT", t[3], "FOREIGN KEY", t[5], "REFERENCES", t[10], t[12], t[13])
+    else:
+        # Manejar un error si la estructura no coincide
+        t[0] = None
 
 def p_alter_drop(t):
     '''alter_drop : DROP COLUMN name
                   | DROP CONSTRAINT name'''
-    t[0] = ("DROP", t[3]) 
+    if len(t) == 4:
+        t[0] = ("DROP", "COLUMN", t[3])
+    elif len(t) == 3:
+        t[0] = ("DROP_CONSTRAINT", t[3])
+    else:
+        # Manejar un error si la estructura no coincide
+        t[0] = None
 
 def p_alter_modify(t):
     '''alter_modify : MODIFY COLUMN name tipo_dato'''
-    t[0] = ("MODIFY", t[4])
+    t[0] = ("MODIFY", "COLUMN", t[4], t[5])
+
 
 #DROP TABLE nombre_tabla
 #DROP DATABASE nombre_database
@@ -474,7 +452,9 @@ def p_drop_type(t):
 #TRUNCATE TABLE nombre_tabla
 def p_sent_truncate(t):
     '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
-    print("TRUNCATE TABLE -> " + str(t[4]))
+    t[0] = TRUNCATE_TABLE(t[3], lexer.lineno, 0)
+    print("Estoy recibiendo la gramatica correcta?")
+    
 
 
 
@@ -564,11 +544,53 @@ def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
     t[0] = INSERT_INTO(t[3],t[5],t[9],lexer.lineno,0)
 
-    
+#SELECT
+def p_f_select(t):
+    ''' f_select : SELECT select_list FROM name optional_conditions PTCOMA'''
+    #t[0] = UPDATE(t[2], t[4], t[6], lexer.lineno, 0)    
+    print("INSERT ")
+
+def p_select_list(t):
+    ''' select_list : expresion AS name
+                    | expresion
+                    | MULTIPLICACION '''
+    if len(t) == 2:
+        t[0] = [t[1]]
+    elif len(t) == 3:
+        t[0] = [(t[1], t[3])]
+    else:
+        t[0] = ["*"]
+
+def p_optional_conditions(t):
+    ''' optional_conditions : WHERE condition
+                           | '''
+    if len(t) == 3:
+        t[0] = t[2]
+    else:
+        t[0] = None
+
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
+
+def p_f_update(t):
+    '''f_update: UPDATE name SET set_list_ WHERE condition PTCOMA'''
+    #t[0] = SELECT(t[2], t[4], t[6], lexer.lineno, 0)
+    print("UPDATE")
+
+def p_set_list(t):
+    ''' set_list: asignacion 
+                | asignacion COMA set_list'''
+    if len(t) == 2:
+        t[0] = [t[1]]
+    else:
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+
+def p_asignacion(t):
+    '''asignacion: name IGUAL expresion'''
+    #t[0] = (t[1], t[3])
 
 def p_columnas(t):
     ''' columnas : name

@@ -30,7 +30,7 @@ Rule 24    func_hoy -> HOY PARABRE PARCIERRA
 Rule 25    func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
 Rule 26    func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion
 Rule 27    func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA
-Rule 28    select_dato -> MULTIPLICACION FROM name PTCOMA
+Rule 28    select_dato -> MULTIPLICACION FROM name
 Rule 29    select_dato -> FROM name
 Rule 30    select_dato -> FROM name WHERE condiciones
 Rule 31    condiciones -> expresion
@@ -175,7 +175,7 @@ OR                   : 33 56
 PARABRE              : 22 23 24 25 26 27 59 65 65 81 81 90 90 103 104 112
 PARCIERRA            : 22 23 24 25 26 27 59 65 65 81 81 90 90 103 104 112
 PRIMARY              : 89
-PTCOMA               : 28 58 59 60 69 72 80 90 91
+PTCOMA               : 58 59 60 69 72 80 90 91
 REFERENCE            : 81
 REFERENCES           : 65
 RESTA                : 39
@@ -770,7 +770,7 @@ state 14
     (25) func_contar -> . CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion
     (26) func_suma -> . SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion
     (27) func_cas -> . CAST PARABRE ARROBA name AS tipo_dato PARCIERRA
-    (28) select_dato -> . MULTIPLICACION FROM name PTCOMA
+    (28) select_dato -> . MULTIPLICACION FROM name
     (29) select_dato -> . FROM name
     (30) select_dato -> . FROM name WHERE condiciones
 
@@ -2679,7 +2679,7 @@ state 69
 
 state 70
 
-    (28) select_dato -> MULTIPLICACION . FROM name PTCOMA
+    (28) select_dato -> MULTIPLICACION . FROM name
 
     FROM            shift and go to state 103
 
@@ -3669,7 +3669,7 @@ state 102
 
 state 103
 
-    (28) select_dato -> MULTIPLICACION FROM . name PTCOMA
+    (28) select_dato -> MULTIPLICACION FROM . name
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -3923,9 +3923,25 @@ state 121
 
 state 122
 
-    (28) select_dato -> MULTIPLICACION FROM name . PTCOMA
+    (28) select_dato -> MULTIPLICACION FROM name .
 
-    PTCOMA          shift and go to state 142
+    SELECT          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    CREATE          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    USE             reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    INSERT          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    DELETE          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    FECHA           reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    FECHAHORA       reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    CADENA          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    ALTER           reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    DROP            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    TRUNCATE        reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    RNOT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    PARABRE         reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    NINT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    NBIT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    NDECIMAL        reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
+    $end            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name .)
 
 
 state 123
@@ -3974,8 +3990,8 @@ state 123
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    condiciones                    shift and go to state 143
-    expresion                      shift and go to state 144
+    condiciones                    shift and go to state 142
+    expresion                      shift and go to state 143
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -3995,7 +4011,7 @@ state 124
 
     (26) func_suma -> SUMA PARABRE name . PARCIERRA FROM name WHERE name IGUAL expresion
 
-    PARCIERRA       shift and go to state 145
+    PARCIERRA       shift and go to state 144
 
 
 state 125
@@ -4005,13 +4021,13 @@ state 125
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 146
+    name                           shift and go to state 145
 
 state 126
 
     (58) sent_create_database -> CREATE DATA BASE name . PTCOMA
 
-    PTCOMA          shift and go to state 147
+    PTCOMA          shift and go to state 146
 
 
 state 127
@@ -4027,15 +4043,15 @@ state 127
     (81) foreign_key -> . FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
-    FOREIGN         shift and go to state 154
+    FOREIGN         shift and go to state 153
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 148
-    datos                          shift and go to state 149
-    dato                           shift and go to state 150
-    dato_con_caract                shift and go to state 151
-    dato_sin_caract                shift and go to state 152
-    foreign_key                    shift and go to state 153
+    name                           shift and go to state 147
+    datos                          shift and go to state 148
+    dato                           shift and go to state 149
+    dato_con_caract                shift and go to state 150
+    dato_sin_caract                shift and go to state 151
+    foreign_key                    shift and go to state 152
 
 state 128
 
@@ -4046,8 +4062,8 @@ state 128
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 155
-    columnas                       shift and go to state 156
+    name                           shift and go to state 154
+    columnas                       shift and go to state 155
 
 state 129
 
@@ -4056,13 +4072,13 @@ state 129
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 157
+    name                           shift and go to state 156
 
 state 130
 
     (60) sent_alter_table -> ALTER TABLE name alter_action . PTCOMA
 
-    PTCOMA          shift and go to state 158
+    PTCOMA          shift and go to state 157
 
 
 state 131
@@ -4091,8 +4107,8 @@ state 134
     (64) alter_add -> ADD . COLUMN name tipo_dato
     (65) alter_add -> ADD . CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    COLUMN          shift and go to state 159
-    CONSTRAINT      shift and go to state 160
+    COLUMN          shift and go to state 158
+    CONSTRAINT      shift and go to state 159
 
 
 state 135
@@ -4100,15 +4116,15 @@ state 135
     (66) alter_drop -> DROP . COLUMN name
     (67) alter_drop -> DROP . CONSTRAINT name
 
-    COLUMN          shift and go to state 161
-    CONSTRAINT      shift and go to state 162
+    COLUMN          shift and go to state 160
+    CONSTRAINT      shift and go to state 161
 
 
 state 136
 
     (68) alter_modify -> MODIFY . COLUMN name tipo_dato
 
-    COLUMN          shift and go to state 163
+    COLUMN          shift and go to state 162
 
 
 state 137
@@ -4200,7 +4216,7 @@ state 139
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    expresion                      shift and go to state 164
+    expresion                      shift and go to state 163
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -4227,39 +4243,16 @@ state 140
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    numero                         shift and go to state 165
+    numero                         shift and go to state 164
 
 state 141
 
     (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA . FROM name WHERE name IGUAL expresion
 
-    FROM            shift and go to state 166
+    FROM            shift and go to state 165
 
 
 state 142
-
-    (28) select_dato -> MULTIPLICACION FROM name PTCOMA .
-
-    SELECT          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    CREATE          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    USE             reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    INSERT          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    DELETE          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    FECHA           reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    FECHAHORA       reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    CADENA          reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    ALTER           reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    DROP            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    TRUNCATE        reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    RNOT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    PARABRE         reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    NINT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    NBIT            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    NDECIMAL        reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-    $end            reduce using rule 28 (select_dato -> MULTIPLICACION FROM name PTCOMA .)
-
-
-state 143
 
     (30) select_dato -> FROM name WHERE condiciones .
 
@@ -4282,7 +4275,7 @@ state 143
     $end            reduce using rule 30 (select_dato -> FROM name WHERE condiciones .)
 
 
-state 144
+state 143
 
     (31) condiciones -> expresion .
     (32) condiciones -> expresion . AND condiciones
@@ -4315,8 +4308,8 @@ state 144
     NBIT            reduce using rule 31 (condiciones -> expresion .)
     NDECIMAL        reduce using rule 31 (condiciones -> expresion .)
     $end            reduce using rule 31 (condiciones -> expresion .)
-    AND             shift and go to state 167
-    OR              shift and go to state 168
+    AND             shift and go to state 166
+    OR              shift and go to state 167
     MAS             shift and go to state 48
     RESTA           shift and go to state 49
     MULTIPLICACION  shift and go to state 50
@@ -4329,21 +4322,21 @@ state 144
     MAYORIGUAL      shift and go to state 57
 
 
-state 145
+state 144
 
     (26) func_suma -> SUMA PARABRE name PARCIERRA . FROM name WHERE name IGUAL expresion
 
-    FROM            shift and go to state 169
+    FROM            shift and go to state 168
 
 
-state 146
+state 145
 
     (27) func_cas -> CAST PARABRE ARROBA name . AS tipo_dato PARCIERRA
 
-    AS              shift and go to state 170
+    AS              shift and go to state 169
 
 
-state 147
+state 146
 
     (58) sent_create_database -> CREATE DATA BASE name PTCOMA .
 
@@ -4366,7 +4359,7 @@ state 147
     $end            reduce using rule 58 (sent_create_database -> CREATE DATA BASE name PTCOMA .)
 
 
-state 148
+state 147
 
     (79) dato_con_caract -> name . tipo_dato caracteristicas
     (78) dato_sin_caract -> name . tipo_dato
@@ -4380,35 +4373,35 @@ state 148
     (103) dato_char -> . CHAR PARABRE NINT PARCIERRA
     (104) dato_varchar -> . VARCHAR PARABRE NINT PARCIERRA
 
-    INT             shift and go to state 172
-    BIT             shift and go to state 173
-    DECIMAL         shift and go to state 174
-    DATE            shift and go to state 175
-    DATETIME        shift and go to state 176
-    CHAR            shift and go to state 179
-    VARCHAR         shift and go to state 180
+    INT             shift and go to state 171
+    BIT             shift and go to state 172
+    DECIMAL         shift and go to state 173
+    DATE            shift and go to state 174
+    DATETIME        shift and go to state 175
+    CHAR            shift and go to state 178
+    VARCHAR         shift and go to state 179
 
-    tipo_dato                      shift and go to state 171
-    dato_char                      shift and go to state 177
-    dato_varchar                   shift and go to state 178
+    tipo_dato                      shift and go to state 170
+    dato_char                      shift and go to state 176
+    dato_varchar                   shift and go to state 177
 
-state 149
+state 148
 
     (59) sent_create_table -> CREATE TABLE name PARABRE datos . PARCIERRA PTCOMA
 
-    PARCIERRA       shift and go to state 181
+    PARCIERRA       shift and go to state 180
 
 
-state 150
+state 149
 
     (73) datos -> dato . COMA datos
     (74) datos -> dato .
 
-    COMA            shift and go to state 182
+    COMA            shift and go to state 181
     PARCIERRA       reduce using rule 74 (datos -> dato .)
 
 
-state 151
+state 150
 
     (75) dato -> dato_con_caract .
 
@@ -4416,7 +4409,7 @@ state 151
     PARCIERRA       reduce using rule 75 (dato -> dato_con_caract .)
 
 
-state 152
+state 151
 
     (76) dato -> dato_sin_caract .
 
@@ -4424,7 +4417,7 @@ state 152
     PARCIERRA       reduce using rule 76 (dato -> dato_sin_caract .)
 
 
-state 153
+state 152
 
     (77) dato -> foreign_key .
 
@@ -4432,37 +4425,37 @@ state 153
     PARCIERRA       reduce using rule 77 (dato -> foreign_key .)
 
 
-state 154
+state 153
 
     (81) foreign_key -> FOREIGN . KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
 
-    KEY             shift and go to state 183
+    KEY             shift and go to state 182
 
 
-state 155
+state 154
 
     (92) columnas -> name .
     (93) columnas -> name . COMA columnas
 
     PARCIERRA       reduce using rule 92 (columnas -> name .)
-    COMA            shift and go to state 184
+    COMA            shift and go to state 183
+
+
+state 155
+
+    (90) f_insert -> INSERT INTO name PARABRE columnas . PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+
+    PARCIERRA       shift and go to state 184
 
 
 state 156
 
-    (90) f_insert -> INSERT INTO name PARABRE columnas . PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
+    (91) f_delete -> DELETE FROM name WHERE name . IGUAL expresion PTCOMA
 
-    PARCIERRA       shift and go to state 185
+    IGUAL           shift and go to state 185
 
 
 state 157
-
-    (91) f_delete -> DELETE FROM name WHERE name . IGUAL expresion PTCOMA
-
-    IGUAL           shift and go to state 186
-
-
-state 158
 
     (60) sent_alter_table -> ALTER TABLE name alter_action PTCOMA .
 
@@ -4485,9 +4478,18 @@ state 158
     $end            reduce using rule 60 (sent_alter_table -> ALTER TABLE name alter_action PTCOMA .)
 
 
-state 159
+state 158
 
     (64) alter_add -> ADD COLUMN . name tipo_dato
+    (116) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 78
+
+    name                           shift and go to state 186
+
+state 159
+
+    (65) alter_add -> ADD CONSTRAINT . name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -4496,7 +4498,7 @@ state 159
 
 state 160
 
-    (65) alter_add -> ADD CONSTRAINT . name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
+    (66) alter_drop -> DROP COLUMN . name
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -4505,7 +4507,7 @@ state 160
 
 state 161
 
-    (66) alter_drop -> DROP COLUMN . name
+    (67) alter_drop -> DROP CONSTRAINT . name
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -4514,7 +4516,7 @@ state 161
 
 state 162
 
-    (67) alter_drop -> DROP CONSTRAINT . name
+    (68) alter_modify -> MODIFY COLUMN . name tipo_dato
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -4522,15 +4524,6 @@ state 162
     name                           shift and go to state 190
 
 state 163
-
-    (68) alter_modify -> MODIFY COLUMN . name tipo_dato
-    (116) name -> . NOMBRE
-
-    NOMBRE          shift and go to state 78
-
-    name                           shift and go to state 191
-
-state 164
 
     (22) func_concatena -> CONCATENAR PARABRE expresion COMA expresion . PARCIERRA
     (38) op_suma -> expresion . MAS expresion
@@ -4544,7 +4537,7 @@ state 164
     (52) exr_menorigual -> expresion . MENORIGUAL expresion
     (53) exr_mayorigual -> expresion . MAYORIGUAL expresion
 
-    PARCIERRA       shift and go to state 192
+    PARCIERRA       shift and go to state 191
     MAS             shift and go to state 48
     RESTA           shift and go to state 49
     MULTIPLICACION  shift and go to state 50
@@ -4557,23 +4550,23 @@ state 164
     MAYORIGUAL      shift and go to state 57
 
 
-state 165
+state 164
 
     (23) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero . COMA numero PARCIERRA
 
-    COMA            shift and go to state 193
+    COMA            shift and go to state 192
 
 
-state 166
+state 165
 
     (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM . name WHERE name IGUAL expresion
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 194
+    name                           shift and go to state 193
 
-state 167
+state 166
 
     (32) condiciones -> expresion AND . condiciones
     (31) condiciones -> . expresion
@@ -4619,8 +4612,8 @@ state 167
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    expresion                      shift and go to state 144
-    condiciones                    shift and go to state 195
+    expresion                      shift and go to state 143
+    condiciones                    shift and go to state 194
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -4636,7 +4629,7 @@ state 167
     exr_menorigual                 shift and go to state 40
     exr_mayorigual                 shift and go to state 41
 
-state 168
+state 167
 
     (33) condiciones -> expresion OR . condiciones
     (31) condiciones -> . expresion
@@ -4682,8 +4675,8 @@ state 168
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    expresion                      shift and go to state 144
-    condiciones                    shift and go to state 196
+    expresion                      shift and go to state 143
+    condiciones                    shift and go to state 195
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -4699,16 +4692,16 @@ state 168
     exr_menorigual                 shift and go to state 40
     exr_mayorigual                 shift and go to state 41
 
-state 169
+state 168
 
     (26) func_suma -> SUMA PARABRE name PARCIERRA FROM . name WHERE name IGUAL expresion
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 197
+    name                           shift and go to state 196
 
-state 170
+state 169
 
     (27) func_cas -> CAST PARABRE ARROBA name AS . tipo_dato PARCIERRA
     (96) tipo_dato -> . INT
@@ -4721,19 +4714,19 @@ state 170
     (103) dato_char -> . CHAR PARABRE NINT PARCIERRA
     (104) dato_varchar -> . VARCHAR PARABRE NINT PARCIERRA
 
-    INT             shift and go to state 172
-    BIT             shift and go to state 173
-    DECIMAL         shift and go to state 174
-    DATE            shift and go to state 175
-    DATETIME        shift and go to state 176
-    CHAR            shift and go to state 179
-    VARCHAR         shift and go to state 180
+    INT             shift and go to state 171
+    BIT             shift and go to state 172
+    DECIMAL         shift and go to state 173
+    DATE            shift and go to state 174
+    DATETIME        shift and go to state 175
+    CHAR            shift and go to state 178
+    VARCHAR         shift and go to state 179
 
-    tipo_dato                      shift and go to state 198
-    dato_char                      shift and go to state 177
-    dato_varchar                   shift and go to state 178
+    tipo_dato                      shift and go to state 197
+    dato_char                      shift and go to state 176
+    dato_varchar                   shift and go to state 177
 
-state 171
+state 170
 
     (79) dato_con_caract -> name tipo_dato . caracteristicas
     (78) dato_sin_caract -> name tipo_dato .
@@ -4748,17 +4741,17 @@ state 171
 
     COMA            reduce using rule 78 (dato_sin_caract -> name tipo_dato .)
     PARCIERRA       reduce using rule 78 (dato_sin_caract -> name tipo_dato .)
-    NULL            shift and go to state 204
-    NOT             shift and go to state 205
-    PRIMARY         shift and go to state 206
+    NULL            shift and go to state 203
+    NOT             shift and go to state 204
+    PRIMARY         shift and go to state 205
 
-    caracteristicas                shift and go to state 199
-    caracteristica                 shift and go to state 200
-    caract_nulo                    shift and go to state 201
-    caract_no_nulo                 shift and go to state 202
-    caract_primary_key             shift and go to state 203
+    caracteristicas                shift and go to state 198
+    caracteristica                 shift and go to state 199
+    caract_nulo                    shift and go to state 200
+    caract_no_nulo                 shift and go to state 201
+    caract_primary_key             shift and go to state 202
 
-state 172
+state 171
 
     (96) tipo_dato -> INT .
 
@@ -4770,7 +4763,7 @@ state 172
     PTCOMA          reduce using rule 96 (tipo_dato -> INT .)
 
 
-state 173
+state 172
 
     (97) tipo_dato -> BIT .
 
@@ -4782,7 +4775,7 @@ state 173
     PTCOMA          reduce using rule 97 (tipo_dato -> BIT .)
 
 
-state 174
+state 173
 
     (98) tipo_dato -> DECIMAL .
 
@@ -4794,7 +4787,7 @@ state 174
     PTCOMA          reduce using rule 98 (tipo_dato -> DECIMAL .)
 
 
-state 175
+state 174
 
     (99) tipo_dato -> DATE .
 
@@ -4806,7 +4799,7 @@ state 175
     PTCOMA          reduce using rule 99 (tipo_dato -> DATE .)
 
 
-state 176
+state 175
 
     (100) tipo_dato -> DATETIME .
 
@@ -4818,7 +4811,7 @@ state 176
     PTCOMA          reduce using rule 100 (tipo_dato -> DATETIME .)
 
 
-state 177
+state 176
 
     (101) tipo_dato -> dato_char .
 
@@ -4830,7 +4823,7 @@ state 177
     PTCOMA          reduce using rule 101 (tipo_dato -> dato_char .)
 
 
-state 178
+state 177
 
     (102) tipo_dato -> dato_varchar .
 
@@ -4842,28 +4835,28 @@ state 178
     PTCOMA          reduce using rule 102 (tipo_dato -> dato_varchar .)
 
 
-state 179
+state 178
 
     (103) dato_char -> CHAR . PARABRE NINT PARCIERRA
+
+    PARABRE         shift and go to state 206
+
+
+state 179
+
+    (104) dato_varchar -> VARCHAR . PARABRE NINT PARCIERRA
 
     PARABRE         shift and go to state 207
 
 
 state 180
 
-    (104) dato_varchar -> VARCHAR . PARABRE NINT PARCIERRA
+    (59) sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA . PTCOMA
 
-    PARABRE         shift and go to state 208
+    PTCOMA          shift and go to state 208
 
 
 state 181
-
-    (59) sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA . PTCOMA
-
-    PTCOMA          shift and go to state 209
-
-
-state 182
 
     (73) datos -> dato COMA . datos
     (73) datos -> . dato COMA datos
@@ -4876,24 +4869,24 @@ state 182
     (81) foreign_key -> . FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
-    FOREIGN         shift and go to state 154
+    FOREIGN         shift and go to state 153
     NOMBRE          shift and go to state 78
 
-    dato                           shift and go to state 150
-    datos                          shift and go to state 210
-    dato_con_caract                shift and go to state 151
-    dato_sin_caract                shift and go to state 152
-    foreign_key                    shift and go to state 153
-    name                           shift and go to state 148
+    dato                           shift and go to state 149
+    datos                          shift and go to state 209
+    dato_con_caract                shift and go to state 150
+    dato_sin_caract                shift and go to state 151
+    foreign_key                    shift and go to state 152
+    name                           shift and go to state 147
 
-state 183
+state 182
 
     (81) foreign_key -> FOREIGN KEY . PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 211
+    PARABRE         shift and go to state 210
 
 
-state 184
+state 183
 
     (93) columnas -> name COMA . columnas
     (92) columnas -> . name
@@ -4902,17 +4895,17 @@ state 184
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 155
-    columnas                       shift and go to state 212
+    name                           shift and go to state 154
+    columnas                       shift and go to state 211
 
-state 185
+state 184
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA . VALUES PARABRE valores PARCIERRA PTCOMA
 
-    VALUES          shift and go to state 213
+    VALUES          shift and go to state 212
 
 
-state 186
+state 185
 
     (91) f_delete -> DELETE FROM name WHERE name IGUAL . expresion PTCOMA
     (105) expresion -> . exp_aritmetica
@@ -4955,7 +4948,7 @@ state 186
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    expresion                      shift and go to state 214
+    expresion                      shift and go to state 213
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -4971,7 +4964,7 @@ state 186
     exr_menorigual                 shift and go to state 40
     exr_mayorigual                 shift and go to state 41
 
-state 187
+state 186
 
     (64) alter_add -> ADD COLUMN name . tipo_dato
     (96) tipo_dato -> . INT
@@ -4984,40 +4977,40 @@ state 187
     (103) dato_char -> . CHAR PARABRE NINT PARCIERRA
     (104) dato_varchar -> . VARCHAR PARABRE NINT PARCIERRA
 
-    INT             shift and go to state 172
-    BIT             shift and go to state 173
-    DECIMAL         shift and go to state 174
-    DATE            shift and go to state 175
-    DATETIME        shift and go to state 176
-    CHAR            shift and go to state 179
-    VARCHAR         shift and go to state 180
+    INT             shift and go to state 171
+    BIT             shift and go to state 172
+    DECIMAL         shift and go to state 173
+    DATE            shift and go to state 174
+    DATETIME        shift and go to state 175
+    CHAR            shift and go to state 178
+    VARCHAR         shift and go to state 179
 
-    tipo_dato                      shift and go to state 215
-    dato_char                      shift and go to state 177
-    dato_varchar                   shift and go to state 178
+    tipo_dato                      shift and go to state 214
+    dato_char                      shift and go to state 176
+    dato_varchar                   shift and go to state 177
 
-state 188
+state 187
 
     (65) alter_add -> ADD CONSTRAINT name . FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    FOREIGN         shift and go to state 216
+    FOREIGN         shift and go to state 215
 
 
-state 189
+state 188
 
     (66) alter_drop -> DROP COLUMN name .
 
     PTCOMA          reduce using rule 66 (alter_drop -> DROP COLUMN name .)
 
 
-state 190
+state 189
 
     (67) alter_drop -> DROP CONSTRAINT name .
 
     PTCOMA          reduce using rule 67 (alter_drop -> DROP CONSTRAINT name .)
 
 
-state 191
+state 190
 
     (68) alter_modify -> MODIFY COLUMN name . tipo_dato
     (96) tipo_dato -> . INT
@@ -5030,19 +5023,19 @@ state 191
     (103) dato_char -> . CHAR PARABRE NINT PARCIERRA
     (104) dato_varchar -> . VARCHAR PARABRE NINT PARCIERRA
 
-    INT             shift and go to state 172
-    BIT             shift and go to state 173
-    DECIMAL         shift and go to state 174
-    DATE            shift and go to state 175
-    DATETIME        shift and go to state 176
-    CHAR            shift and go to state 179
-    VARCHAR         shift and go to state 180
+    INT             shift and go to state 171
+    BIT             shift and go to state 172
+    DECIMAL         shift and go to state 173
+    DATE            shift and go to state 174
+    DATETIME        shift and go to state 175
+    CHAR            shift and go to state 178
+    VARCHAR         shift and go to state 179
 
-    tipo_dato                      shift and go to state 217
-    dato_char                      shift and go to state 177
-    dato_varchar                   shift and go to state 178
+    tipo_dato                      shift and go to state 216
+    dato_char                      shift and go to state 176
+    dato_varchar                   shift and go to state 177
 
-state 192
+state 191
 
     (22) func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .
 
@@ -5065,7 +5058,7 @@ state 192
     $end            reduce using rule 22 (func_concatena -> CONCATENAR PARABRE expresion COMA expresion PARCIERRA .)
 
 
-state 193
+state 192
 
     (23) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA . numero PARCIERRA
     (113) numero -> . NINT
@@ -5076,16 +5069,16 @@ state 193
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    numero                         shift and go to state 218
+    numero                         shift and go to state 217
 
-state 194
+state 193
 
     (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name . WHERE name IGUAL expresion
 
-    WHERE           shift and go to state 219
+    WHERE           shift and go to state 218
 
 
-state 195
+state 194
 
     (32) condiciones -> expresion AND condiciones .
 
@@ -5108,7 +5101,7 @@ state 195
     $end            reduce using rule 32 (condiciones -> expresion AND condiciones .)
 
 
-state 196
+state 195
 
     (33) condiciones -> expresion OR condiciones .
 
@@ -5131,21 +5124,21 @@ state 196
     $end            reduce using rule 33 (condiciones -> expresion OR condiciones .)
 
 
-state 197
+state 196
 
     (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name . WHERE name IGUAL expresion
 
-    WHERE           shift and go to state 220
+    WHERE           shift and go to state 219
 
 
-state 198
+state 197
 
     (27) func_cas -> CAST PARABRE ARROBA name AS tipo_dato . PARCIERRA
 
-    PARCIERRA       shift and go to state 221
+    PARCIERRA       shift and go to state 220
 
 
-state 199
+state 198
 
     (79) dato_con_caract -> name tipo_dato caracteristicas .
 
@@ -5153,7 +5146,7 @@ state 199
     PARCIERRA       reduce using rule 79 (dato_con_caract -> name tipo_dato caracteristicas .)
 
 
-state 200
+state 199
 
     (82) caracteristicas -> caracteristica . caracteristicas
     (83) caracteristicas -> caracteristica .
@@ -5168,17 +5161,17 @@ state 200
 
     COMA            reduce using rule 83 (caracteristicas -> caracteristica .)
     PARCIERRA       reduce using rule 83 (caracteristicas -> caracteristica .)
-    NULL            shift and go to state 204
-    NOT             shift and go to state 205
-    PRIMARY         shift and go to state 206
+    NULL            shift and go to state 203
+    NOT             shift and go to state 204
+    PRIMARY         shift and go to state 205
 
-    caracteristica                 shift and go to state 200
-    caracteristicas                shift and go to state 222
-    caract_nulo                    shift and go to state 201
-    caract_no_nulo                 shift and go to state 202
-    caract_primary_key             shift and go to state 203
+    caracteristica                 shift and go to state 199
+    caracteristicas                shift and go to state 221
+    caract_nulo                    shift and go to state 200
+    caract_no_nulo                 shift and go to state 201
+    caract_primary_key             shift and go to state 202
 
-state 201
+state 200
 
     (84) caracteristica -> caract_nulo .
 
@@ -5189,7 +5182,7 @@ state 201
     PARCIERRA       reduce using rule 84 (caracteristica -> caract_nulo .)
 
 
-state 202
+state 201
 
     (85) caracteristica -> caract_no_nulo .
 
@@ -5200,7 +5193,7 @@ state 202
     PARCIERRA       reduce using rule 85 (caracteristica -> caract_no_nulo .)
 
 
-state 203
+state 202
 
     (86) caracteristica -> caract_primary_key .
 
@@ -5211,7 +5204,7 @@ state 203
     PARCIERRA       reduce using rule 86 (caracteristica -> caract_primary_key .)
 
 
-state 204
+state 203
 
     (87) caract_nulo -> NULL .
 
@@ -5222,35 +5215,35 @@ state 204
     PARCIERRA       reduce using rule 87 (caract_nulo -> NULL .)
 
 
-state 205
+state 204
 
     (88) caract_no_nulo -> NOT . NULL
 
-    NULL            shift and go to state 223
+    NULL            shift and go to state 222
+
+
+state 205
+
+    (89) caract_primary_key -> PRIMARY . KEY
+
+    KEY             shift and go to state 223
 
 
 state 206
 
-    (89) caract_primary_key -> PRIMARY . KEY
+    (103) dato_char -> CHAR PARABRE . NINT PARCIERRA
 
-    KEY             shift and go to state 224
+    NINT            shift and go to state 224
 
 
 state 207
 
-    (103) dato_char -> CHAR PARABRE . NINT PARCIERRA
+    (104) dato_varchar -> VARCHAR PARABRE . NINT PARCIERRA
 
     NINT            shift and go to state 225
 
 
 state 208
-
-    (104) dato_varchar -> VARCHAR PARABRE . NINT PARCIERRA
-
-    NINT            shift and go to state 226
-
-
-state 209
 
     (59) sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .
 
@@ -5273,37 +5266,37 @@ state 209
     $end            reduce using rule 59 (sent_create_table -> CREATE TABLE name PARABRE datos PARCIERRA PTCOMA .)
 
 
-state 210
+state 209
 
     (73) datos -> dato COMA datos .
 
     PARCIERRA       reduce using rule 73 (datos -> dato COMA datos .)
 
 
-state 211
+state 210
 
     (81) foreign_key -> FOREIGN KEY PARABRE . name PARCIERRA REFERENCE name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 227
+    name                           shift and go to state 226
 
-state 212
+state 211
 
     (93) columnas -> name COMA columnas .
 
     PARCIERRA       reduce using rule 93 (columnas -> name COMA columnas .)
 
 
-state 213
+state 212
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES . PARABRE valores PARCIERRA PTCOMA
 
-    PARABRE         shift and go to state 228
+    PARABRE         shift and go to state 227
 
 
-state 214
+state 213
 
     (91) f_delete -> DELETE FROM name WHERE name IGUAL expresion . PTCOMA
     (38) op_suma -> expresion . MAS expresion
@@ -5317,7 +5310,7 @@ state 214
     (52) exr_menorigual -> expresion . MENORIGUAL expresion
     (53) exr_mayorigual -> expresion . MAYORIGUAL expresion
 
-    PTCOMA          shift and go to state 229
+    PTCOMA          shift and go to state 228
     MAS             shift and go to state 48
     RESTA           shift and go to state 49
     MULTIPLICACION  shift and go to state 50
@@ -5330,37 +5323,46 @@ state 214
     MAYORIGUAL      shift and go to state 57
 
 
-state 215
+state 214
 
     (64) alter_add -> ADD COLUMN name tipo_dato .
 
     PTCOMA          reduce using rule 64 (alter_add -> ADD COLUMN name tipo_dato .)
 
 
-state 216
+state 215
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN . KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    KEY             shift and go to state 230
+    KEY             shift and go to state 229
 
 
-state 217
+state 216
 
     (68) alter_modify -> MODIFY COLUMN name tipo_dato .
 
     PTCOMA          reduce using rule 68 (alter_modify -> MODIFY COLUMN name tipo_dato .)
 
 
-state 218
+state 217
 
     (23) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero . PARCIERRA
 
-    PARCIERRA       shift and go to state 231
+    PARCIERRA       shift and go to state 230
 
+
+state 218
+
+    (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE . name IGUAL expresion
+    (116) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 78
+
+    name                           shift and go to state 231
 
 state 219
 
-    (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE . name IGUAL expresion
+    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE . name IGUAL expresion
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -5368,15 +5370,6 @@ state 219
     name                           shift and go to state 232
 
 state 220
-
-    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE . name IGUAL expresion
-    (116) name -> . NOMBRE
-
-    NOMBRE          shift and go to state 78
-
-    name                           shift and go to state 233
-
-state 221
 
     (27) func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .
 
@@ -5399,7 +5392,7 @@ state 221
     $end            reduce using rule 27 (func_cas -> CAST PARABRE ARROBA name AS tipo_dato PARCIERRA .)
 
 
-state 222
+state 221
 
     (82) caracteristicas -> caracteristica caracteristicas .
 
@@ -5407,7 +5400,7 @@ state 222
     PARCIERRA       reduce using rule 82 (caracteristicas -> caracteristica caracteristicas .)
 
 
-state 223
+state 222
 
     (88) caract_no_nulo -> NOT NULL .
 
@@ -5418,7 +5411,7 @@ state 223
     PARCIERRA       reduce using rule 88 (caract_no_nulo -> NOT NULL .)
 
 
-state 224
+state 223
 
     (89) caract_primary_key -> PRIMARY KEY .
 
@@ -5429,28 +5422,28 @@ state 224
     PARCIERRA       reduce using rule 89 (caract_primary_key -> PRIMARY KEY .)
 
 
-state 225
+state 224
 
     (103) dato_char -> CHAR PARABRE NINT . PARCIERRA
+
+    PARCIERRA       shift and go to state 233
+
+
+state 225
+
+    (104) dato_varchar -> VARCHAR PARABRE NINT . PARCIERRA
 
     PARCIERRA       shift and go to state 234
 
 
 state 226
 
-    (104) dato_varchar -> VARCHAR PARABRE NINT . PARCIERRA
+    (81) foreign_key -> FOREIGN KEY PARABRE name . PARCIERRA REFERENCE name PARABRE name PARCIERRA
 
     PARCIERRA       shift and go to state 235
 
 
 state 227
-
-    (81) foreign_key -> FOREIGN KEY PARABRE name . PARCIERRA REFERENCE name PARABRE name PARCIERRA
-
-    PARCIERRA       shift and go to state 236
-
-
-state 228
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE . valores PARCIERRA PTCOMA
     (94) valores -> . expresion
@@ -5495,8 +5488,8 @@ state 228
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    valores                        shift and go to state 237
-    expresion                      shift and go to state 238
+    valores                        shift and go to state 236
+    expresion                      shift and go to state 237
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -5512,7 +5505,7 @@ state 228
     exr_menorigual                 shift and go to state 40
     exr_mayorigual                 shift and go to state 41
 
-state 229
+state 228
 
     (91) f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .
 
@@ -5535,14 +5528,14 @@ state 229
     $end            reduce using rule 91 (f_delete -> DELETE FROM name WHERE name IGUAL expresion PTCOMA .)
 
 
-state 230
+state 229
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY . PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 239
+    PARABRE         shift and go to state 238
 
 
-state 231
+state 230
 
     (23) func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .
 
@@ -5565,21 +5558,21 @@ state 231
     $end            reduce using rule 23 (func_substraer -> SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA .)
 
 
-state 232
+state 231
 
     (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name . IGUAL expresion
+
+    IGUAL           shift and go to state 239
+
+
+state 232
+
+    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name . IGUAL expresion
 
     IGUAL           shift and go to state 240
 
 
 state 233
-
-    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name . IGUAL expresion
-
-    IGUAL           shift and go to state 241
-
-
-state 234
 
     (103) dato_char -> CHAR PARABRE NINT PARCIERRA .
 
@@ -5591,7 +5584,7 @@ state 234
     PTCOMA          reduce using rule 103 (dato_char -> CHAR PARABRE NINT PARCIERRA .)
 
 
-state 235
+state 234
 
     (104) dato_varchar -> VARCHAR PARABRE NINT PARCIERRA .
 
@@ -5603,21 +5596,21 @@ state 235
     PTCOMA          reduce using rule 104 (dato_varchar -> VARCHAR PARABRE NINT PARCIERRA .)
 
 
-state 236
+state 235
 
     (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA . REFERENCE name PARABRE name PARCIERRA
 
-    REFERENCE       shift and go to state 242
+    REFERENCE       shift and go to state 241
 
 
-state 237
+state 236
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores . PARCIERRA PTCOMA
 
-    PARCIERRA       shift and go to state 243
+    PARCIERRA       shift and go to state 242
 
 
-state 238
+state 237
 
     (94) valores -> expresion .
     (95) valores -> expresion . COMA valores
@@ -5633,7 +5626,7 @@ state 238
     (53) exr_mayorigual -> expresion . MAYORIGUAL expresion
 
     PARCIERRA       reduce using rule 94 (valores -> expresion .)
-    COMA            shift and go to state 244
+    COMA            shift and go to state 243
     MAS             shift and go to state 48
     RESTA           shift and go to state 49
     MULTIPLICACION  shift and go to state 50
@@ -5646,18 +5639,77 @@ state 238
     MAYORIGUAL      shift and go to state 57
 
 
-state 239
+state 238
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE . name PARCIERRA REFERENCES name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 245
+    name                           shift and go to state 244
+
+state 239
+
+    (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL . expresion
+    (105) expresion -> . exp_aritmetica
+    (106) expresion -> . exp_relacional
+    (107) expresion -> . parentesis
+    (108) expresion -> . numero
+    (109) expresion -> . FECHA
+    (110) expresion -> . FECHAHORA
+    (111) expresion -> . CADENA
+    (34) exp_aritmetica -> . op_suma
+    (35) exp_aritmetica -> . op_resta
+    (36) exp_aritmetica -> . op_multiplicacion
+    (37) exp_aritmetica -> . op_division
+    (42) exp_relacional -> . exr_igual
+    (43) exp_relacional -> . exr_diferente
+    (44) exp_relacional -> . exr_menorque
+    (45) exp_relacional -> . exr_mayorque
+    (46) exp_relacional -> . exr_menorigual
+    (47) exp_relacional -> . exr_mayorigual
+    (112) parentesis -> . PARABRE expresion PARCIERRA
+    (113) numero -> . NINT
+    (114) numero -> . NBIT
+    (115) numero -> . NDECIMAL
+    (38) op_suma -> . expresion MAS expresion
+    (39) op_resta -> . expresion RESTA expresion
+    (40) op_multiplicacion -> . expresion MULTIPLICACION expresion
+    (41) op_division -> . expresion DIVISION expresion
+    (48) exr_igual -> . expresion IGUALIGUAL expresion
+    (49) exr_diferente -> . expresion DIFERENTE expresion
+    (50) exr_menorque -> . expresion MENORQUE expresion
+    (51) exr_mayorque -> . expresion MAYORQUE expresion
+    (52) exr_menorigual -> . expresion MENORIGUAL expresion
+    (53) exr_mayorigual -> . expresion MAYORIGUAL expresion
+
+    FECHA           shift and go to state 25
+    FECHAHORA       shift and go to state 26
+    CADENA          shift and go to state 27
+    PARABRE         shift and go to state 17
+    NINT            shift and go to state 42
+    NBIT            shift and go to state 43
+    NDECIMAL        shift and go to state 44
+
+    expresion                      shift and go to state 245
+    exp_aritmetica                 shift and go to state 21
+    exp_relacional                 shift and go to state 22
+    parentesis                     shift and go to state 23
+    numero                         shift and go to state 24
+    op_suma                        shift and go to state 32
+    op_resta                       shift and go to state 33
+    op_multiplicacion              shift and go to state 34
+    op_division                    shift and go to state 35
+    exr_igual                      shift and go to state 36
+    exr_diferente                  shift and go to state 37
+    exr_menorque                   shift and go to state 38
+    exr_mayorque                   shift and go to state 39
+    exr_menorigual                 shift and go to state 40
+    exr_mayorigual                 shift and go to state 41
 
 state 240
 
-    (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL . expresion
+    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL . expresion
     (105) expresion -> . exp_aritmetica
     (106) expresion -> . exp_relacional
     (107) expresion -> . parentesis
@@ -5716,80 +5768,21 @@ state 240
 
 state 241
 
-    (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL . expresion
-    (105) expresion -> . exp_aritmetica
-    (106) expresion -> . exp_relacional
-    (107) expresion -> . parentesis
-    (108) expresion -> . numero
-    (109) expresion -> . FECHA
-    (110) expresion -> . FECHAHORA
-    (111) expresion -> . CADENA
-    (34) exp_aritmetica -> . op_suma
-    (35) exp_aritmetica -> . op_resta
-    (36) exp_aritmetica -> . op_multiplicacion
-    (37) exp_aritmetica -> . op_division
-    (42) exp_relacional -> . exr_igual
-    (43) exp_relacional -> . exr_diferente
-    (44) exp_relacional -> . exr_menorque
-    (45) exp_relacional -> . exr_mayorque
-    (46) exp_relacional -> . exr_menorigual
-    (47) exp_relacional -> . exr_mayorigual
-    (112) parentesis -> . PARABRE expresion PARCIERRA
-    (113) numero -> . NINT
-    (114) numero -> . NBIT
-    (115) numero -> . NDECIMAL
-    (38) op_suma -> . expresion MAS expresion
-    (39) op_resta -> . expresion RESTA expresion
-    (40) op_multiplicacion -> . expresion MULTIPLICACION expresion
-    (41) op_division -> . expresion DIVISION expresion
-    (48) exr_igual -> . expresion IGUALIGUAL expresion
-    (49) exr_diferente -> . expresion DIFERENTE expresion
-    (50) exr_menorque -> . expresion MENORQUE expresion
-    (51) exr_mayorque -> . expresion MAYORQUE expresion
-    (52) exr_menorigual -> . expresion MENORIGUAL expresion
-    (53) exr_mayorigual -> . expresion MAYORIGUAL expresion
-
-    FECHA           shift and go to state 25
-    FECHAHORA       shift and go to state 26
-    CADENA          shift and go to state 27
-    PARABRE         shift and go to state 17
-    NINT            shift and go to state 42
-    NBIT            shift and go to state 43
-    NDECIMAL        shift and go to state 44
-
-    expresion                      shift and go to state 247
-    exp_aritmetica                 shift and go to state 21
-    exp_relacional                 shift and go to state 22
-    parentesis                     shift and go to state 23
-    numero                         shift and go to state 24
-    op_suma                        shift and go to state 32
-    op_resta                       shift and go to state 33
-    op_multiplicacion              shift and go to state 34
-    op_division                    shift and go to state 35
-    exr_igual                      shift and go to state 36
-    exr_diferente                  shift and go to state 37
-    exr_menorque                   shift and go to state 38
-    exr_mayorque                   shift and go to state 39
-    exr_menorigual                 shift and go to state 40
-    exr_mayorigual                 shift and go to state 41
-
-state 242
-
     (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE . name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 248
+    name                           shift and go to state 247
 
-state 243
+state 242
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA . PTCOMA
 
-    PTCOMA          shift and go to state 249
+    PTCOMA          shift and go to state 248
 
 
-state 244
+state 243
 
     (95) valores -> expresion COMA . valores
     (94) valores -> . expresion
@@ -5834,8 +5827,8 @@ state 244
     NBIT            shift and go to state 43
     NDECIMAL        shift and go to state 44
 
-    expresion                      shift and go to state 238
-    valores                        shift and go to state 250
+    expresion                      shift and go to state 237
+    valores                        shift and go to state 249
     exp_aritmetica                 shift and go to state 21
     exp_relacional                 shift and go to state 22
     parentesis                     shift and go to state 23
@@ -5851,14 +5844,14 @@ state 244
     exr_menorigual                 shift and go to state 40
     exr_mayorigual                 shift and go to state 41
 
-state 245
+state 244
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name . PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    PARCIERRA       shift and go to state 251
+    PARCIERRA       shift and go to state 250
 
 
-state 246
+state 245
 
     (25) func_contar -> CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion .
     (38) op_suma -> expresion . MAS expresion
@@ -5901,7 +5894,7 @@ state 246
     MAYORIGUAL      shift and go to state 57
 
 
-state 247
+state 246
 
     (26) func_suma -> SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion .
     (38) op_suma -> expresion . MAS expresion
@@ -5944,14 +5937,14 @@ state 247
     MAYORIGUAL      shift and go to state 57
 
 
-state 248
+state 247
 
     (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name . PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 252
+    PARABRE         shift and go to state 251
 
 
-state 249
+state 248
 
     (90) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .
 
@@ -5974,23 +5967,32 @@ state 249
     $end            reduce using rule 90 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
 
 
-state 250
+state 249
 
     (95) valores -> expresion COMA valores .
 
     PARCIERRA       reduce using rule 95 (valores -> expresion COMA valores .)
 
 
-state 251
+state 250
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA . REFERENCES name PARABRE name PARCIERRA
 
-    REFERENCES      shift and go to state 253
+    REFERENCES      shift and go to state 252
 
+
+state 251
+
+    (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE . name PARCIERRA
+    (116) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 78
+
+    name                           shift and go to state 253
 
 state 252
 
-    (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE . name PARCIERRA
+    (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES . name PARABRE name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
@@ -5999,28 +6001,19 @@ state 252
 
 state 253
 
-    (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES . name PARABRE name PARCIERRA
-    (116) name -> . NOMBRE
+    (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name . PARCIERRA
 
-    NOMBRE          shift and go to state 78
+    PARCIERRA       shift and go to state 255
 
-    name                           shift and go to state 255
 
 state 254
 
-    (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name . PARCIERRA
+    (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name . PARABRE name PARCIERRA
 
-    PARCIERRA       shift and go to state 256
+    PARABRE         shift and go to state 256
 
 
 state 255
-
-    (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name . PARABRE name PARCIERRA
-
-    PARABRE         shift and go to state 257
-
-
-state 256
 
     (81) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .
 
@@ -6028,23 +6021,23 @@ state 256
     PARCIERRA       reduce using rule 81 (foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .)
 
 
-state 257
+state 256
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE . name PARCIERRA
     (116) name -> . NOMBRE
 
     NOMBRE          shift and go to state 78
 
-    name                           shift and go to state 258
+    name                           shift and go to state 257
 
-state 258
+state 257
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name . PARCIERRA
 
-    PARCIERRA       shift and go to state 259
+    PARCIERRA       shift and go to state 258
 
 
-state 259
+state 258
 
     (65) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA .
 
