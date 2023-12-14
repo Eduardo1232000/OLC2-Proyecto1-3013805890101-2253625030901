@@ -24,4 +24,5 @@ class TRUNCATE_TABLE(Instruccion):
             if truncate_table(base_activa, nombre_tabla):
                 ast.escribir_en_consola(f"Se ha truncado la tabla {nombre_tabla}")
             else:
+                
                 ast.escribir_en_consola(f"No se pudo truncar la tabla {nombre_tabla}")
