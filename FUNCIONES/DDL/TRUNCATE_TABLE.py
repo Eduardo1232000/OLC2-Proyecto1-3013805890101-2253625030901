@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.TRUNCAR_TABLA import *
+from FUNCIONES.ERROR_LSS import *
 
 class TRUNCATE_TABLE(Instruccion):
     def __init__(self, nombre_tabla, linea, columna):
@@ -16,6 +17,7 @@ class TRUNCATE_TABLE(Instruccion):
             base_activa = ast.obtener_base_activa()
             if base_activa == "":
                 ast.escribir_en_consola("Error: No hay una base de datos seleccionada \n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","TRUNCATE: No hay una base de datos seleccionada",self.linea))
                 return
                 
             nombre_tabla = self.nombre_tabla.obtener_valor(actual, globa, ast)
@@ -26,3 +28,4 @@ class TRUNCATE_TABLE(Instruccion):
             else:
                 
                 ast.escribir_en_consola(f"No se pudo truncar la tabla {nombre_tabla}")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","TRUNCATE: No se pudo truncar la tabla",self.linea))

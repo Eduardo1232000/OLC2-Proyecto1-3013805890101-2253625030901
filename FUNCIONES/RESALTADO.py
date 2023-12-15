@@ -6,7 +6,10 @@ def resaltar_palabras(contenido_texto):
                       'concatenar', 'substraer','hoy','contar','suma',
                       'cast', 'int','bit','decimal','date','datetime','nchar','nvarchar',
                       'not','null','primary key','foreign', 'reference',
-                      'insert','into','values','delete']
+                      'insert','into','values','delete',
+                      'PROCEDURE','BEGIN','END','EXEC','DECLARE','SET'
+                      
+                      ]
 
     contenido_texto.tag_remove('palabra_clave', '1.0', 'end-1c')
 

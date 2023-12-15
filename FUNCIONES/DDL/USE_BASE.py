@@ -2,6 +2,7 @@ from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ARBOL.AST import *
+from FUNCIONES.ERROR_LSS import *
 
 class USE_BASE(Instruccion):        
     def __init__(self,nombre, linea, columna):
@@ -21,3 +22,4 @@ class USE_BASE(Instruccion):
 
             else:   #SI NO EXISTE LA BASE DE DATOS
                 ast.escribir_en_consola("NO EXISTE LA BASE DE DATOS: "+str(nombre)+"\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","USE: No existe la base de datos",self.linea))

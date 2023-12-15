@@ -2,6 +2,11 @@ from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ERROR_LSS import *
 from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
 from FUNCIONES.ARBOL.NODO_TABLA_SIMBOLOS import *
+from FUNCIONES.CREAR_REPORTES.REPORTE_ERRORES import *
+
+from REPORTES.CREAR_GRAFO import *
+import os
+import sys
 
 class AST:
     def __init__(self, ejecuciones,errores_lexicos,errores_sintacticos):
@@ -23,7 +28,6 @@ class AST:
         #CREAMOS EL AMBITO ACTUAL Y GLOBAL
         TABLA_FUNCIONES_Y_VARIABLES_GLOBAL = TABLA_FUNCIONES_Y_VARIABLES(None,"global")     #AMBITO GLOBAL
         TABLA_FUNCIONES_Y_VARIABLES_ACTUAL = TABLA_FUNCIONES_Y_VARIABLES_GLOBAL             #AMBITO ACTUAL ES EL GLOBAL PORQUE ES EL INICIO
-
         for instr in self.EJECUCIONES:
             
             if isinstance(instr,Instruccion):
@@ -63,7 +67,17 @@ class AST:
     def graficar_tabla_simbolos():
         print("NO IMPLEMENTADO")
 
-    def graficar_reporte_errores(self): #POR AHORA SOLO MUESTRA LOS ERRORES
-        for error in self.errores_codigo:
-            if(isinstance(error,ERROR_LSS)):
-                print(str(error.tipo) + ": "+str(error.descripcion) + " , "+str(error.linea))
+    def insertar_error_semantico(self,error):
+        self.errores_codigo.append(error)
+
+    def graficar_reporte_errores(self, ventana_principal,cuaderno): # VENTANA PRINCIPAL PARA CREAR UNA SUBVENTANA, CUADERNO PARA ALMACENAR EL NOMBRE DE LA IMAGEN
+        codigo_graf_error = obtener_codigo_grafica_reporte_errores(self.errores_codigo)
+        print(codigo_graf_error)
+        pestana_actual = cuaderno.select()
+        contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
+        ruta = "REPORTES/"
+        nombre_archivo_se, extension = os.path.splitext(os.path.basename(str(label1.cget("text"))))
+        ruta+=str(nombre_archivo_se)
+        r_errores.config(text=ruta+".png")
+        crear_grafo(codigo_graf_error,ruta)
+        print("GRAFO CREADO")

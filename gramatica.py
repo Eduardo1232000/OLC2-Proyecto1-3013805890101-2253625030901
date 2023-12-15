@@ -3,7 +3,8 @@ from FUNCIONES.ARBOL.TIPO import *
 from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
-from FUNCIONES.DDL.DECLARE import *
+from FUNCIONES.DDL.VARIABLES import *
+from FUNCIONES.DDL.PROCEDURES import *
 
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
@@ -11,7 +12,6 @@ from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
 
 from FUNCIONES.DDL.INSERT_INTO import *
-
 
 from FUNCIONES.FUNCIONES_SISTEMA.CONCATENAR import *
 from FUNCIONES.FUNCIONES_SISTEMA.SUBSTRAER import *
@@ -51,7 +51,8 @@ tokens = (
     'INSERT', 'INTO', 'VALUES', 'DELETE',
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
-    'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET'
+    'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
+    'PROCEDURE','BEGIN','END','EXEC'
 )
 
 #Tokens
@@ -89,6 +90,10 @@ t_VALUES            =   r'(?i)VALUES'
 t_DELETE            =   r'(?i)DELETE'
 t_DECLARE           =   r'(?i)DECLARE'
 t_SET               =   r'(?i)SET'
+t_PROCEDURE         =   r'(?i)PROCEDURE'
+t_BEGIN             =   r'(?i)BEGIN'
+t_END               =   r'(?i)END'
+t_EXEC              =   r'(?i)EXEC'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -103,7 +108,7 @@ t_MAYORIGUAL        =   r'>='
 t_MENORIGUAL        =   r'<='
 t_OR                =   r'\|\|'
 t_AND               =   r'\&\&'
-t_RNOT               =   r'\!'
+t_RNOT              =   r'\!'
 t_PARABRE           =   r'\('
 t_PARCIERRA         =   r'\)'
 t_COMA              =   r'\,'
@@ -253,9 +258,73 @@ def p_instrucciones_evaluar(t):
                     | sent_truncate
                     | declarar_var
                     | asignacion_variable
+                    | declarar_procedure
+                    | exec_procedure
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
+
+
+
+def p_declaracion_funcion(t):
+    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END'''
+    t[0] = CREATE_PROCEDURE(t[3], "PROCEDURE",t[5],t[9],lexer.lineno,0)
+
+
+def p_variables_procedure(t):
+    ''' variables_procedure : var_procedure COMA variables_procedure
+                       | var_procedure'''
+    if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
+        t[0] = [t[1]]
+    else:               #SI ES MAS DE 1 CARACTERISTICA
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+
+def p_var_procedure(t):
+    ''' var_procedure : ARROBA name tipo_dato'''
+    lst_temporal = []
+    lst_temporal.append(t[2])
+    lst_temporal.append(t[3])
+    t[0] = lst_temporal
+
+def p_exec_procedure(t):
+    ''' exec_procedure : EXEC name valores_procedure_variables
+                       | EXEC name valores_procedure_simple'''
+    t[0] = EJECUTAR_PROCEDURE(t[2],t[3],lexer.lineno,0)
+    
+def p_valores_procedure_variables(t):
+    '''valores_procedure_variables : valor_procedure_variable COMA valores_procedure_variables
+                                    | valor_procedure_variable'''
+    if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
+        t[0] = [t[1]]
+    else:               #SI ES MAS DE 1 CARACTERISTICA
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+
+def p_valor_procedure_variable(t):
+    '''valor_procedure_variable : ARROBA name IGUAL expresion'''
+    lst_temporal = []
+    lst_temporal.append(t[2])
+    lst_temporal.append(t[4])
+    t[0] = lst_temporal
+
+def p_valores_procedure_simple(t):
+    '''valores_procedure_simple : valor_procedure_simple COMA valores_procedure_simple
+                                | valor_procedure_simple'''
+    if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
+        t[0] = [t[1]]
+    else:               #SI ES MAS DE 1 CARACTERISTICA
+        t[3].insert(0, t[1])
+        t[0] = t[3]
+    
+    
+def p_valor_procedure_simple(t):
+    '''valor_procedure_simple : expresion'''
+    lst_temporal = []
+    lst_temporal.append(None)
+    lst_temporal.append(t[1])
+    t[0] = lst_temporal
+
 def p_declaracion_variable(t):
     ''' declarar_var : DECLARE ARROBA name tipo_dato PTCOMA'''
     t[0] = DECLARE(t[3],t[4],lexer.lineno,0)
@@ -275,7 +344,7 @@ def p_operacion_sistema(t):
                     | func_contar
                     | func_suma
                     | func_cas
-                    | select_dato
+                    | select_dato 
                     '''
     t[0] = t[1]
 

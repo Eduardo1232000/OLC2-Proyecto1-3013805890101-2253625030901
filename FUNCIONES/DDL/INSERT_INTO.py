@@ -2,6 +2,7 @@ from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.INSERTAR_BASE import *
+from FUNCIONES.ERROR_LSS import *
 
 class INSERT_INTO(Instruccion):        
     def __init__(self,nombre,columnas,valores, linea, columna):
@@ -15,6 +16,7 @@ class INSERT_INTO(Instruccion):
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):  #SI NO EXISTE LA BASE
                 ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: No hay una base de datos seleccionada",self.linea))
                 return
             nombre_tabla = self.nombre.obtener_valor(actual,globa,ast)
             lista_columnas = self.columnas
@@ -61,6 +63,7 @@ class INSERT_INTO(Instruccion):
 
             if(tabla_existente == False):   #SI NO EXISTE LA TABLA
                 ast.escribir_en_consola("ERROR: La Tabla "+str(nombre_tabla) +" no existe en la base "+str(base_activa)+"!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: La tabla "+str(nombre_tabla) +" no existe en la base "+str(base_activa),self.linea))
                 return
             
             '''#COLUMNAS TABLA
@@ -78,10 +81,12 @@ class INSERT_INTO(Instruccion):
             #VALIDACION ORDEN COLUMNAS
             if(len(lista_columnas)> len(lst_nombre)):
                 ast.escribir_en_consola("ERROR: El numero de columnas es mayor a la de la tabla")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: El numero de columnas es mayor a la de la tabla!",self.linea))
                 return
             
             if(len(lista_columnas) != len(lista_valores)):
                 ast.escribir_en_consola("ERROR: El numero de datos no coincide al numero de columnas")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: El numero de datos no coincide al numero de columnas!",self.linea))
                 return
             
             
@@ -137,12 +142,14 @@ class INSERT_INTO(Instruccion):
                                                     print(campo[contador].text)
                                                     if(encontre_ref == False):
                                                         ast.escribir_en_consola("ERROR: No existe el campo de referencia")
+                                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: No existe el campo de referencia",self.linea))
                                                         return
                                                     if(campo[contador].text == valor_dato):
                                                         encontre_valor_ref = True
                                 print(encontre_valor_ref)                    #for valor in campo:
                                 if(encontre_valor_ref == False):
                                     ast.escribir_en_consola("ERROR: El valor no existe en la referencia")
+                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: El valor no existe en la referencia",self.linea))
                                     return
 
                             #VALIDAR QUE EL PRIMARY KEY NO SE REPITA
@@ -171,6 +178,7 @@ class INSERT_INTO(Instruccion):
                                         valor_dato = nuevo_nom
                             else:   #ALGUN TIPO DE VALOR NO ES EL CORRECTO
                                 ast.escribir_en_consola("ERROR: Los tipos de los valores no coinciden con los de la tabla\n")
+                                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Los tipos no coinciden con los de la tabla",self.linea))
                                 return
                             #GUARDARLO EN LA LISTA
                             lista_nombres_valor.append(valor_dato)
@@ -180,6 +188,7 @@ class INSERT_INTO(Instruccion):
                                 lista_nombres_valor.append("")
                             else:
                                 ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
+                                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Se omitio una columna que no era NULL",self.linea))
                                 return
                             avanza+=1
                             #GUARDAR UN DATO VACIO EN LA LISTA
@@ -190,6 +199,7 @@ class INSERT_INTO(Instruccion):
                         lista_nombres_valor.append("")
                     else:
                         ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
+                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Se omitio una columna que no era NULL",self.linea))
                         return
 
              #AGREGAR DATO A LA BASE
@@ -198,5 +208,6 @@ class INSERT_INTO(Instruccion):
                 ast.escribir_en_consola(" Dato Insertado! \n")
             else:
                 ast.escribir_en_consola(" ERROR AL INSERTAR \n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Ocurrio un error al insertar",self.linea))
 
             

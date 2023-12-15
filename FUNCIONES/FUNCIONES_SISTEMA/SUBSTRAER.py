@@ -1,5 +1,6 @@
 from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
+from FUNCIONES.ERROR_LSS import *
 
 class SUBSTRAER(Expresion):        
     def __init__(self, cadena1,inicio, final, linea, columna):
@@ -30,6 +31,7 @@ class SUBSTRAER(Expresion):
                 #VALIDACION SI EL NUMERO FINAL EXCEDE LA CANTIDAD DE CARACTERES 
                 if(num2 > len(cadena)):
                     ast.escribir_en_consola("ERROR: El numero final, excede la cantidad de caracteres de la cadena!\n")
+                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: El numero final excede la cantidad de caracteres de la cadena",self.linea))
                     respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                     self.tipo = respuesta.tipo
                     return "ERROR"

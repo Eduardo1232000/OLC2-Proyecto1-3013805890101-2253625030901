@@ -12,6 +12,7 @@ from FUNCIONES.ARBOL.AST import *
 
 from FUNCIONES.EXPORTAR_IMPORTAR.EXPORTAR import *
 from FUNCIONES.EXPORTAR_IMPORTAR.IMPORTAR import *
+from FUNCIONES.CREAR_REPORTES.MOSTRAR_REPORTES import *
 import gramatica
 
 contador_querys  = 1
@@ -33,8 +34,10 @@ def crear_pestana(notebook,texto_prueba):
     contenido.configure(bg="#ECEEF1")
     contenido.place(x=0,y=0,width=1000,height=300)
 
-
-    contenido = Label(pestana,text="",state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
+    contenido = Label(pestana,text=str(texto_prueba),state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
+    contenido = Label(pestana,text="",state="disabled")       #RUTA ERRORES
+    contenido = Label(pestana,text="",state="disabled")       #RUTA TABLA
+    contenido = Label(pestana,text="",state="disabled")       #RUTA ARBOL
 
 
 
@@ -62,13 +65,15 @@ def cargar_datos_arbol():
 
 def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
     global contador_querys
+    pestana_actual = cuaderno.select()
+    contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
     if(opcion == "nuevo"):
         crear_pestana(cuaderno, "Query"+str(int(contador_querys) +1))
         if(int(contador_querys>0)):
             contador_querys +=1
     elif(opcion == "abrir"):
         pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
+
         archivo_seleccionado = filedialog.askopenfilename(defaultextension=".txt", filetypes=[("Archivos de texto", "*.sql"), ("Todos los archivos", "*.*")])
         if archivo_seleccionado:
             with open(archivo_seleccionado, "r") as archivo:
@@ -77,8 +82,7 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
                 contenido_texto.insert(END, contenido)
 
                 #MODIFICAR LA RUTA DEL ARCHIVO EN MEMORIA
-                contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
-                contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
+                label1.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
 
                 nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
                 indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
@@ -86,12 +90,11 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
 
     elif(opcion == "guardar"):
         pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
-
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']   #OBTENER EL CONTENIDO DEL AREA DE TEXTO
+       #OBTENER EL CONTENIDO DEL AREA DE TEXTO
         contenido = contenido_texto.get("1.0", END)
 
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']  #OBTENER EL CONTENIDO DEL LABEL OCULTO
-        ruta = contenido_texto.cget("text")
+        #OBTENER EL CONTENIDO DEL LABEL OCULTO
+        ruta = label1.cget("text")
 
         if(ruta !=""):                   #SI EXISTE ALGUNA RUTA GUARDADA GUARDARLO AHI
             with open(ruta, "w") as archivo:
@@ -104,15 +107,12 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
                     archivo.write(contenido)
                 messagebox.showinfo(message="Archivo Guardado con exito!", title="Aviso")
 
-                contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
                 contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
                 nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
                 indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
                 cuaderno.tab(indice_pestana, text=nombre)
 
     elif(opcion == "guardarcomo"):
-        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
         contenido = contenido_texto.get("1.0", END)        
         
         archivo_seleccionado = filedialog.asksaveasfilename(defaultextension=".sql", filetypes=[("Archivos de texto", "*.sql"), ("Todos los archivos", "*.*")])
@@ -121,14 +121,13 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
                 archivo.write(contenido)
             messagebox.showinfo(message="Archivo Guardado con exito!", title="Aviso")
 
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!label']
-        contenido_texto.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
+        label1
+        label1.config(text=archivo_seleccionado)   #GUARDAMOS LA RUTA EN LA pestana
         nombre = os.path.basename(archivo_seleccionado)     #OBTENEMOS EL NOMBRE DEL ARCHIVO
         indice_pestana = cuaderno.index(pestana_actual)     #CAMBIAMOS EL NOMBRE DE LA PESTANA
         cuaderno.tab(indice_pestana, text=nombre)
 
     elif(opcion == "cerrar"):
-        pestana_actual = cuaderno.select() 
         indice_pestana = cuaderno.index(pestana_actual)
         cuaderno.forget(indice_pestana)
     else:
@@ -136,6 +135,8 @@ def accion_menu_archivo(opcion):    #ACCION DEL MENU ARCHIVO
 
 def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
     global contador_querys
+    pestana_actual = cuaderno.select()
+    contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
     if(opcion == "crear_base"):
         nombre = simpledialog.askstring("Ingresar Nombre", "Por favor, ingresa el nombre de tu base de datos:")
         if nombre:
@@ -169,8 +170,6 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         if(int(contador_querys>0)):
             contador_querys +=1
     elif(opcion == "ejecutar_query"):
-        pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
-        contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
         contenido = contenido_texto.get("1.0", END)
         
         #ANALIZAR CONTENIDO
@@ -183,7 +182,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
             else:
                 arbol_sintactico = AST(respuesta,respuesta_parser[1],respuesta_parser[2])
                 arbol_sintactico.ejecutar()
-                #arbol_sintactico.graficar_reporte_errores()
+                arbol_sintactico.graficar_reporte_errores(ventana_principal,cuaderno)
                 #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
                 salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
@@ -211,6 +210,22 @@ def mostrar_menu_herramientas(): #ACCION BOTON HERRAMIENTAS
 def actualizar_resaltar_palabras(event=None):
     resaltar_palabras(contenido_texto)
 
+def mostrar_reporte_errores(ventana_principal,cuaderno,tipo):
+    print(tipo)
+    pestana_actual = cuaderno.select()
+    contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
+    ruta_errores = r_errores.cget("text")
+    ruta_tabla = r_tabla.cget("text")
+    ruta_arbol = r_arbol.cget("text")
+    if(tipo == "ERRORES" and (ruta_errores !="")):
+        mostrar_reporte(ventana_principal,ruta_errores)
+    elif(tipo == "TABLA" and (ruta_tabla !="")):
+        mostrar_reporte(ventana_principal,ruta_tabla)
+    elif(tipo == "ARBOL" and (ruta_arbol !="")):
+        mostrar_reporte(ventana_principal,ruta_arbol)
+    else:
+        messagebox.showerror(message="aun no se ha generado este reporte!", title="Error")
+
 ventana_principal = Tk()    #CREAMOS LA VENTANA PRINCIPAL                             
 programa = interfaz(ventana_principal)
 
@@ -218,6 +233,17 @@ titulo = Label(ventana_principal, text="XSQL-IDE", font=("Helvetica", 16))      
 titulo.configure(bg="#252950",fg="white")
 titulo.place(x=0,y=0,width=1280,height=60)
 
+#BOTONES DE REPORTES
+boton_reporte_errores = Button(ventana_principal, text="Errores",bg="#9C8442", fg="white",font=("Helvetica", 12),command=lambda:mostrar_reporte_errores(ventana_principal,cuaderno,"ERRORES"))
+boton_reporte_errores.place(x=900,y=20, width=100, height=30)
+
+#BOTONES DE REPORTES
+boton_reporte_tabla = Button(ventana_principal, text="Tabla de Simbolos",bg="#9C8442", fg="white",font=("Helvetica", 12),command=lambda:mostrar_reporte_errores(ventana_principal,cuaderno,"TABLA"))
+boton_reporte_tabla.place(x=1000,y=20, width=150, height=30)
+
+#BOTONES DE REPORTES
+boton_reporte_ast = Button(ventana_principal, text="Arbol",bg="#9C8442", fg="white",font=("Helvetica", 12),command=lambda:mostrar_reporte_errores(ventana_principal,cuaderno,"ARBOL"))
+boton_reporte_ast.place(x=1150,y=20, width=100, height=30)
 
 boton_archivo = Button(ventana_principal, text="Archivo",bg="#4F5C7C", fg="white",font=("Helvetica", 12),command=mostrar_menu_archivo)
 boton_archivo.place(x=10,y=65, width=100, height=30)

@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ALTERAR_TABLA import *
+from FUNCIONES.ERROR_LSS import *
 
 class ALTER_TABLE(Instruccion):        
     def __init__(self, nombre_tabla, operacion, linea, columna):
@@ -15,6 +16,7 @@ class ALTER_TABLE(Instruccion):
         if isinstance(ast, AST):
             base_activa = ast.obtener_base_activa()
             if base_activa == "":  # SI NO EXISTE LA BASE
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","ALTER: No hay una base de datos seleccionada",self.linea))
                 ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
                 return
 
@@ -37,6 +39,7 @@ class ALTER_TABLE(Instruccion):
                 ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo {nombre_tipo_dato} a la tabla {nombre_tabla}\n")
             else:
                 ast.escribir_en_consola(f"No se pudo agregar la columna {nombre_columna} a la tabla {nombre_tabla}\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","ALTER: No se pudo agregar la columna "+str(nombre_columna)+" a la tabla "+str(nombre_tabla),self.linea))
 
             #ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo  {tipo_dato} a la tabla {nombre_tabla}\n")
         elif self.operacion[1] == "CONSTRAINT":

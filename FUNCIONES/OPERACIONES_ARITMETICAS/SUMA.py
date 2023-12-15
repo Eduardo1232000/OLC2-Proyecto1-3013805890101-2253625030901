@@ -1,5 +1,6 @@
 from FUNCIONES.ARBOL.EJECUCION import *
 from FUNCIONES.ARBOL.VALOR import *
+from FUNCIONES.ERROR_LSS import *
 
 class SUMA(Expresion):        
     def __init__(self, numero1,numero2, linea, columna):
@@ -14,7 +15,10 @@ class SUMA(Expresion):
         #if(issubclass(self.numero1.__class__, Expresion) and issubclass(self.numero2.__class__,Expresion)):
             numero1 = self.numero1.obtener_valor(actual,globa,ast)
             numero2 = self.numero2.obtener_valor(actual,globa,ast)
-            
+            self.numero1.tipo
+            if(numero1 =="ERROR" or numero2 =="ERROR"):
+                ast.escribir_en_consola("ERROR: ")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUMA: Hay un problema con un valor",self.linea))
             tipo_numero1 = self.numero1.tipo.obtener_tipo_dato()
             tipo_numero2 = self.numero2.tipo.obtener_tipo_dato()
             

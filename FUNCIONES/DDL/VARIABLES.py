@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
 from FUNCIONES.ARBOL.AST import *
+from FUNCIONES.ERROR_LSS import *
 
 class DECLARE(Instruccion):        
     def __init__(self,nombre,tipo_v, linea, columna):
@@ -18,6 +19,7 @@ class DECLARE(Instruccion):
             id = self.nombre.obtener_valor(actual,globa,ast)
             if(actual.variable_existe(id)):     #SI EXISTE LA VARIABLE
                 ast.escribir_en_consola("ERROR: Variable "+str(id)+" ya existe !\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id)+" ya existe",self.linea))
                 return
             
             #RECONOCER EL TIPO DE LA VARIABLE
@@ -56,8 +58,9 @@ class ASIGNAR_VARIABLE(Instruccion):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.id,Expresion)):
             id_var = self.id.obtener_valor(actual,globa,ast)
             validar_existe = actual.variable_existe(str(id_var))
-            if(validar_existe is None):
+            if(validar_existe == False):
                 ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: La variable "+str(id_var)+" no existe!",self.linea))
                 return
             
             objeto_variable = actual.obtener_variable(str(id_var))
@@ -79,6 +82,7 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
             validar_existe = actual.variable_existe(str(id_var))
             if(validar_existe is None):
                 ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id_var)+" no existe",self.linea))
                 val = VALOR("ERROR","ERROR",self.linea,self.columna)
                 self.tipo = val.tipo
                 return "ERROR"
@@ -96,7 +100,8 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
 
                 return(valor_variable)
             else:
-                self.tipo = TIPO.ERROR
+                val = VALOR("ERROR","ERROR",self.linea,self.columna)
+                self.tipo = val.tipo
                 return("ERROR")
         
         

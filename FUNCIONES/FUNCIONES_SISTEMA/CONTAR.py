@@ -77,6 +77,7 @@ class CONTAR(Expresion):
                     pass
                 else:   #SI NO EXISTE LA BASE DE DATOS
                     ast.escribir_en_consola("ERROR: No existe la base de datos : "+str(nombre_base)+"\n")
+                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CONTAR: No existe la base de datos",self.linea))
                     salida = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                     self.tipo = salida.tipo
                     return "ERROR"
@@ -110,6 +111,7 @@ class CONTAR(Expresion):
                                                 self.cuenta = self.cuenta+1
                                 else:
                                     ast.escribir_en_consola("ERROR: El campo "+str(valor_campo_ref)+" no existe en la tabla\n")
+                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CONTAR: El campo"+str(valor_campo_ref)+" no existe en la tabla",self.linea))
                                     salida = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                                     self.tipo = salida.tipo
                                     return "ERROR"
@@ -120,6 +122,7 @@ class CONTAR(Expresion):
                             break
         if(base_existente is None):
             ast.escribir_en_consola("ERROR: La TABLA "+str(valor_tabla_ref)+" No existe en la base !\n")
+            ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CONTAR: La tabla "+str(valor_tabla_ref+" No existe en la base"),self.linea))
             salida = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
             self.tipo = salida.tipo
             return "ERROR"
