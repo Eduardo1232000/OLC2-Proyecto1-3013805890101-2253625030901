@@ -38,6 +38,8 @@ from FUNCIONES.OPERACIONES_LOGICAS.NOT import *
 
 from FUNCIONES.ERROR_LSS import *
 
+from FUNCIONES.SSL.RETURN import *
+
 
 tokens = (
     'SELECT', 'FROM','USE', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
@@ -53,7 +55,7 @@ tokens = (
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
-    'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN'
+    'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN','BETWEEN'
 )
 
 #Tokens
@@ -97,6 +99,7 @@ t_BEGIN             =   r'(?i)BEGIN'
 t_END               =   r'(?i)END'
 t_EXEC              =   r'(?i)EXEC'
 t_RETURN            =   r'(?i)RETURN'
+t_BETWEEN           =   r'(?i)BETWEEN'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -259,25 +262,46 @@ def p_instrucciones_evaluar(t):
                     | declarar_procedure
                     | exec_procedure
                     | declarar_funcion
+                    
+                    | func_return
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
+
+def p_return(t):
+    '''func_return : RETURN expresion PTCOMA'''
+    t[0] = RETURN(t[2],lexer.lineno,0)
+    t[0].text = str(t[1]) + str(t[2].text) + str(t[3])
 
 def p_declaracion_funcion(t):
     ''' declarar_funcion : CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
     t[0] = CREATE_FUNCION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
 
+def p_llamada_funcion(t):
+    '''llamada_funcion : name PARABRE valores_proc PARCIERRA'''
+    t[0] = EJECUTAR_FUNCION_BASE(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text)+" "+t[2]+" "
+    #AGREGAR LAS DEL 3
+    t[0].text += str(t[4])
 
 def p_declaracion_procedure(t):
-    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END'''
-    t[0] = CREATE_PROCEDURE_BASE(t[3], "PROCEDURE",t[5],t[9],lexer.lineno,0)    #INTENTARE ENVIAR EL TEXTO PARA GUARDARLO EN LA BASE
-    t[0].text = t[1]+" "+t[2]+" "+t[3].text+str(t[4]) 
-    #AGREGAR LAS VARIABLES PROCEDURE
-    #
-    t[0].text += str(t[6])+" "+str(t[7])+" "+str(t[8])
-    #AGREGAR LAS INSTRUCCIONES
-    #
-    t[0].text+= " "+str(t[10])
+    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END
+                           | CREATE PROCEDURE name  AS BEGIN instrucciones END'''
+    
+    if(len(t)==8):
+        t[0] = CREATE_PROCEDURE_BASE(t[3], "PROCEDURE",None,t[6],lexer.lineno,0)
+        t[0].text = t[1]+" "+t[2]+" "+t[3].text+" "+str(t[4])+" "+str(t[5]) +" "
+        #AGREGAR LAS INSTRUCCIONES
+        t[0].text += str(t[7])
+    else:
+        t[0] = CREATE_PROCEDURE_BASE(t[3], "PROCEDURE",t[5],t[9],lexer.lineno,0)    #INTENTARE ENVIAR EL TEXTO PARA GUARDARLO EN LA BASE
+        t[0].text = t[1]+" "+t[2]+" "+t[3].text+str(t[4]) 
+        #AGREGAR LAS VARIABLES PROCEDURE
+        #
+        t[0].text += str(t[6])+" "+str(t[7])+" "+str(t[8])
+        #AGREGAR LAS INSTRUCCIONES
+        #
+        t[0].text+= " "+str(t[10])
 
 def p_variables_procedure(t):
     ''' variables_procedure : var_procedure COMA variables_procedure
@@ -303,13 +327,21 @@ def p_var_procedure(t):
         t[0] = lst_temporal
 
 def p_exec_procedure(t):
-    ''' exec_procedure : EXEC name valores_procedure_variables
-                       | EXEC name valores_procedure_simple'''
-    t[0] = EJECUTAR_PROCEDURE_BASE(t[2],t[3],lexer.lineno,0)
-    t[0].text = str(t[1])+" "+str(t[2].text)+ " "   #
+    ''' exec_procedure : EXEC name valores_proc PTCOMA
+                       | EXEC name PTCOMA'''
+    if(len(t)== 4):
+        t[0] = EJECUTAR_PROCEDURE_BASE(t[2],None,lexer.lineno,0)
+    else:
+        t[0] = EJECUTAR_PROCEDURE_BASE(t[2],t[3],lexer.lineno,0)
+        t[0].text = str(t[1])+" "+str(t[2].text)+ " "   #AGREGAR LOS VALORES DEL 3
+
+def p_valor_proc(t):
+    ''' valores_proc : valores_procedure_variables
+                     | valores_procedure_simple'''
+    t[0] = t[1]
     
 def p_valores_procedure_variables(t):
-    '''valores_procedure_variables : valor_procedure_variable COMA valores_procedure_variables
+    '''valores_procedure_variables : valor_procedure_variable COMA valores_proc
                                     | valor_procedure_variable'''
     if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
         t[0] = [t[1]]
@@ -325,7 +357,7 @@ def p_valor_procedure_variable(t):
     t[0] = lst_temporal
 
 def p_valores_procedure_simple(t):
-    '''valores_procedure_simple : valor_procedure_simple COMA valores_procedure_simple
+    '''valores_procedure_simple : valor_procedure_simple COMA valores_proc
                                 | valor_procedure_simple'''
     if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
         t[0] = [t[1]]
@@ -791,8 +823,10 @@ def p_dato_varchar(t):
 
 def p_expresion(t):
     '''expresion : exp_aritmetica
+                 | llamada_funcion
                  | exp_relacional
                  | variable
+                 | op_between
                  | parentesis
                  | numero
                  | FECHA
@@ -812,6 +846,12 @@ def p_expresion(t):
     else:
         t[0] = t[1]
 
+def p_between(t):
+    ''' op_between : expresion BETWEEN expresion AND expresion'''
+
+    operacion1 = MAYOR_IGUAL(t[1],t[3],lexer.lineno,0)
+    operacion2 = MENOR_IGUAL(t[1],t[5],lexer.lineno,0)
+    t[0] = EXP_AND(operacion1,operacion2,lexer.lineno,0) 
 
 def p_variable(t):
     '''variable : ARROBA name '''

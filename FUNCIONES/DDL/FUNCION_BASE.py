@@ -4,6 +4,7 @@ from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.ERROR_LSS import *
+from FUNCIONES.SSL.RETURN import *
 
 import gramatica
 
@@ -103,13 +104,13 @@ class CREATE_FUNCION_BASE(Instruccion):
                         archivo.write(xml_string)
             ast.escribir_en_consola("FUNCION CREADA\n")
 
-class EJECUTAR_FUNCION_BASE(Instruccion):
+class EJECUTAR_FUNCION_BASE(Expresion):
     def __init__(self,id,lista_valores, linea, columna):
         super().__init__(linea, columna, "EJECUTAR FUNCION")
         self.id = id
         self.lista_valores = lista_valores
-    
-    def ejecutar(self, actual, globa, ast):
+
+    def obtener_valor(self, actual, globa, ast):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.id,Expresion)):
             nombre_base = ast.obtener_base_activa()
             nombre_funcion = self.id.obtener_valor(actual,globa,ast)
@@ -121,6 +122,8 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
 
             lista_parametros = []
             lista_sentencias = []
+            tipo_retorno = ""
+            size_retorno=0
             sentencias_unidas = ""
 
             #VALIDAR QUE NO HAYA UNA FUNCION CON MISMO NOMBRE
@@ -129,6 +132,9 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
                 for proc in base.findall('funcion'):
                     if(proc).attrib['name'] == nombre_funcion:
                         existe_proc = True
+                        for retorn in proc.findall("retorno"):
+                            tipo_retorno = retorn.attrib['type']
+                            size_retorno = int(retorn.attrib['size'])
                         for params in proc.findall("parameters"):
                             for param in params:
                                 objeto_variable = VARIABLE(param.attrib['name'],param.attrib['type'],int(param.attrib['size']),"")
@@ -144,12 +150,13 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
             
             #ANALIZAR LAS SENTENCIAS CON EL PARSER
             respuesta_parser = gramatica.parses(sentencias_unidas)
-            if(respuesta_parser is not None):
+            
+            if(respuesta_parser !=None):
                 respuesta = respuesta_parser[0]
-                objeto_funcion = FUNCION(nombre_funcion,lista_parametros,respuesta)
-
+                objeto_funcion = FUNCION(nombre_funcion,tipo_retorno,size_retorno,lista_parametros,respuesta)
+                #print(lista_parametros)
                 #AGREGARLO EN LA TABLA DE SIMBOLOS
-                ast.guardar_en_tabla_simbolos(id,"FUNCION",nombre_base, "-",actual,self.linea,self.columna)
+                ast.guardar_en_tabla_simbolos(nombre_funcion,"FUNCION","-",nombre_base, objeto_funcion.obtener_tipo(),actual.nombre,"-",self.linea,self.columna)
                 #SE AGREGA SI NO EXISTE (GANAS DE HACERLO, NO SE VA A OBTENER NUNCA)
                 validacion_existe = actual.funcion_existe(nombre_funcion)
                 if(validacion_existe == False):
@@ -158,6 +165,9 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
                 #RECICLAR EL OTRO EXEC FUNCION
                 parametros_funcion = objeto_funcion.obtener_parametros()
                 instrucciones_funcion = objeto_funcion.obtener_sentencias()
+
+                #print(parametros_funcion)
+                #print(instrucciones_funcion)
 
                 #VALIDACION NUMERO DE VALORES COINCIDE CON NUMERO DE PARAMETROS
                 if(len(parametros_funcion) != len(self.lista_valores)):
@@ -173,7 +183,10 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
                     lista_valor_variable = self.lista_valores[i]
                     objeto_variable_guardar = lista_valor_variable[0]
                     objeto_valor_variable = lista_valor_variable[1]
-
+                    #print(self.lista_valores)
+                    #print(lista_valor_variable)
+                    #print(objeto_variable_guardar)
+                    #print(objeto_valor_variable)
                     if(isinstance(objeto_variable_guardar, Expresion) and isinstance(objeto_valor_variable, Expresion)):   #SI TIENE NOMBRES DE VARIABLES
                         variable_guardar = objeto_variable_guardar.obtener_valor(actual,globa,ast)
                         valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
@@ -194,9 +207,14 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
 
                                 #VALIDACION TIPOS
                                 if(tipo_var != tipo_valor):
-                                    ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
-                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion",self.linea))
-                                    return 
+                                    print(tipo_var)
+                                    print(tipo_valor)
+                                    if((tipo_var == "NCHAR" or tipo_var == "NVARCHAR")and (tipo_valor == "NCHAR" or tipo_valor == "NVARCHAR")):
+                                        pass
+                                    else:
+                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion",self.linea))
+                                        return 
                                 
                                 #VALIDAR QUE NO SE HAYA GUARDADO
                                 validacion_existe = ambito_funcion.variable_existe(nombre_var)
@@ -206,13 +224,13 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
                                     return
                                 var.modificar_valor(valor_variable)
                                 ambito_funcion.agregar_variable_tabla(var)
+                                print("AGREGUE VARIABLE")
 
                     elif(isinstance(objeto_valor_variable,Expresion)):
-                        
                         valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
                         #print(valor_variable)
-    
                         var = parametros_funcion[i]
+                        #print(var)
                         if(isinstance(var,VARIABLE)):
                             nombre_var = var.obtener_nombre()
                             tipo_var = var.obtener_tipo()
@@ -222,7 +240,7 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
 
                             #VALIDACION TIPOS
                             if(tipo_var != tipo_valor):
-                                if(tipo_var== TIPO.INT and tipo_valor == TIPO.BIT):
+                                if((tipo_var== TIPO.INT and tipo_valor == TIPO.BIT)or ((tipo_var == TIPO.NCHAR or tipo_var == TIPO.NVARCHAR)and(tipo_valor== TIPO.NCHAR or tipo_valor == TIPO.NVARCHAR) )):
                                     pass
                                 else:
                                     ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
@@ -230,15 +248,41 @@ class EJECUTAR_FUNCION_BASE(Instruccion):
                                     return 
                             
                             var.modificar_valor(valor_variable)
-                            ambito_funcion.agregar_variable_tabla(nombre_var,var)
-                                       
+                            ambito_funcion.agregar_variable_tabla(nombre_var,var)          
                     else:
                         print("ERROR")
-
                 #EJECUTAR CADA INSTRUCCION
                 for instr in instrucciones_funcion:
                     if isinstance(instr,Instruccion):
                         instr.ejecutar(ambito_funcion,globa,ast)
+                        #VALIDAR SI ACABA DE EJECUTAR UN RETURN
+                        if(isinstance(instr, RETURN)):
+                            self.ejecuto_return = instr.ejecuto_return  #OBTENGO LO QUE RETORNA
+                            #COMPARAMOS ESTE RETURN CON EL TIPO QUE DEBE RETORNAR
+                            valor_return = self.ejecuto_return.obtener_valor(ambito_funcion,globa,ast)
+                            tipo_return = self.ejecuto_return.tipo.obtener_tipo_dato()
+                            
+                            #COMPARAR EL TIPO RETORNO CON EL RETORNO DE LA FUNCION
+                            if((tipo_retorno == tipo_return) or((tipo_retorno == "BIT" or tipo_retorno == "INT") and(tipo_return=="BIT" or tipo_return =="INT"))  ):
+                                respuesta = VALOR(valor_return,tipo_return,self.linea,self.columna)
+                                self.tipo = respuesta.tipo
+                                return valor_return
+                            else:
+                                #ES ERROR PORQUE NO RETORNA EL TIPO QUE DICE
+                                ast.escribir_en_consola("ERROR: Funcion retorna Valor de tipo Incorrecto!\n")
+                                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","FUNCION: Funcion retorna valor de tipo incorrecto",self.linea))
+                                respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
+                                self.tipo = respuesta.tipo
+                                return "ERROR"
 
                     elif(isinstance(instr, Expresion)):                 #SI EN EL ARBOL APARECE UNA EXPRESION SOLO ASI, DA IGUAL EL VALOR PORQUE ASI SE HIZO EN EL IDE
                         instr.obtener_valor(ambito_funcion,globa,ast)     # ES DECIR QUE SOLO ESCRIBIERON 1+1 Y NO LO ASIGNARON A ALGUNA VARIABLE
+                
+                #SALIO DEL FOR Y NO RETORNO NADA
+                ast.escribir_en_consola("ERROR: Funcion no retorno valor!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","FUNCION: No retorno valor",self.linea))
+                respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
+                self.tipo = respuesta.tipo
+                return "ERROR"
+
+                                        

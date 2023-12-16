@@ -4,6 +4,7 @@ class Instruccion(ListaEjecuciones):                    # INSTRUCCION NO RETORNA
     def __init__(self, linea, columna, nombre_in_ex):
         super().__init__(linea, columna, nombre_in_ex)
         self.text = ""
+        self.ejecuto_return = None
     @abstractmethod
     def ejecutar(self, actual, globa, ast):
         pass

@@ -44,7 +44,7 @@ class DECLARE(Instruccion):
 
             variable_crear = VARIABLE(id,tipo_valor_tabla_simbolo,self.tipo.obtener_size(),res)
             actual.agregar_variable_tabla(id,variable_crear)
-            ast.guardar_en_tabla_simbolos(id,"VARIABLE","-", tipo_valor_tabla_simbolo,actual,self.linea,self.columna)
+            ast.guardar_en_tabla_simbolos(id,"VARIABLE",self.tipo.obtener_size(),"-", tipo_valor_tabla_simbolo,actual.nombre,"-",self.linea,self.columna)
             ast.escribir_en_consola("Variable "+str(id) +" Creada!\n")
         #VALIDAR SI EXISTE EN EL AMBITO
 
@@ -92,6 +92,7 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
     def obtener_valor(self, actual, globa, ast):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST)):
             id_var = self.id.obtener_valor(actual,globa,ast)
+            #print(actual.tabla_variables)
             validar_existe = actual.variable_existe(str(id_var))
             if(validar_existe == False):
                 ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
@@ -111,6 +112,7 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
                 #print(valor_variable)
                 return(valor_variable)
             else:
+                #print("NO DEBI LLEGAR AQUI")
                 val = VALOR("ERROR","ERROR",self.linea,self.columna)
                 self.tipo = val.tipo
                 return("ERROR")

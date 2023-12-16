@@ -182,7 +182,8 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
             else:
                 arbol_sintactico = AST(respuesta,respuesta_parser[1],respuesta_parser[2])
                 arbol_sintactico.ejecutar()
-                arbol_sintactico.graficar_reporte_errores(ventana_principal,cuaderno)
+                arbol_sintactico.graficar_reporte_errores(cuaderno)
+                arbol_sintactico.graficar_tabla_simbolos(cuaderno)
                 #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
                 salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
@@ -218,11 +219,11 @@ def mostrar_reporte_errores(ventana_principal,cuaderno,tipo):
     ruta_tabla = r_tabla.cget("text")
     ruta_arbol = r_arbol.cget("text")
     if(tipo == "ERRORES" and (ruta_errores !="")):
-        mostrar_reporte(ventana_principal,ruta_errores)
+        mostrar_reporte(ventana_principal,ruta_errores, "REPORTE DE ERRORES")
     elif(tipo == "TABLA" and (ruta_tabla !="")):
-        mostrar_reporte(ventana_principal,ruta_tabla)
+        mostrar_reporte(ventana_principal,ruta_tabla, "REPORTE DE TABLA DE SIMBOLOS")
     elif(tipo == "ARBOL" and (ruta_arbol !="")):
-        mostrar_reporte(ventana_principal,ruta_arbol)
+        mostrar_reporte(ventana_principal,ruta_arbol,"REPORTE DE AST")
     else:
         messagebox.showerror(message="aun no se ha generado este reporte!", title="Error")
 

@@ -3,6 +3,7 @@ from FUNCIONES.ERROR_LSS import *
 from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
 from FUNCIONES.ARBOL.NODO_TABLA_SIMBOLOS import *
 from FUNCIONES.CREAR_REPORTES.REPORTE_ERRORES import *
+from FUNCIONES.CREAR_REPORTES.REPORTE_TABLA_SIMBOLOS import *
 
 from REPORTES.CREAR_GRAFO import *
 import os
@@ -60,7 +61,7 @@ class AST:
     def graficar(nodos):
         print("NO IMPLEMENTADO")
 
-    def guardar_en_tabla_simbolos(self,identificador,tipo_variable,base, tipo, entorno,linea,columna):
+    def guardar_en_tabla_simbolos(self,identificador,tipo_variable,dimension,base, tipo, entorno,referencia,linea,columna):
 
         #VALIDAR SI EXISTE
         for nodo_t in self.tabla_simbolos:
@@ -69,27 +70,38 @@ class AST:
                     if(tipo_variable == nodo_t.obtener_tipo_var_fun()):
                         if(base == nodo_t.obtener_base()):
                             if(tipo == nodo_t.obtener_tipo()):
-                                if(entorno == nodo_t.obtener_entorno):
-                                    #TODO ES IGUAL, NO SE INSERTA
-                                    return
-        nodo = NODO_TABLA_SIMBOLOS(identificador,base,tipo_variable,tipo,entorno,linea,columna)
+                                if(entorno == nodo_t.obtener_entorno()):
+                                    if(dimension == nodo_t.obtener_dimension()):
+                                        if(referencia == nodo_t.obtener_referencia()):
+                                            #TODO ES IGUAL, NO SE INSERTA
+                                            return
+        nodo = NODO_TABLA_SIMBOLOS(identificador,base,tipo_variable,tipo,dimension,entorno,referencia,linea,columna)
         self.tabla_simbolos.append(nodo)
     
-    def graficar_tabla_simbolos():
-        print("NO IMPLEMENTADO")
+    def graficar_tabla_simbolos(self,cuaderno):
+        codigo_graf_tabla = obtener_codigo_grafica_reporte_tabla_simbolos(self.tabla_simbolos)
+        #print(codigo_graf_tabla)
+        pestana_actual = cuaderno.select()
+        contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
+        ruta = "REPORTES/TABLA/"
+        nombre_archivo_se, extension = os.path.splitext(os.path.basename(str(label1.cget("text"))))
+        nombre_archivo_se = nombre_archivo_se.replace(" ","_")
+        ruta+=str(nombre_archivo_se)
+        r_tabla.config(text=ruta+".png")
+        crear_grafo(codigo_graf_tabla,ruta)
+        print("GRAFO TABLA CREADO")
 
     def insertar_error_semantico(self,error):
         self.errores_codigo.append(error)
 
-    def graficar_reporte_errores(self, ventana_principal,cuaderno): # VENTANA PRINCIPAL PARA CREAR UNA SUBVENTANA, CUADERNO PARA ALMACENAR EL NOMBRE DE LA IMAGEN
+    def graficar_reporte_errores(self,cuaderno): # VENTANA PRINCIPAL PARA CREAR UNA SUBVENTANA, CUADERNO PARA ALMACENAR EL NOMBRE DE LA IMAGEN
         codigo_graf_error = obtener_codigo_grafica_reporte_errores(self.errores_codigo)
-        #print(codigo_graf_error)
         pestana_actual = cuaderno.select()
         contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
-        ruta = "REPORTES/"
+        ruta = "REPORTES/ERRORES/"
         nombre_archivo_se, extension = os.path.splitext(os.path.basename(str(label1.cget("text"))))
         nombre_archivo_se = nombre_archivo_se.replace(" ","_")
         ruta+=str(nombre_archivo_se)
         r_errores.config(text=ruta+".png")
         crear_grafo(codigo_graf_error,ruta)
-        print("GRAFO CREADO")
+        print("GRAFO ERRORES CREADO")

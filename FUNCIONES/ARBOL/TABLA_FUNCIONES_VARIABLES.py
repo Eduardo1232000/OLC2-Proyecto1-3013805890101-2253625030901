@@ -83,9 +83,10 @@ class VARIABLE:
         return self.size_tipo
     
 class FUNCION:
-    def __init__(self,nombre, tipo, parametros, sentencias):
+    def __init__(self,nombre, tipo,size_tipo, parametros, sentencias):
         self.tipo = tipo        #(TIPO)
         self.nombre = nombre    #(STRING)
+        self.size_tipo = size_tipo
         self.parametros = parametros #(LISTA)
         self.sentencias = sentencias #(LISTA)
 

@@ -23,39 +23,40 @@ class CREATE_PROCEDURE_BASE(Instruccion):
             nombre_base = ast.obtener_base_activa()
             nombre_func = self.nombre.obtener_valor(actual,globa,ast)
             lista_parametros = []
-            for var in self.lista_variables:
-                if(isinstance(var[0], Expresion) and isinstance(var[1],TIPODATO)):
-                    nombre_variable = var[0].obtener_valor(actual,globa,ast)
-                    if(var[1].tipo == TIPO.INT):
-                        tipo_var = "INT"
-                        size_tipo_var = 0
-                    elif(var[1].tipo == TIPO.DECIMAL):
-                        tipo_var = "DECIMAL"
-                        size_tipo_var = 0
-                    elif(var[1].tipo == TIPO.DATE):
-                        tipo_var = "DATE"
-                        size_tipo_var = 0
-                    elif(var[1].tipo == TIPO.DATETIME):
-                        tipo_var = "DATETIME"
-                        size_tipo_var = 0
-                    elif(var[1].tipo == TIPO.NCHAR):
-                        tipo_var = "NCHAR"
-                        if(isinstance(var[1],TIPODATO)):
-                            size_tipo_var = var[1].obtener_size()
-                    elif(var[1].tipo == TIPO.NVARCHAR):
-                        tipo_var = "NVARCHAR"
-                        if(isinstance(var[1],TIPODATO)):
-                            size_tipo_var = var[1].obtener_size()
-                    else:
-                        tipo_var = "ERROR"
-                        ast.escribir_en_consola("ERROR: No se reconocio un tipo de dato\n")
-                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No se reconocio un tipo de dato",self.linea))
-                        return
-                    lst = []
-                    lst.append(nombre_variable)
-                    lst.append(tipo_var)
-                    lst.append(size_tipo_var)
-                    lista_parametros.append(lst)
+            if(self.lista_variables != None):
+                for var in self.lista_variables:
+                    if(isinstance(var[0], Expresion) and isinstance(var[1],TIPODATO)):
+                        nombre_variable = var[0].obtener_valor(actual,globa,ast)
+                        if(var[1].tipo == TIPO.INT):
+                            tipo_var = "INT"
+                            size_tipo_var = 0
+                        elif(var[1].tipo == TIPO.DECIMAL):
+                            tipo_var = "DECIMAL"
+                            size_tipo_var = 0
+                        elif(var[1].tipo == TIPO.DATE):
+                            tipo_var = "DATE"
+                            size_tipo_var = 0
+                        elif(var[1].tipo == TIPO.DATETIME):
+                            tipo_var = "DATETIME"
+                            size_tipo_var = 0
+                        elif(var[1].tipo == TIPO.NCHAR):
+                            tipo_var = "NCHAR"
+                            if(isinstance(var[1],TIPODATO)):
+                                size_tipo_var = var[1].obtener_size()
+                        elif(var[1].tipo == TIPO.NVARCHAR):
+                            tipo_var = "NVARCHAR"
+                            if(isinstance(var[1],TIPODATO)):
+                                size_tipo_var = var[1].obtener_size()
+                        else:
+                            tipo_var = "ERROR"
+                            ast.escribir_en_consola("ERROR: No se reconocio un tipo de dato\n")
+                            ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No se reconocio un tipo de dato",self.linea))
+                            return
+                        lst = []
+                        lst.append(nombre_variable)
+                        lst.append(tipo_var)
+                        lst.append(size_tipo_var)
+                        lista_parametros.append(lst)
 
             #AGREGAR EL PROCEDURE A LA BASE
             ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
@@ -74,11 +75,13 @@ class CREATE_PROCEDURE_BASE(Instruccion):
                     nuevo_procedure.set('name', nombre_func)  
 
                     nuevo_parameters = ET.SubElement(nuevo_procedure, 'parameters')
-                    for param in lista_parametros:
-                        nuevo_param = ET.SubElement(nuevo_parameters, 'parameter')
-                        nuevo_param.set('name', str(param[0]))
-                        nuevo_param.set('type', str(param[1]))
-                        nuevo_param.set('size', str(param[2]))
+                    
+                    if(len(lista_parametros) !=0):
+                        for param in lista_parametros:
+                            nuevo_param = ET.SubElement(nuevo_parameters, 'parameter')
+                            nuevo_param.set('name', str(param[0]))
+                            nuevo_param.set('type', str(param[1]))
+                            nuevo_param.set('size', str(param[2]))
 
                     nuevo_sentencias = ET.SubElement(nuevo_procedure, 'sentencias')
                     for sent in self.lista_instruccion[0]:
@@ -141,7 +144,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                 objeto_procedure = PROCEDURE(nombre_procedure,lista_parametros,respuesta)
 
                 #AGREGARLO EN LA TABLA DE SIMBOLOS
-                ast.guardar_en_tabla_simbolos(id,"PROCEDURE",nombre_base, "-",actual,self.linea,self.columna)
+                ast.guardar_en_tabla_simbolos(nombre_procedure,"PROCEDURE","-",nombre_base, "-",actual.nombre,"-",self.linea,self.columna)
                 #SE AGREGA SI NO EXISTE (GANAS DE HACERLO, NO SE VA A OBTENER NUNCA)
                 validacion_existe = actual.procedure_existe(nombre_procedure)
                 if(validacion_existe == False):
@@ -152,80 +155,82 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                 instrucciones_procedure = objeto_procedure.obtener_sentencias()
 
                 #VALIDACION NUMERO DE VALORES COINCIDE CON NUMERO DE PARAMETROS
-                if(len(parametros_procedure) != len(self.lista_valores)):
-                    ast.escribir_en_consola("ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
-                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El numero de parametros no coincide con el numero de variables del procedimiento",self.linea))
-                    return
+                if(self.lista_valores != None):
+                    if(len(parametros_procedure) != len(self.lista_valores)):
+                        ast.escribir_en_consola("ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
+                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El numero de parametros no coincide con el numero de variables del procedimiento",self.linea))
+                        return
                                 
                 #CREAR EL AMBITO DE PROCEDURE
                 ambito_procedure = TABLA_FUNCIONES_Y_VARIABLES(actual,nombre_procedure)
 
-                #GUARDA LOS VALORES EN LOS PARAMETROS
-                for i in range(len(self.lista_valores)):
-                    lista_valor_variable = self.lista_valores[i]
-                    objeto_variable_guardar = lista_valor_variable[0]
-                    objeto_valor_variable = lista_valor_variable[1]
+                if(self.lista_valores !=None):
+                    #GUARDA LOS VALORES EN LOS PARAMETROS
+                    for i in range(len(self.lista_valores)):
+                        lista_valor_variable = self.lista_valores[i]
+                        objeto_variable_guardar = lista_valor_variable[0]
+                        objeto_valor_variable = lista_valor_variable[1]
 
-                    if(isinstance(objeto_variable_guardar, Expresion) and isinstance(objeto_valor_variable, Expresion)):   #SI TIENE NOMBRES DE VARIABLES
-                        variable_guardar = objeto_variable_guardar.obtener_valor(actual,globa,ast)
-                        valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
-                        #print(variable_guardar)
-                        #print(valor_variable)
+                        if(isinstance(objeto_variable_guardar, Expresion) and isinstance(objeto_valor_variable, Expresion)):   #SI TIENE NOMBRES DE VARIABLES
+                            variable_guardar = objeto_variable_guardar.obtener_valor(actual,globa,ast)
+                            valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
+                            #print(variable_guardar)
+                            #print(valor_variable)
 
-                        for j in range (len(parametros_procedure)):
-                            var = parametros_procedure[j]
+                            for j in range (len(parametros_procedure)):
+                                var = parametros_procedure[j]
+                                if(isinstance(var,VARIABLE)):
+
+                                    nombre_var = var.obtener_nombre()
+                                    if(nombre_var != variable_guardar): #SI NO ES EL MISMO NOMBRE PASA AL SIGUIENTE
+                                        continue
+
+                                    #print("ENCONTRE")
+                                    tipo_var = var.obtener_tipo()
+                                    tipo_valor = objeto_valor_variable.tipo.obtener_tipo_dato()
+
+                                    #VALIDACION TIPOS
+                                    if(tipo_var != tipo_valor):
+                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
+                                        return 
+                                    
+                                    #VALIDAR QUE NO SE HAYA GUARDADO
+                                    validacion_existe = ambito_procedure.variable_existe(nombre_var)
+                                    if(validacion_existe == True):
+                                        ast.escribir_en_consola("ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: La variable "+str(nombre_var)+" se inserto mas de 1 vez",self.linea))
+                                        return
+                                    var.modificar_valor(valor_variable)
+                                    ambito_procedure.agregar_variable_tabla(var)
+
+                        elif(isinstance(objeto_valor_variable,Expresion)):
+                            
+                            valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
+                            #print(valor_variable)
+        
+                            var = parametros_procedure[i]
                             if(isinstance(var,VARIABLE)):
-
                                 nombre_var = var.obtener_nombre()
-                                if(nombre_var != variable_guardar): #SI NO ES EL MISMO NOMBRE PASA AL SIGUIENTE
-                                    continue
-
-                                #print("ENCONTRE")
                                 tipo_var = var.obtener_tipo()
                                 tipo_valor = objeto_valor_variable.tipo.obtener_tipo_dato()
+                                #print(tipo_var)
+                                #print(tipo_valor)
 
                                 #VALIDACION TIPOS
                                 if(tipo_var != tipo_valor):
-                                    ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
-                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
-                                    return 
+                                    if(tipo_var== TIPO.INT and tipo_valor == TIPO.BIT):
+                                        pass
+                                    else:
+                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
+                                        return 
                                 
-                                #VALIDAR QUE NO SE HAYA GUARDADO
-                                validacion_existe = ambito_procedure.variable_existe(nombre_var)
-                                if(validacion_existe == True):
-                                    ast.escribir_en_consola("ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
-                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: La variable "+str(nombre_var)+" se inserto mas de 1 vez",self.linea))
-                                    return
                                 var.modificar_valor(valor_variable)
-                                ambito_procedure.agregar_variable_tabla(var)
-
-                    elif(isinstance(objeto_valor_variable,Expresion)):
-                        
-                        valor_variable = objeto_valor_variable.obtener_valor(actual,globa,ast)
-                        #print(valor_variable)
-    
-                        var = parametros_procedure[i]
-                        if(isinstance(var,VARIABLE)):
-                            nombre_var = var.obtener_nombre()
-                            tipo_var = var.obtener_tipo()
-                            tipo_valor = objeto_valor_variable.tipo.obtener_tipo_dato()
-                            #print(tipo_var)
-                            #print(tipo_valor)
-
-                            #VALIDACION TIPOS
-                            if(tipo_var != tipo_valor):
-                                if(tipo_var== TIPO.INT and tipo_valor == TIPO.BIT):
-                                    pass
-                                else:
-                                    ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
-                                    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
-                                    return 
-                            
-                            var.modificar_valor(valor_variable)
-                            ambito_procedure.agregar_variable_tabla(nombre_var,var)
-                                       
-                    else:
-                        print("ERROR")
+                                ambito_procedure.agregar_variable_tabla(nombre_var,var)
+                                        
+                        else:
+                            print("ERROR")
 
                 #EJECUTAR CADA INSTRUCCION
                 for instr in instrucciones_procedure:

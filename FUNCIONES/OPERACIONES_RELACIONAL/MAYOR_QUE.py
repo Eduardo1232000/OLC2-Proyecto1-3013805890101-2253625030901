@@ -25,4 +25,5 @@ class MAYOR_QUE(Expresion):
             respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
         #BORRAR
         ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
-        return respuesta
+        self.tipo = respuesta.tipo
+        return respuesta.obtener_valor(actual,globa,ast)

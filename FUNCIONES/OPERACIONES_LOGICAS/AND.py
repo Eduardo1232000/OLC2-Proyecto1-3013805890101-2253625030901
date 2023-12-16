@@ -14,6 +14,7 @@ class EXP_AND(Expresion):
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
             tipo_expr2 = self.expr2.tipo.obtener_tipo_dato()
 
+            
             if(((tipo_expr1==TIPO.INT or tipo_expr1==TIPO.BIT or tipo_expr1==TIPO.DECIMAL)and(tipo_expr2==TIPO.INT or tipo_expr2==TIPO.BIT or tipo_expr2==TIPO.DECIMAL))):
                 if((int(expr1)==0 or int(expr1)==1) and(int(expr2)==0 or int(expr2)==1)):
                     if((expr1 == 1) and expr2 == 1):
