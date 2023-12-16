@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.TIPO import *
 class VALOR(Expresion):
     def __init__(self,valor,tipo_valor, linea, columna):
         super().__init__(linea, columna, "VALOR")
+        self.text = ""
         self.valor = valor
         self.tipo_valor = tipo_valor
         if(self.tipo_valor == "INT"):
@@ -126,4 +127,4 @@ class CAMPO_TABLA(Expresion):
 
     def obtener_reference(self):
         return self.reference
-
+    

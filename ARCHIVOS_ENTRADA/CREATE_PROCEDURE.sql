@@ -1,3 +1,4 @@
+USE Alimentos;
 CREATE PROCEDURE prueba (@var1 INT , @var2 INT , @var3 INT) 
 AS
 BEGIN
@@ -10,3 +11,4 @@ BEGIN
 END
 
 EXEC prueba 1,2,3
+

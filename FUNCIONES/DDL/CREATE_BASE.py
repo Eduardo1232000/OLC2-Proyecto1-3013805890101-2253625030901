@@ -17,3 +17,7 @@ class CREATE_BASE(Instruccion):
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe una base de datos con ese nombre",self.linea))
             else:
                 ast.escribir_en_consola("BASE DE DATOS CREADA!\n")
+
+    '''def retornar_codigo_origen(self):
+        codigo_origen = "CREATE DATA BASE "+str(self.nombre.retornar_codigo_origen()) +";"
+        return codigo_origen'''

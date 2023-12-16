@@ -16,6 +16,7 @@ class TIPODATO:
     def __init__(self,tipo,size=0) -> None:
         self.tipo = tipo
         self.size = size
+        self.text = ""
 
     def obtener_tipo_dato(self):
         return self.tipo

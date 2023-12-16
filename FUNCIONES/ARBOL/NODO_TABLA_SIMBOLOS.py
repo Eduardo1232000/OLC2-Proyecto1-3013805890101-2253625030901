@@ -1,6 +1,7 @@
 class NODO_TABLA_SIMBOLOS:
-    def __init__(self,identificador, tipo_var_fun,tipo,entorno,linea,columna):
+    def __init__(self,identificador,base, tipo_var_fun,tipo,entorno,linea,columna):
         self.identificador = identificador
+        self.base = base
         self.tipo_var_fun = tipo_var_fun
         self.tipo = tipo 
         self.entorno = entorno
@@ -9,6 +10,9 @@ class NODO_TABLA_SIMBOLOS:
 
     def obtener_identificador(self):
         return self.identificador
+    
+    def obtener_base(self):
+        return self.base
 
     def obtener_tipo_var_fun(self):
         return self.tipo_var_fun

@@ -99,8 +99,6 @@
                 <reference>false</reference>
             </campo>
         </tabla>
-        <funcion name="FUNCIONES">
-        </funcion>
         <tabla name="Lacteos">
             <campo>
                 <nombre>product_no</nombre>
@@ -177,5 +175,32 @@
                 <valor>1</valor>
             </dato>
         </tabla>
+        <funcion name="prueba">
+            <retorno type="INT" size="0"/>
+            <parameters>
+                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var2" type="INT" size="0"/>
+                <parameter name="var3" type="INT" size="0"/>
+                <parameter name="var4" type="NCHAR" size="5"/>
+                <parameter name="var5" type="NVARCHAR" size="3"/>
+            </parameters>
+            <sentencias>
+                <sentencia>DECLARE @IVA INT;</sentencia>
+                <sentencia>SET @IVA = 3;</sentencia>
+                <sentencia>@IVA + 1</sentencia>
+            </sentencias>
+        </funcion>
+        <procedure name="prueba">
+            <parameters>
+                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var2" type="INT" size="0"/>
+                <parameter name="var3" type="INT" size="0"/>
+            </parameters>
+            <sentencias>
+                <sentencia>DECLARE @IVA INT;</sentencia>
+                <sentencia>SET @IVA = 3;</sentencia>
+                <sentencia>@IVA + 1</sentencia>
+            </sentencias>
+        </procedure>
     </base>
 </database>

@@ -8,5 +8,11 @@ a0 [shape=none label=<
 <TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>DESCRIPCION</B></FONT></TD>
 <TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>LINEA</B></FONT></TD>
 </TR>
+<TR>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">1</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">SEMANTICO</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">CREATE: Ya existe un procedure con ese nombre</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">31</FONT></TD>
+</TR>
 </TABLE>>];
 }

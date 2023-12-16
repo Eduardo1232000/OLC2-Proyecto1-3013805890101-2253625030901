@@ -4,7 +4,8 @@ from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.VARIABLES import *
-from FUNCIONES.DDL.PROCEDURES import *
+from FUNCIONES.DDL.PROCEDURE_BASE import *
+from FUNCIONES.DDL.FUNCION_BASE import *
 
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
@@ -52,7 +53,7 @@ tokens = (
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
-    'PROCEDURE','BEGIN','END','EXEC'
+    'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN'
 )
 
 #Tokens
@@ -91,9 +92,11 @@ t_DELETE            =   r'(?i)DELETE'
 t_DECLARE           =   r'(?i)DECLARE'
 t_SET               =   r'(?i)SET'
 t_PROCEDURE         =   r'(?i)PROCEDURE'
+t_FUNCTION          =   r'(?i)FUNCTION'
 t_BEGIN             =   r'(?i)BEGIN'
 t_END               =   r'(?i)END'
 t_EXEC              =   r'(?i)EXEC'
+t_RETURN            =   r'(?i)RETURN'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -161,11 +164,6 @@ def t_NBIT(t):
         print("VALOR BIT DEMASIADO LARGO %d",t.value)
         t.value = 0
     return t
-
-
-
-
-
 
 def t_CADENA(t):
     r'\"([^"]*)\"'
@@ -260,16 +258,26 @@ def p_instrucciones_evaluar(t):
                     | asignacion_variable
                     | declarar_procedure
                     | exec_procedure
+                    | declarar_funcion
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
 
-
-
 def p_declaracion_funcion(t):
-    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END'''
-    t[0] = CREATE_PROCEDURE(t[3], "PROCEDURE",t[5],t[9],lexer.lineno,0)
+    ''' declarar_funcion : CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
+    t[0] = CREATE_FUNCION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
 
+
+def p_declaracion_procedure(t):
+    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END'''
+    t[0] = CREATE_PROCEDURE_BASE(t[3], "PROCEDURE",t[5],t[9],lexer.lineno,0)    #INTENTARE ENVIAR EL TEXTO PARA GUARDARLO EN LA BASE
+    t[0].text = t[1]+" "+t[2]+" "+t[3].text+str(t[4]) 
+    #AGREGAR LAS VARIABLES PROCEDURE
+    #
+    t[0].text += str(t[6])+" "+str(t[7])+" "+str(t[8])
+    #AGREGAR LAS INSTRUCCIONES
+    #
+    t[0].text+= " "+str(t[10])
 
 def p_variables_procedure(t):
     ''' variables_procedure : var_procedure COMA variables_procedure
@@ -281,16 +289,24 @@ def p_variables_procedure(t):
         t[0] = t[3]
 
 def p_var_procedure(t):
-    ''' var_procedure : ARROBA name tipo_dato'''
-    lst_temporal = []
-    lst_temporal.append(t[2])
-    lst_temporal.append(t[3])
-    t[0] = lst_temporal
+    ''' var_procedure : ARROBA name tipo_dato
+                      | ARROBA name AS tipo_dato'''
+    if(len(t) == 4):
+        lst_temporal = []
+        lst_temporal.append(t[2])
+        lst_temporal.append(t[3])
+        t[0] = lst_temporal
+    else:
+        lst_temporal = []
+        lst_temporal.append(t[2])
+        lst_temporal.append(t[4])
+        t[0] = lst_temporal
 
 def p_exec_procedure(t):
     ''' exec_procedure : EXEC name valores_procedure_variables
                        | EXEC name valores_procedure_simple'''
-    t[0] = EJECUTAR_PROCEDURE(t[2],t[3],lexer.lineno,0)
+    t[0] = EJECUTAR_PROCEDURE_BASE(t[2],t[3],lexer.lineno,0)
+    t[0].text = str(t[1])+" "+str(t[2].text)+ " "   #
     
 def p_valores_procedure_variables(t):
     '''valores_procedure_variables : valor_procedure_variable COMA valores_procedure_variables
@@ -326,16 +342,24 @@ def p_valor_procedure_simple(t):
     t[0] = lst_temporal
 
 def p_declaracion_variable(t):
-    ''' declarar_var : DECLARE ARROBA name tipo_dato PTCOMA'''
-    t[0] = DECLARE(t[3],t[4],lexer.lineno,0)
+    ''' declarar_var : DECLARE ARROBA name tipo_dato PTCOMA
+                     | DECLARE ARROBA name AS tipo_dato PTCOMA'''
+    if(len(t) == 6):
+        t[0] = DECLARE(t[3],t[4],lexer.lineno,0)
+        t[0].text = str(t[1])+" "+str(t[2])+str(t[3].text)+" "+str(t[4].text)+str(t[5])
+    else:
+        t[0] = DECLARE(t[3],t[5],lexer.lineno,0)
+        t[0].text = str(t[1])+" "+str(t[2])+str(t[3].text)+" "+str(t[5].text)+str(t[5])
 
 def p_asignacion_variable(t):
     ''' asignacion_variable : SET ARROBA name IGUAL expresion PTCOMA'''
     t[0] = ASIGNAR_VARIABLE(t[3],t[5],lexer.lineno,0)
+    t[0].text = str(t[1])+" "+str(t[2])+str(t[3].text)+" "+str(t[4])+" "+str(t[5].text)+str(t[6])
 
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT operacion_sis'''
     t[0] = t[2]
+    t[0].text = str(t[1]) +" "+str(t[2].text)
 
 def p_operacion_sistema(t):
     '''operacion_sis : func_concatena
@@ -348,27 +372,32 @@ def p_operacion_sistema(t):
                     '''
     t[0] = t[1]
 
-
-
 def p_concatena(t):
     'func_concatena : CONCATENAR PARABRE expresion COMA expresion PARCIERRA'
     t[0] = CONCATENAR(t[3],t[5],lexer.lineno,0)
+    t[0].text = str(t[1])+str(t[2])+str(t[3].text)+str(t[4])+" "+str(t[5].text)+str(t[6])
 
 def p_substraer(t):
     'func_substraer : SUBSTRAER PARABRE cadenas COMA numero COMA numero PARCIERRA'
     #print("SUBSTRAER -> "+str(t[3]) +" , "+ str(t[5])+" , "+str(t[7]))
     t[0] = SUBSTRAER(t[3],t[5],t[7],lexer.lineno,0)
+    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+" "+str(t[4]) +" "+str(t[5].text)+str(t[6])+" "+str(t[7].text) +str(t[8])
 
 def p_hoy(t):
     'func_hoy : HOY PARABRE PARCIERRA'
     t[0] = HOY(lexer.lineno,0)
+    t[0].text = str(t[1]) +str(t[2])+str(t[3])
 
 def p_contar(t):
     '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
                    | CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
     
     t[0] = CONTAR(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
-
+    
+    if(t.slice[9].type == "IGUAL"):
+        t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) +" "+str(t[5])+" "+str(t[6].text)+" "+str(t[7])+" "+str(t[8].text)+str(t[9])+" "+str(t[10].text)+str(t[11])
+    else:
+         t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) +" "+str(t[5])+" "+str(t[6].text)+" "+str(t[7])+" "+str(t[8].text)+str(t[9].text)+" "+str(t[10].text)+str(t[11])
 def p_signo_relacional(t):
     '''signo_relacional : DIFERENTE
                         | MENORQUE
@@ -376,14 +405,21 @@ def p_signo_relacional(t):
                         | MENORIGUAL
                         | MAYORIGUAL'''
     t[0] = t[1]
+
 def p_suma(t):
     '''func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
                  | SUMA PARABRE name PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
     t[0] = SELECT_SUMA(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
 
+    if(t.slice[9].type =="IGUAL"):
+        t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])+ " "+str(t[5])+" "+str(t[6].text) +" "+str(t[7])+" "+str(t[8].text)+" "+str(t[9]) +" "+str(t[10].text)+str(t[11])
+    else:
+        t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])+ " "+str(t[5])+" "+str(t[6].text) +" "+str(t[7].text)+str(t[8].text)+str(t[9].text)+" " +str(t[10].text)+str(t[11])
 def p_cas(t):
     'func_cas : CAST PARABRE ARROBA name AS tipo_dato PARCIERRA '
     print("CAST -> "+str(t[4]) + " -> " +str(t[6]))
+    #agregar hasta que sea un objeto
+    #t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4].text)+" "+str(t[5]) +" "+str(t[6].text)+ str(t[7])
 
 def p_select_dato(t):
     '''select_dato : MULTIPLICACION FROM name
@@ -391,10 +427,12 @@ def p_select_dato(t):
                     | FROM name WHERE condiciones'''
     print("SELECCIONANDO TODOS LOS DATOS DE: " +str(t[3]))
 
+
 def p_condiciones (t):
     '''condiciones : expresion
                     | expresion AND condiciones
                     | expresion OR condiciones '''
+
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -406,18 +444,22 @@ def p_expresion_aritmetica(t):
 def p_adicion(t):
     '''op_suma : expresion MAS expresion '''
     t[0] = SUMA(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_resta(t):
     '''op_resta : expresion RESTA expresion '''
     t[0] = RESTA(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_multiplicacion(t):
     '''op_multiplicacion : expresion MULTIPLICACION expresion '''
     t[0] = MULTIPLICACION(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_division(t):
     '''op_division : expresion DIVISION expresion '''
     t[0] = DIVISION(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 
 
@@ -433,26 +475,32 @@ def p_expresion_relacional(t):
 def p_igual(t):
     '''exr_igual : expresion IGUALIGUAL expresion'''
     t[0] = IGUAL(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_diferente(t):
     '''exr_diferente : expresion DIFERENTE expresion'''
     t[0] = DIFERENTE(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_menorque(t):
     '''exr_menorque : expresion MENORQUE expresion'''
     t[0] = MENOR_QUE(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_mayorque(t):
     '''exr_mayorque : expresion MAYORQUE expresion'''
     t[0] = MAYOR_QUE(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_menorigual(t):
     '''exr_menorigual : expresion MENORIGUAL expresion'''
     t[0] = MENOR_IGUAL(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 def p_mayorigual(t):
     '''exr_mayorigual : expresion MAYORIGUAL expresion'''
     t[0] = MAYOR_IGUAL(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+str(t[2])+" "+str(t[3].text)
 
 
 
@@ -461,27 +509,35 @@ def p_expresion_logica(t):
     t[0] = t[1]
 
 def p_and(t):
-    '''exl_and : expresion AND expresion'''
+    '''exl_and : expresion AND expresion'''                                 #ARREGLAR ESTO JUNTARLOS TODOS
     t[0] = EXP_AND(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text)+" "+str(t[2])+" "+str(t[3].text)
 
 def p_or(t):
     '''exl_and : expresion OR expresion'''
     t[0] = EXP_OR(t[1],t[3],lexer.lineno,0)
+    t[0].text = str(t[1].text) +" "+ str(t[2])+" "+str(t[3].text)
 
 def p_not(t):
     '''exl_and : RNOT expresion %prec RNOT'''
     t[0] = EXP_NOT(t[2],lexer.lineno,0)
+    t[0].text = str(t[1]) + str(t[2].text)
 
 
 
 def p_sentencia_create_database(t):
     '''sent_create_database : CREATE DATA BASE name PTCOMA '''
     t[0] = CREATE_BASE(t[4],lexer.lineno,0)
+    t[0].text = str(t[1])+" "+str(t[2])+" "+str(t[3])+" "+str(t[4].text) +str(t[5])
 
 
 def p_sentencia_create_table(t):
     '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
     t[0] = CREATE_TABLE(t[3],t[5],lexer.lineno,0)
+    t[0].text = str(t[1]) +" "+ str(t[2])+" "+str(t[3].text)+" "+str(t[4]) 
+
+    #AGREGAR EL TEXTO DE LOS DATOS (T[5])
+    t[0].text += str(t[6])+str(t[7])
 
 
 #ALTER TABLE nombre_tabla ADD COLUMN new column TIPO DATO
@@ -489,7 +545,7 @@ def p_sentencia_create_table(t):
 #ALTER TABLE nombre_tabla 'MODIFY' COLUMN nombre_columna name
 
 
-def p_alter_table(t):
+def p_alter_table(t) :
     '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
     t[0] = ALTER_TABLE(t[3], t[4], lexer.lineno, 0)
 
@@ -508,14 +564,14 @@ def p_alter_add(t):
     elif len(t) == 14:
         t[0] = ("ADD_CONSTRAINT", t[3], "FOREIGN KEY", t[5], "REFERENCES", t[10], t[12], t[13])
     else:
-        # Manejar un error si la estructura no coincide
+        # Manejar un error si la estructura no coincide         #MEJOR QUITAR EL ELSE, Y COLOCARLO EN EL DE LEN 14
         t[0] = None
 
 def p_alter_drop(t):
     '''alter_drop : DROP COLUMN name
                   | DROP CONSTRAINT name'''
-    if len(t) == 4:
-        t[0] = ("DROP", "COLUMN", t[3])
+    if len(t) == 4:                                 #SIEMPRE VA A TENER LEN 4
+        t[0] = ("DROP", "COLUMN", t[3])             #PUEDE GENERAR ERROR PORQUE NO CREA OBJETO INSTRUCCION NI EXPRESION
     elif len(t) == 3:
         t[0] = ("DROP_CONSTRAINT", t[3])
     else:
@@ -524,7 +580,7 @@ def p_alter_drop(t):
 
 def p_alter_modify(t):
     '''alter_modify : MODIFY COLUMN name tipo_dato'''
-    t[0] = ("MODIFY", "COLUMN", t[4], t[5])
+    t[0] = ("MODIFY", "COLUMN", t[4], t[5])         #PUEDE GENERAR ERROR PORQUE NO ES OBJETO INSTRUCCION NI EXPRESION
 
 #DROP TABLE nombre_tabla
 #DROP DATABASE nombre_database
@@ -532,18 +588,21 @@ def p_alter_modify(t):
 def p_sent_drop(t):
     '''sent_drop : DROP drop_type name PTCOMA'''
     t[0] = DROP(t[2], t[3], lexer.lineno,0)
+    t[0].text = str(t[1]) +" "+ str(t[2]) +" "+ str(t[3].text) +str(t[4])
     #print("DROP -> ")
 
 def p_drop_type(t):
     '''drop_type : TABLE
                 | DATA BASE'''
     t[0] = t[1]  # Usar t[1] (TABLE) o t[2] (DATA BASE) según la gramática
+
     #print("DROP TYPE -> " + str(t[0]))
 
 #TRUNCATE TABLE nombre_tabla
 def p_sent_truncate(t):
     '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
     t[0] = TRUNCATE_TABLE(t[3], lexer.lineno, 0)
+    t[0].text = str(t[1]) +" "+str(t[2]) + " "+str(t[3].text) +str(t[4])
     print("Estoy recibiendo la gramatica correcta?")
 
 
@@ -591,12 +650,14 @@ def p_dato_con_caract(t):
 def p_user_base(t):
     '''use_base : USE name PTCOMA'''
     t[0] = USE_BASE(t[2],lexer.lineno,0)
+    t[0].text = str(t[1]) +" "+str(t[2].text) +str(t[3])
          
     
 def p_foreign_key(t):
     '''foreign_key : FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA'''
     #print("HAY UN FOREIGN KEY")
     t[0] = FORANEA(t[7],t[4],t[9],lexer.lineno,0)
+    t[0].text = str(t[1]) +" "+ str(t[2]) +" "+str(t[3])+str(t[4].text) + str(t[5]) +" "+ str(t[6]) + " "+str(t[7].text) +str(t[8]) +str(t[9].text)+str(t[10])
 
 def p_caracteristicas(t):
     '''caracteristicas : caracteristica caracteristicas
@@ -605,6 +666,7 @@ def p_caracteristicas(t):
     if len(t) == 2:     #SI SOLO ES UNA CARACTERISTICA
         t[0] = [t[1]]
     else:               #SI ES MAS DE 1 CARACTERISTICA
+        t[1].text += " "
         t[2].insert(0, t[1])
         t[0] = t[2]
 
@@ -618,14 +680,17 @@ def p_caracteristica(t):
 def p_caract_nulo(t):
     '''caract_nulo : NULL'''
     t[0] = TIPODATO(TIPO.NULL)
+    t[0].text = str(t[1])
 
 def p_caract_no_nulo(t):
     '''caract_no_nulo : NOT NULL'''
     t[0] = TIPODATO(TIPO.NOT_NULL)
+    t[0].text = str(t[1]) +" "+str(t[2])
 
 def p_caract_primary_key(t):
     '''caract_primary_key : PRIMARY KEY'''
     t[0] = TIPODATO(TIPO.PRIMARY_KEY)
+    t[0].text = str(t[1]) +" "+str([2])
 
     
     
@@ -633,13 +698,30 @@ def p_caract_primary_key(t):
 def p_f_insert(t):
     ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
     t[0] = INSERT_INTO(t[3],t[5],t[9],lexer.lineno,0)
+    t[0].text = str(t[1]) + " "+str(t[2])+ " " +str(t[3].text) +" " +str(t[4])  #AGREGAMOS LAS COLUMNAS SEPARADO POR COMAS
+    for i in range(len(t[5])):
+        objeto = t[5][i]
+        if(isinstance(objeto,Instruccion) or isinstance(objeto,Expresion) or isinstance(objeto, TIPODATO)):
+            if(i!=0):
+                t[0].text+=", "
+            t[0].text+=str(objeto.text)
+
+    t[0].text+= str(t[6]) +" "+ str(t[7]) + " "+ str(t[8])                      #AGREGAMOS LOS VALORES SEPARADOS POR COMAS
+    for i in range(len(t[9])):
+        objeto = t[9][i]
+        if(isinstance(objeto,Instruccion) or isinstance(objeto,Expresion) or isinstance(objeto, TIPODATO)):
+            if(i!=0):
+                t[0].text+=", "
+            t[0].text+=str(objeto.text)
+
+    t[0].text+= str(t[10]) +str(t[11])
 
     
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
-
+    
 def p_columnas(t):
     ''' columnas : name
                 | name COMA columnas'''
@@ -648,8 +730,10 @@ def p_columnas(t):
         t[0] = [t[1]]
     else:
         # Hay más de una expresión
+        t[1].text = t[1].text +", "
         t[3].insert(0, t[1])
         t[0] = t[3]
+
                 
     
 
@@ -663,6 +747,7 @@ def p_valores(t):
         t[0] = [t[1]]
     else:
         # Hay más de una expresión
+        t[1].text = t[1].text +", "  #MODIFICO EL TEXTO PARA AGREGARLE LA COMA ANTES
         t[3].insert(0, t[1])
         t[0] = t[3]
 
@@ -676,25 +761,32 @@ def p_tipodato(t):
                  | dato_varchar'''
     if(t.slice[1].type == "INT"):
         t[0] = TIPODATO(TIPO.INT)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "BIT"):
         t[0] = TIPODATO(TIPO.BIT)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "DECIMAL"):
         t[0] = TIPODATO(TIPO.DECIMAL)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "DATE"):
         t[0] = TIPODATO(TIPO.DATE)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "DATETIME"):
         t[0] = TIPODATO(TIPO.DATETIME)
+        t[0].text = str(t[1])
     else:
         t[0] = t[1]
     
 def p_dato_char(t):
     '''dato_char : NCHAR PARABRE NINT PARCIERRA'''
     t[0] = TIPODATO(TIPO.NCHAR,t[3]) #PARA EL TIPODATO ES EL UNICO DONDE NO MANEJA OBJETO PARA EL NUMERO DEL CHAR O VARCHAR
+    t[0].text = str(t[1]) + str(t[2]) + str(t[3]) + str(t[4])
 
 
 def p_dato_varchar(t):
     '''dato_varchar : NVARCHAR PARABRE NINT PARCIERRA'''
     t[0] = TIPODATO(TIPO.NVARCHAR,t[3])
+    t[0].text = str(t[1]) +str(t[2]) + str(t[3]) + str(t[4])
     
 
 def p_expresion(t):
@@ -710,22 +802,28 @@ def p_expresion(t):
     
     if(t.slice[1].type == "FECHA"):
         t[0] = VALOR(t[1],"FECHA",lexer.lineno,0)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "FECHAHORA"):
         t[0] = VALOR(t[1],"FECHAHORA",lexer.lineno,0)
+        t[0].text = str(t[1])
     elif(t.slice[1].type == "CADENA"):
         t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
+        t[0].text = str(t[1])
     else:
         t[0] = t[1]
+
 
 def p_variable(t):
     '''variable : ARROBA name '''
     t[0] = VALIDAR_EXISTE_VARIABLE(t[2],lexer.lineno,0)
+    t[0].text = str(t[1]) + str(t[2].text)
 
 
 
 def p_parentesisop(t):
     '''parentesis : PARABRE expresion PARCIERRA'''
-    t[0] = t[2]
+    t[0] = t[2] #ASIGNA A LA EXPRESION LA ESTRUCTURA
+    t[0].text = str(t[1]) + str(t[2].text) + str(t[3])
 
 def p_numero(t):
     '''numero : NINT
@@ -739,14 +837,17 @@ def p_numero(t):
         t[0] = VALOR(t[1],"DECIMAL",lexer.lineno,0)
     else:
         t[0] = t[1]     #CASO DE ERROR
+    t[0].text = str(t[1])
 
 def p_name(t):
     '''name : NOMBRE'''     
     t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
+    t[0].text = str(t[1])
 
 def p_cadena(t):
     '''cadenas : CADENA'''     
     t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
+    t[0].text = str(t[1])
 
 def p_error(t):
     if t is not None:

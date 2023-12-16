@@ -30,7 +30,7 @@ def construir_estructura_arbol_xml():
                         lista_tablas.append(str(dato.get('name')))
                     elif(dato.tag == "funcion"):
                         lista_funciones.append(str(dato.get('name')))
-                    elif(dato.tag == "procedimiento"):
+                    elif(dato.tag == "procedure"):
                         lista_procedimientos.append(str(dato.get('name')))
                 lista_base.append(lista_tablas)
                 lista_base.append(lista_funciones)

@@ -19,6 +19,9 @@ class SUMA(Expresion):
             if(numero1 =="ERROR" or numero2 =="ERROR"):
                 ast.escribir_en_consola("ERROR: ")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUMA: Hay un problema con un valor",self.linea))
+                respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
+                self.tipo = respuesta.tipo
+                return "ERROR"
             tipo_numero1 = self.numero1.tipo.obtener_tipo_dato()
             tipo_numero2 = self.numero2.tipo.obtener_tipo_dato()
             

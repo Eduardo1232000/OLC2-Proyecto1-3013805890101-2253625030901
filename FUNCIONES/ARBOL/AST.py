@@ -60,8 +60,19 @@ class AST:
     def graficar(nodos):
         print("NO IMPLEMENTADO")
 
-    def guardar_en_tabla_simbolos(self,identificador,tipo_variable, tipo, entorno,linea,columna):
-        nodo = NODO_TABLA_SIMBOLOS(identificador,tipo_variable,tipo,entorno,linea,columna)
+    def guardar_en_tabla_simbolos(self,identificador,tipo_variable,base, tipo, entorno,linea,columna):
+
+        #VALIDAR SI EXISTE
+        for nodo_t in self.tabla_simbolos:
+            if(isinstance(nodo_t,NODO_TABLA_SIMBOLOS)):
+                if(identificador == nodo_t.obtener_identificador()):
+                    if(tipo_variable == nodo_t.obtener_tipo_var_fun()):
+                        if(base == nodo_t.obtener_base()):
+                            if(tipo == nodo_t.obtener_tipo()):
+                                if(entorno == nodo_t.obtener_entorno):
+                                    #TODO ES IGUAL, NO SE INSERTA
+                                    return
+        nodo = NODO_TABLA_SIMBOLOS(identificador,base,tipo_variable,tipo,entorno,linea,columna)
         self.tabla_simbolos.append(nodo)
     
     def graficar_tabla_simbolos():
@@ -72,11 +83,12 @@ class AST:
 
     def graficar_reporte_errores(self, ventana_principal,cuaderno): # VENTANA PRINCIPAL PARA CREAR UNA SUBVENTANA, CUADERNO PARA ALMACENAR EL NOMBRE DE LA IMAGEN
         codigo_graf_error = obtener_codigo_grafica_reporte_errores(self.errores_codigo)
-        print(codigo_graf_error)
+        #print(codigo_graf_error)
         pestana_actual = cuaderno.select()
         contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
         ruta = "REPORTES/"
         nombre_archivo_se, extension = os.path.splitext(os.path.basename(str(label1.cget("text"))))
+        nombre_archivo_se = nombre_archivo_se.replace(" ","_")
         ruta+=str(nombre_archivo_se)
         r_errores.config(text=ruta+".png")
         crear_grafo(codigo_graf_error,ruta)

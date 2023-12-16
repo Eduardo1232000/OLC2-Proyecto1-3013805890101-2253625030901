@@ -24,6 +24,18 @@ class TABLA_FUNCIONES_Y_VARIABLES:
                 return True
         return False
     
+    def procedure_existe(self,id):
+        for lst in self.tabla_procedimientos:
+            if(lst[0] == id):
+                return True
+        return False
+    
+    def funcion_existe(self,id):
+        for lst in self.tabla_funciones:
+            if(lst[0] == id):
+                return True
+        return False
+    
     def agregar_funcion_tabla(self,id,funcion): #ID (STRING) , FUNCION(OBJETO FUNCION)
         lst_temporal = []
         lst_temporal.append(id)
@@ -49,9 +61,10 @@ class TABLA_FUNCIONES_Y_VARIABLES:
         return None
     
 class VARIABLE:
-    def __init__(self,id,tipo,valor):
+    def __init__(self,id,tipo,size_tipo,valor):
         self.id = id
         self.tipo = tipo
+        self.size_tipo = size_tipo
         self.valor = valor
 
     def obtener_valor(self):
@@ -66,6 +79,9 @@ class VARIABLE:
     def obtener_tipo(self):
         return self.tipo
     
+    def obtener_size_tipo(self):
+        return self.size_tipo
+    
 class FUNCION:
     def __init__(self,nombre, tipo, parametros, sentencias):
         self.tipo = tipo        #(TIPO)
@@ -76,6 +92,9 @@ class FUNCION:
     def obtener_nombre(self):
         return self.nombre
     
+    def obtener_tipo(self):
+        return self.tipo
+        
     def obtener_parametros(self):
         return self.parametros
     
