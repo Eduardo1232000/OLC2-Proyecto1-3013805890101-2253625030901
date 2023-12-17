@@ -11,6 +11,7 @@ from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
+from FUNCIONES.DDL.SELECT import *
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -59,47 +60,47 @@ tokens = (
 )
 
 #Tokens
-t_INT               =   r'(?i)INT'
-t_BIT               =   r'(?i)BIT'
-t_DECIMAL           =   r'(?i)DECIMAL'
-t_DATETIME          =   r'(?i)DATETIME'
-t_DATE              =   r'(?i)DATE'
-t_NCHAR             =   r'(?i)NCHAR'
-t_NVARCHAR          =   r'(?i)NVARCHAR'
-t_NOT               =   r'(?i)NOT'
-t_NULL              =   r'(?i)NULL'
-t_PRIMARY           =   r'(?i)PRIMARY'
-t_FOREIGN           =   r'(?i)FOREIGN'
-t_REFERENCE         =   r'(?i)REFERENCE'
-t_KEY               =   r'(?i)KEY'
-t_SELECT            =   r'(?i)SELECT' 
-t_FROM              =   r'(?i)FROM'
-t_USE               =   r'(?i)USE'
-t_WHERE             =   r'(?i)WHERE'
-t_CAST              =   r'(?i)CAST'
-t_AS                =   r'(?i)AS'
-t_CREATE            =   r'(?i)CREATE'
-t_TABLE             =   r'(?i)TABLE'
-t_DATA              =   r'(?i)DATA'
-t_BASE              =   r'(?i)BASE'
-t_CONCATENAR        =   r'(?i)CONCATENAR'
-t_SUBSTRAER         =   r'(?i)SUBSTRAER'
-t_HOY               =   r'(?i)HOY'
-t_CONTAR            =   r'(?i)CONTAR'
-t_SUMA              =   r'(?i)SUMA'
-t_INSERT            =   r'(?i)INSERT'
-t_INTO              =   r'(?i)INTO'
-t_VALUES            =   r'(?i)VALUES'
-t_DELETE            =   r'(?i)DELETE'
-t_DECLARE           =   r'(?i)DECLARE'
-t_SET               =   r'(?i)SET'
-t_PROCEDURE         =   r'(?i)PROCEDURE'
-t_FUNCTION          =   r'(?i)FUNCTION'
-t_BEGIN             =   r'(?i)BEGIN'
-t_END               =   r'(?i)END'
-t_EXEC              =   r'(?i)EXEC'
-t_RETURN            =   r'(?i)RETURN'
-t_BETWEEN           =   r'(?i)BETWEEN'
+t_INT               =   r'INT'
+t_BIT               =   r'BIT'
+t_DECIMAL           =   r'DECIMAL'
+t_DATETIME          =   r'DATETIME'
+t_DATE              =   r'DATE'
+t_NCHAR             =   r'NCHAR'
+t_NVARCHAR          =   r'NVARCHAR'
+t_NOT               =   r'NOT'
+t_NULL              =   r'NULL'
+t_PRIMARY           =   r'PRIMARY'
+t_FOREIGN           =   r'FOREIGN'
+t_REFERENCE         =   r'REFERENCE'
+t_KEY               =   r'KEY'
+t_SELECT            =   r'SELECT' 
+t_FROM              =   r'FROM'
+t_USE               =   r'USE'
+t_WHERE             =   r'WHERE'
+t_CAST              =   r'CAST'
+t_AS                =   r'AS'
+t_CREATE            =   r'CREATE'
+t_TABLE             =   r'TABLE'
+t_DATA              =   r'DATA'
+t_BASE              =   r'BASE'
+t_CONCATENAR        =   r'CONCATENAR'
+t_SUBSTRAER         =   r'SUBSTRAER'
+t_HOY               =   r'HOY'
+t_CONTAR            =   r'CONTAR'
+t_SUMA              =   r'SUMA'
+t_INSERT            =   r'INSERT'
+t_INTO              =   r'INTO'
+t_VALUES            =   r'VALUES'
+t_DELETE            =   r'DELETE'
+t_DECLARE           =   r'DECLARE'
+t_SET               =   r'SET'
+t_PROCEDURE         =   r'PROCEDURE'
+t_FUNCTION          =   r'FUNCTION'
+t_BEGIN             =   r'BEGIN'
+t_END               =   r'END'
+t_EXEC              =   r'EXEC'
+t_RETURN            =   r'RETURN'
+t_BETWEEN           =   r'BETWEEN'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -251,7 +252,8 @@ def p_instrucciones_evaluar(t):
                     | sent_create_database
                     | sent_create_table
                     | use_base
-                    | f_insert 
+                    | f_insert
+                    | f_select 
                     | f_delete
                     | expresion 
                     | sent_alter_table
@@ -393,6 +395,8 @@ def p_funcion_sistema(t):
     t[0] = t[2]
     t[0].text = str(t[1]) +" "+str(t[2].text)
 
+
+#Elimine                     | select_dato 
 def p_operacion_sistema(t):
     '''operacion_sis : func_concatena
                     | func_substraer
@@ -400,7 +404,7 @@ def p_operacion_sistema(t):
                     | func_contar
                     | func_suma
                     | func_cas
-                    | select_dato 
+
                     '''
     t[0] = t[1]
 
@@ -453,17 +457,16 @@ def p_cas(t):
     #agregar hasta que sea un objeto
     #t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4].text)+" "+str(t[5]) +" "+str(t[6].text)+ str(t[7])
 
-def p_select_dato(t):
-    '''select_dato : MULTIPLICACION FROM name
-                    | FROM name
-                    | FROM name WHERE condiciones'''
-    print("SELECCIONANDO TODOS LOS DATOS DE: " +str(t[3]))
+
 
 
 def p_condiciones (t):
     '''condiciones : expresion
                     | expresion AND condiciones
-                    | expresion OR condiciones '''
+                    | expresion OR condiciones 
+                    | name IGUAL expresion'''
+    
+
 
 
 def p_expresion_aritmetica(t):
@@ -748,7 +751,38 @@ def p_f_insert(t):
 
     t[0].text+= str(t[10]) +str(t[11])
 
+#SELECT
+#                 | FROM name WHERE condiciones'    
+def p_f_select(t):
+    '''f_select : SELECT select_dato PTCOMA'''
+    t[0] = SELECT(t[2]['columnas'], t[2]['tabla'], t[2]['condiciones'], lexer.lineno, 0)
     
+
+def p_select_dato(t): 
+    '''select_dato : select_list FROM name where_clause_op
+                   | FROM name where_clause_op'''
+    if len(t) == 6:
+        # Si viene una clausula Where
+        t[0] = {'columnas': t[1], 'tabla': t[3], 'condiciones': t[5]}
+    else:
+        # Sin Where
+        t[0] = {'columnas': t[1], 'tabla': t[3], 'condiciones': None}
+    
+def p_select_list(t):
+    ''' select_list : MULTIPLICACION
+                    | columnas'''
+    t[0] = [t[1]] if len(t) == 2 else [t[1]] + t[3]
+
+
+def p_where_clause_op(t): 
+    ''' where_clause_op : WHERE condiciones
+                        | '''
+    
+    if len(t) == 3:
+        t[0] = t[2]
+    else:
+        t[0] = None
+
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
