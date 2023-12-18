@@ -52,6 +52,7 @@ class CONTAR(Expresion):
             return False
         
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         operacion = self.operacion
            
             

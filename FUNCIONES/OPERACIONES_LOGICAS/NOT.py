@@ -7,6 +7,7 @@ class EXP_NOT(Expresion):
         self.expr1 = expr1      #SON OBJETOS VALOR
 
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.expr1,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()

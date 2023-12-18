@@ -1,0 +1,13 @@
+DECLARE @VALOR AS INT;
+set @VALOR = 1;
+
+IF @VALOR >= 1  THEN 
+ SET @VALOR = 10;
+ELSE
+ SET @VALOR = 5;
+ END IF;
+
+@VALOR +IF(@VALOR >5,100,200)
+
+
+

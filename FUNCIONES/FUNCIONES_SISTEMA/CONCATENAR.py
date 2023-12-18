@@ -9,6 +9,7 @@ class CONCATENAR(Expresion):
         self.cadena2 = cadena2
 
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.cadena1,Expresion) and isinstance(self.cadena2,Expresion)):
             cadena1 = self.cadena1.obtener_valor(actual,globa,ast)
             cadena2 = self.cadena2.obtener_valor(actual,globa,ast)

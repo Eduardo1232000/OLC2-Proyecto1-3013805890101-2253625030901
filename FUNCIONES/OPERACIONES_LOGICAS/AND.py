@@ -8,13 +8,13 @@ class EXP_AND(Expresion):
         self.expr2 = expr2
 
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
             tipo_expr2 = self.expr2.tipo.obtener_tipo_dato()
 
-            
             if(((tipo_expr1==TIPO.INT or tipo_expr1==TIPO.BIT or tipo_expr1==TIPO.DECIMAL)and(tipo_expr2==TIPO.INT or tipo_expr2==TIPO.BIT or tipo_expr2==TIPO.DECIMAL))):
                 if((int(expr1)==0 or int(expr1)==1) and(int(expr2)==0 or int(expr2)==1)):
                     if((expr1 == 1) and expr2 == 1):

@@ -56,32 +56,33 @@ class ASIGNAR_VARIABLE(Instruccion):
 
     def ejecutar(self, actual, globa, ast):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.id,Expresion)):
-            id_var = self.id.obtener_valor(actual,globa,ast)
-            validar_existe = actual.variable_existe(str(id_var))
-            if(validar_existe == False):
-                ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
-                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: La variable "+str(id_var)+" no existe!",self.linea))
-                return
-            
-            objeto_variable = actual.obtener_variable(str(id_var))
-            if(isinstance(objeto_variable,VARIABLE) and isinstance(self.valor,Expresion)):
-                
-
-                val = self.valor.obtener_valor(actual,globa,ast)
-                #TRUNCAR TEXTO SI ES NCHAR
-                if(objeto_variable.obtener_tipo() == "NCHAR"):
-                    nuevo_val = ""
-                    print(objeto_variable.obtener_size_tipo())
-                    if(len(str(val))>int(objeto_variable.obtener_size_tipo())):
-                        for i in range(int(objeto_variable.obtener_size_tipo())):
-                            nuevo_val += str(val)[i]
-                        objeto_variable.modificar_valor(nuevo_val)
-                        ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
+            id_var = self.id.obtener_valor(actual,globa,ast)         
+            while(actual != None):
+                objeto_variable = actual.obtener_variable(str(id_var))
+                if(objeto_variable != None):
+                    if(isinstance(objeto_variable,VARIABLE) and isinstance(self.valor,Expresion)):
+                        val = self.valor.obtener_valor(actual,globa,ast)
+                        #TRUNCAR TEXTO SI ES NCHAR
+                        if(objeto_variable.obtener_tipo() == "NCHAR"):
+                            nuevo_val = ""
+                            print(objeto_variable.obtener_size_tipo())
+                            if(len(str(val))>int(objeto_variable.obtener_size_tipo())):
+                                for i in range(int(objeto_variable.obtener_size_tipo())):
+                                    nuevo_val += str(val)[i]
+                                objeto_variable.modificar_valor(nuevo_val)
+                                #ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
+                                return
+                        objeto_variable.modificar_valor(val)
+                        #ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
                         return
+                else:
+                    actual = actual.anterior 
 
-                objeto_variable.modificar_valor(val)
+            ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+            ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: La variable "+str(id_var)+" no existe!",self.linea))
+            return
 
-                ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
+            
             
 
 class VALIDAR_EXISTE_VARIABLE(Expresion):
@@ -92,29 +93,29 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
     def obtener_valor(self, actual, globa, ast):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST)):
             id_var = self.id.obtener_valor(actual,globa,ast)
-            #print(actual.tabla_variables)
-            validar_existe = actual.variable_existe(str(id_var))
-            if(validar_existe == False):
-                ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
-                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id_var)+" no existe",self.linea))
-                val = VALOR("ERROR","ERROR",self.linea,self.columna)
-                self.tipo = val.tipo
-                return "ERROR"
-            objeto_variable = actual.obtener_variable(str(id_var))
-            if(isinstance(objeto_variable,VARIABLE)):
-                valor_variable = objeto_variable.obtener_valor()
-                #print(valor_variable)
-                tipo_variable = objeto_variable.obtener_tipo()
-                self.tipo = tipo_variable
-                #print(self.tipo)
-                val = VALOR(valor_variable,tipo_variable,self.linea,self.columna)
-                self.tipo = val.tipo
-                #print(valor_variable)
-                return(valor_variable)
-            else:
-                #print("NO DEBI LLEGAR AQUI")
-                val = VALOR("ERROR","ERROR",self.linea,self.columna)
-                self.tipo = val.tipo
-                return("ERROR")
-        
+            while(actual != None):  #BUSCA EN EL AMBITO ACTUAL Y SI NO ESTA, BUSCA EN EL ANTERIOR
+                #PARA VER EN QUE AMBITO LO ENCONTRO
+                '''print("BUSCANDO EN AMBITO: "+str(actual.nombre))
+                print("LISTA: ",end="")
+                print(actual.tabla_variables)
+                print("")
+                print("")'''
+                objeto_variable = actual.obtener_variable(str(id_var))
+                if(objeto_variable != None):
+                    if(isinstance(objeto_variable,VARIABLE)):
+                        valor_variable = objeto_variable.obtener_valor()
+                        tipo_variable = objeto_variable.obtener_tipo()
+                        self.tipo = tipo_variable
+                        val = VALOR(valor_variable,tipo_variable,self.linea,self.columna)
+                        self.tipo = val.tipo
+                        return(valor_variable)
+                else:
+                    actual = actual.anterior 
+
+            #NO EXISTE LA VARIABLE EN NINGUN AMBITO 
+            ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+            ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id_var)+" no existe",self.linea))
+            val = VALOR("ERROR","ERROR",self.linea,self.columna)
+            self.tipo = val.tipo
+            return "ERROR"     
         

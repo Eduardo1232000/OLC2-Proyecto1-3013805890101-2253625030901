@@ -14,7 +14,7 @@ a0 [shape=none label=<
 </TR>
 <TR>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">1</FONT></TD>
-<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">VALOR</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">A</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">VARIABLE</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">-</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">INT</FONT></TD>
@@ -24,11 +24,11 @@ a0 [shape=none label=<
 </TR>
 <TR>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">2</FONT></TD>
-<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">prueba_retorno</FONT></TD>
-<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">FUNCION</FONT></TD>
-<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">Alimentos</FONT></TD>
-<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">INT</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">B</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">VARIABLE</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">-</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">INT</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">0</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">global</FONT></TD>
 <TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">-</FONT></TD>
 </TR>

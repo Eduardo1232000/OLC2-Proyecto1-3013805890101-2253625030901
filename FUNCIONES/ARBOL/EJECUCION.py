@@ -4,6 +4,7 @@ class Instruccion(ListaEjecuciones):                    # INSTRUCCION NO RETORNA
     def __init__(self, linea, columna, nombre_in_ex):
         super().__init__(linea, columna, nombre_in_ex)
         self.text = ""
+        self.nodo_arbol = None          #SOLO PUEDE SER UN NODO_ARBOL
         self.ejecuto_return = None
     @abstractmethod
     def ejecutar(self, actual, globa, ast):
@@ -14,6 +15,7 @@ class Expresion(ListaEjecuciones):                      #EXPRESION RETORNA VALOR
         super().__init__(linea, columna, nombre_in_ex)
         self.tipo = ""
         self.text = ""
+        self.nodo_arbol = None
 
     @abstractmethod
     def obtener_valor(self, actual, globa, ast):

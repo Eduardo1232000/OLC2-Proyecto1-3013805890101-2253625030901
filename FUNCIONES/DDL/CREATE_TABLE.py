@@ -13,6 +13,7 @@ class CREATE_TABLE(Instruccion):
         self.primary_campo_ref = ""
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(ast,AST)):
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):  #SI NO EXISTE LA BASE
@@ -42,7 +43,6 @@ class CREATE_TABLE(Instruccion):
                 ast.escribir_en_consola("ERROR: Ya existe la Tabla: "+str(nombre_tabla) +" en la Base de Datos: "+str(base_activa)+"\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe la tabla "+str(nombre_tabla)+" En la base de datos"+ str(base_activa),self.linea))
                 return
-
             #NO EXISTE LA TABLA
 
             lista_campos = []
@@ -121,7 +121,6 @@ class CREATE_TABLE(Instruccion):
                             nombre_campo = dato.obtener_valor(actual,globa,ast)
                             table.cambiar_nombre(nombre_campo)
                         elif(isinstance(dato,TIPODATO)):
-                            #print("ES UN TIPO")
                             tipo = dato.tipo
                             size = dato.obtener_size()
                             if(dato.tipo == TIPO.NCHAR):
@@ -168,6 +167,5 @@ class CREATE_TABLE(Instruccion):
                     primary_key = campo.obtener_primary_key()
                     foreign = campo.obtener_foreign_key()
                     reference = campo.obtener_reference()
-                   
                     base_agregar_campo(base_activa,nombre_tabla,nombre_campo,tipo,nulo,primary_key,foreign,reference)
             ast.escribir_en_consola("TABLA "+str(nombre_tabla)+" CREADA!\n")

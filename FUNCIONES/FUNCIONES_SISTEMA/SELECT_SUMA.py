@@ -60,6 +60,7 @@ class SELECT_SUMA(Expresion):
 
     def obtener_valor(self, actual, globa, ast):
         operacion = self.operacion
+        print(self.text)
         if(isinstance(self.expresion, Expresion) and isinstance(self.campo_ref,Expresion) and isinstance(ast,AST) and isinstance(self.tabla_ref,Expresion) and isinstance(self.tabla_contar,Expresion)):
             valor2 = self.expresion.obtener_valor(actual,globa,ast)
             valor_campo_ref = self.campo_ref.obtener_valor(actual,globa,ast)

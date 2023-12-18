@@ -1,0 +1,27 @@
+USE Prueba_archivo;
+CREATE PROCEDURE procedure1
+AS
+BEGIN 
+	DECLARE @VALOR1 INT;
+	SET @VALOR1= @var1;
+END;
+
+CREATE PROCEDURE procedure2 (@var1 INT) 
+AS
+BEGIN
+	DECLARE @VALOR1 INT;
+	SET @VALOR1= @var1;
+END;
+
+CREATE PROCEDURE procedure3 (@var1 AS INT , @var2 AS NCHAR(5)) 
+AS
+BEGIN
+	DECLARE @VALOR1 INT;
+	SET @VALOR1= @var1;
+END;
+
+
+
+
+
+

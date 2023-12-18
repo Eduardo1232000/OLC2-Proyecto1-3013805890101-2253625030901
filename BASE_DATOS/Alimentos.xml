@@ -41,6 +41,76 @@
                 <valor>Manza</valor>
                 <valor>1</valor>
             </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>4</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>5</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>6</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>7</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>8</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>9</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>10</valor>
+                <valor>Manza</valor>
+                <valor>1</valor>
+            </dato>
         </tabla>
         <tabla name="Identificaciones">
             <campo>
@@ -193,5 +263,45 @@
                 <sentencia>RETURN @VALOR1;</sentencia>
             </sentencias>
         </funcion>
+        <tabla name="produs">
+            <campo>
+                <nombre>product_no</nombre>
+                <tipo>INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>name</nombre>
+                <tipo>NCHAR(5)</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>id_producto</nombre>
+                <tipo>INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>Identificaciones</foreignkey>
+                <reference>product_no</reference>
+            </campo>
+        </tabla>
+        <procedure name="paa">
+            <parameters/>
+            <sentencias>
+                <sentencia>DECLARE @IVA INT;</sentencia>
+                <sentencia>SET @IVA = 3;</sentencia>
+            </sentencias>
+        </procedure>
+        <procedure name="prueba">
+            <parameters/>
+            <sentencias>
+                <sentencia>DECLARE @IVA INT;</sentencia>
+                <sentencia>SET @IVA = 3;</sentencia>
+            </sentencias>
+        </procedure>
     </base>
 </database>

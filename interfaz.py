@@ -184,6 +184,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
                 arbol_sintactico.ejecutar()
                 arbol_sintactico.graficar_reporte_errores(cuaderno)
                 arbol_sintactico.graficar_tabla_simbolos(cuaderno)
+                arbol_sintactico.graficar_ast(cuaderno)
                 #COMO YA SE EJECUTO PODEMOS MOSTRAR LA SALIDA
 
                 salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
