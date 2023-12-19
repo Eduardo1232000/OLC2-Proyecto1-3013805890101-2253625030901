@@ -1,42 +1,29 @@
-#def p_f_update(t):
- #   ''' f_update: UPDATE name SET set_list_ WHERE condition PTCOMA'''
-    #t[0] = SELECT(t[2], t[4], t[6], lexer.lineno, 0)
-  #  print("UPDATE")
+SELECT * FROM nombre_tabla;
+SELECT * FROM name PTCOMA
 
-#def p_set_list(t):
-#    ''' set_list: asignacion 
-#                | asignacion COMA set_list'''
-#    if len(t) == 2:
-#        t[0] = [t[1]]
-#    else:
-#        t[3].insert(0, t[1])
-#        t[0] = t[3]
+SELECT columna1, columna2 FROM nombre_tabla;
+SELECT columnas FROM name PTCOMA
 
-#def p_asignacion(t):
-#    ''' asignacion: name IGUAL expresion'''
-    #t[0] = (t[1], t[3])
 
-    #SELECT
+SELECT * FROM nombre_tabla WHERE condicion;
+SELECT * FROM name condiciones_opt PTCOMA
+
+SELECT columna1, columna 2 FROM nombre_tabla WHERE condicion1 AND condicion2;
+SELECT columnas FROM name condiciones_opt PTCOMA
+
 def p_f_select(t):
-    ''' f_select : SELECT select_list FROM name optional_conditions PTCOMA'''
-    #t[0] = UPDATE(t[2], t[4], t[6], lexer.lineno, 0)    
-    print("INSERT ")
+    ''' f_select : SELECT select_columnas FROM name condiciones_opt PTCOMA'''
+    #t[0] = SELECT(t[3], t[4], t[5], lexer.lineno, 0)
+    print("funciona" +str(t[3]) + " " +str(t[4]))
 
-def p_select_list(t):
-    ''' select_list : expresion AS name
-                    | expresion
-                    | MULTIPLICACION '''
-    if len(t) == 2:
-        t[0] = [t[1]]
-    elif len(t) == 3:
-        t[0] = [(t[1], t[3])]
-    else:
-        t[0] = ["*"]
-
-def p_optional_conditions(t):
-    ''' optional_conditions : WHERE condition
-                           | '''
-    if len(t) == 3:
-        t[0] = t[2]
-    else:
+def p_select_columnas(t):
+    ''' select_columnas : MULTIPLICACION
+                        | columnas
+                        | FROM name'''
+    if t.slice[1].type == 'MULTIPLICACION':
+        #t[0] = SELECT_ALL_COLUMNS()
+        print( 'algo')
+    elif t.slice[1].type == 'FROM':
         t[0] = None
+    else:
+        t[0] = t[1]

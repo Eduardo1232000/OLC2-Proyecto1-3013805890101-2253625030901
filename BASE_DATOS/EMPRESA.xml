@@ -45,6 +45,12 @@
                 <valor>26</valor>
                 <valor>546123</valor>
             </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Alex</valor>
+                <valor>25</valor>
+                <valor>123456890</valor>
+            </dato>
         </tabla>
         <tabla name="Tiendas">
             <campo>
