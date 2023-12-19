@@ -29,7 +29,7 @@ class interfaz:
 
         
 def crear_pestana(notebook,texto_prueba):
-    pestana = Frame(notebook)
+    pestana = Frame(notebook) 
     notebook.add(pestana, text = texto_prueba)
     contenido = Text(pestana,font=("Helvetica", 12))
     contenido.configure(bg="#ECEEF1")
