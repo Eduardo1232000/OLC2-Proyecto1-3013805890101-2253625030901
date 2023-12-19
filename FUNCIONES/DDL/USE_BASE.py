@@ -11,6 +11,7 @@ class USE_BASE(Instruccion):
         self.nombre = nombre    #ES UN VALOR
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.nombre,Expresion)):
             nombre = self.nombre.obtener_valor(actual,globa,ast)
             ruta = "BASE_DATOS/"+str(nombre)+".xml"

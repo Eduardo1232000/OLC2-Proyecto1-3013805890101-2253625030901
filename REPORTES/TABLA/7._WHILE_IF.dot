@@ -1,0 +1,26 @@
+digraph G{
+graph [ dpi = 150 ];
+a0 [shape=none label=<
+<TABLE border="0" cellspacing="5" cellpadding="4" style="rounded" bgcolor="/rdylgn11/5:/rdylgn11/7">
+<TR>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>NUMERO</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>IDENTIFICADOR</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>TIPO<br/>RETORNO</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>BASE<br/>ENCONTRADA</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>TIPO</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>DIMENSION</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>DECLARADA EN <br/>(AMBITO)</B></FONT></TD>
+<TD colspan="1" bgcolor="#DEC682"><FONT POINT-SIZE="14"><B>REFERENCIA</B></FONT></TD>
+</TR>
+<TR>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">1</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">VALOR</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">VARIABLE</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">-</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">INT</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">0</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">global</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">-</FONT></TD>
+</TR>
+</TABLE>>];
+}

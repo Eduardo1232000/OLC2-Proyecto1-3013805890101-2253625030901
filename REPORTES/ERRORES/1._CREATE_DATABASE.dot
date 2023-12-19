@@ -1,0 +1,18 @@
+digraph G{
+graph [ dpi = 150 ];
+a0 [shape=none label=<
+<TABLE border="0" cellspacing="5" cellpadding="4" style="rounded" bgcolor="/rdylgn11/11:/rdylgn11/1">
+<TR>
+<TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>NUMERO</B></FONT></TD>
+<TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>TIPO</B></FONT></TD>
+<TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>DESCRIPCION</B></FONT></TD>
+<TD colspan="1" bgcolor="#EFC8B2"><FONT POINT-SIZE="14"><B>LINEA</B></FONT></TD>
+</TR>
+<TR>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">1</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">SEMANTICO</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">CREATE: Ya existe una base de datos con ese nombre</FONT></TD>
+<TD  colspan="1" bgcolor="#ffffd4"><FONT POINT-SIZE="12">16</FONT></TD>
+</TR>
+</TABLE>>];
+}

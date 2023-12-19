@@ -8,6 +8,7 @@ class MAYOR_QUE(Expresion):
         self.expr2 = expr2
 
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)

@@ -19,6 +19,7 @@ class CREATE_PROCEDURE_BASE(Instruccion):
         self.lista_instruccion = lista_instruccion #LISTA DE OBJETOS INSTRUCCION O EXPRESION
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.nombre, Expresion)):
             nombre_base = ast.obtener_base_activa()
             nombre_func = self.nombre.obtener_valor(actual,globa,ast)
@@ -74,9 +75,9 @@ class CREATE_PROCEDURE_BASE(Instruccion):
                     nuevo_procedure = ET.SubElement(base, 'procedure')
                     nuevo_procedure.set('name', nombre_func)  
 
-                    nuevo_parameters = ET.SubElement(nuevo_procedure, 'parameters')
-                    
                     if(len(lista_parametros) !=0):
+                        nuevo_parameters = ET.SubElement(nuevo_procedure, 'parameters')
+                    
                         for param in lista_parametros:
                             nuevo_param = ET.SubElement(nuevo_parameters, 'parameter')
                             nuevo_param.set('name', str(param[0]))
@@ -105,6 +106,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
         self.lista_valores = lista_valores
     
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.id,Expresion)):
             nombre_base = ast.obtener_base_activa()
             nombre_procedure = self.id.obtener_valor(actual,globa,ast)
@@ -202,7 +204,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: La variable "+str(nombre_var)+" se inserto mas de 1 vez",self.linea))
                                         return
                                     var.modificar_valor(valor_variable)
-                                    ambito_procedure.agregar_variable_tabla(var)
+                                    ambito_procedure.agregar_variable_tabla(nombre_var,var)
 
                         elif(isinstance(objeto_valor_variable,Expresion)):
                             

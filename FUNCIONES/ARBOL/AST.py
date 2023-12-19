@@ -4,6 +4,8 @@ from FUNCIONES.ARBOL.TABLA_FUNCIONES_VARIABLES import *
 from FUNCIONES.ARBOL.NODO_TABLA_SIMBOLOS import *
 from FUNCIONES.CREAR_REPORTES.REPORTE_ERRORES import *
 from FUNCIONES.CREAR_REPORTES.REPORTE_TABLA_SIMBOLOS import *
+from FUNCIONES.CREAR_REPORTES.REPORTE_ARBOL import *
+from FUNCIONES.ARBOL.NODO_ARBOL import *
 
 from REPORTES.CREAR_GRAFO import *
 import os
@@ -58,8 +60,23 @@ class AST:
 
     def obtener_tabla_activa(self):
         return(str(self.tabla_actual))
-    def graficar(nodos):
-        print("NO IMPLEMENTADO")
+    
+    def graficar_ast(self, cuaderno):
+        graf = grafica_arbol()
+        codigo = graf.obtener_codigo_grafica_reporte_arbol(self.EJECUCIONES)
+        #print(codigo)
+
+        pestana_actual = cuaderno.select()
+        contenido_texto, label1,r_errores,r_tabla,r_arbol = cuaderno.nametowidget(pestana_actual).winfo_children()
+        ruta = "REPORTES/ARBOL/"
+        nombre_archivo_se, extension = os.path.splitext(os.path.basename(str(label1.cget("text"))))
+        nombre_archivo_se = nombre_archivo_se.replace(" ","_")
+        ruta+=str(nombre_archivo_se)
+        r_arbol.config(text=ruta+".png")
+        crear_grafo(codigo,ruta)
+        print("GRAFO TABLA CREADO")
+
+
 
     def guardar_en_tabla_simbolos(self,identificador,tipo_variable,dimension,base, tipo, entorno,referencia,linea,columna):
 

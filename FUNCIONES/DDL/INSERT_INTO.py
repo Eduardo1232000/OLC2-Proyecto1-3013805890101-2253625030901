@@ -12,6 +12,7 @@ class INSERT_INTO(Instruccion):
         self.valores = valores   #ES UNA LISTA
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.nombre,Expresion) and isinstance(ast, AST)):
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):  #SI NO EXISTE LA BASE

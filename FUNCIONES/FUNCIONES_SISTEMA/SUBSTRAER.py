@@ -10,6 +10,7 @@ class SUBSTRAER(Expresion):
         self.final = final          #SON OBJETOS VALOR (INT)
 
     def obtener_valor(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.inicio,Expresion) and isinstance(self.final,Expresion) and isinstance(self.cadena1,Expresion)):
             num1 = self.inicio.obtener_valor(actual,globa,ast) - 1  #-1 porque en python el inicio es 0 y en el proyecto es 1
             num2 = self.final.obtener_valor(actual,globa,ast)
@@ -42,3 +43,6 @@ class SUBSTRAER(Expresion):
                 ast.escribir_en_consola("LA NUEVA CADENA ES: "+respuesta.valor +"\n")
                 self.tipo = respuesta.tipo
                 return val_respuesta
+            else:
+                ast.escribir_en_consola("ERROR: Expresiones de tipo incorrecto!\n")
+                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: Expresiones de tipo incorrecto",self.linea))

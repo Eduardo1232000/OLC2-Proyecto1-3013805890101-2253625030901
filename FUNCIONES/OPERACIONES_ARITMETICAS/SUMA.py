@@ -9,8 +9,8 @@ class SUMA(Expresion):
         self.numero2 = numero2
 
     def obtener_valor(self, actual, globa, ast):
-        #print(self.numero1)
-        #print(self.numero2)
+        #print(self.text)
+
         if(isinstance(self.numero1,Expresion) and isinstance(self.numero2,Expresion)):
         #if(issubclass(self.numero1.__class__, Expresion) and issubclass(self.numero2.__class__,Expresion)):
             numero1 = self.numero1.obtener_valor(actual,globa,ast)
