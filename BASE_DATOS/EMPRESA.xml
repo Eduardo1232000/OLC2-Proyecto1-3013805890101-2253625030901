@@ -39,6 +39,11 @@
                 <valor>Alex</valor>
                 <valor>25</valor>
                 <valor>123456890</valor>
+            </dato>            <dato>
+                <valor>2</valor>
+                <valor>Benja</valor>
+                <valor>26</valor>
+                <valor>546123</valor>
             </dato>
         </tabla>
         <tabla name="Tiendas">

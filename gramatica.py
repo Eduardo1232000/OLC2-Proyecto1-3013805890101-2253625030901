@@ -52,7 +52,7 @@ tokens = (
     'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
     'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'NCHAR', 'NVARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
-    'INSERT', 'INTO', 'VALUES', 'DELETE',
+    'INSERT', 'INTO', 'VALUES', 'DELETE', 'UPDATE',
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
@@ -101,6 +101,7 @@ t_END               =   r'END'
 t_EXEC              =   r'EXEC'
 t_RETURN            =   r'RETURN'
 t_BETWEEN           =   r'BETWEEN'
+t_UPDATE            =   r'UPDATE'
 
 t_MAS               =   r'\+'
 t_RESTA             =   r'-'
@@ -255,6 +256,7 @@ def p_instrucciones_evaluar(t):
                     | f_insert
                     | f_select 
                     | f_delete
+                    | f_update
                     | expresion 
                     | sent_alter_table
                     | sent_drop
@@ -460,12 +462,21 @@ def p_cas(t):
 
 
 
-def p_condiciones (t):
+def p_condiciones(t):
     '''condiciones : expresion
                     | expresion AND condiciones
-                    | expresion OR condiciones 
+                    | expresion OR condiciones
                     | name IGUAL expresion'''
-    
+
+    if len(t) == 2:
+        t[0] = [t[1]]  # Una sola expresión
+    elif len(t) == 4:
+        
+        if(t.slice[2].type == "IGUAL"):
+            t[0] = [t[1], t[2], t[3]]  # Esto es para la condición name exp_rel expresion
+        else:
+            t[0] = t[1] + [t[2], t[3]] if isinstance(t[1], list) else [t[1], t[2], t[3]]
+    #print("p_condiciones:", t[0])
 
 
 
@@ -506,6 +517,7 @@ def p_expresion_relacional(t):
                         | exr_menorigual
                         | exr_mayorigual'''
     t[0] = t[1]
+
 
 def p_igual(t):
     '''exr_igual : expresion IGUALIGUAL expresion'''
@@ -751,42 +763,66 @@ def p_f_insert(t):
 
     t[0].text+= str(t[10]) +str(t[11])
 
+
+
 #SELECT
-#                 | FROM name WHERE condiciones'    
+#                 | FROM name WHERE condiciones' lista en lugar de diccionario    
 def p_f_select(t):
     '''f_select : SELECT select_dato PTCOMA'''
-    t[0] = SELECT(t[2]['columnas'], t[2]['tabla'], t[2]['condiciones'], lexer.lineno, 0)
+    #t[0] = SELECT(t[2]['columnas'], t[2]['tabla'], t[2]['condiciones'], lexer.lineno, 0)
+    #print("t[2] en p_f_select:",t[2])
+    t[0] = SELECT(t[2][0], t[2][1], t[2][2], lexer.lineno, 0)
     
-
-def p_select_dato(t): 
-    '''select_dato : select_list FROM name where_clause_op
-                   | FROM name where_clause_op'''
-    if len(t) == 6:
-        # Si viene una clausula Where
-        t[0] = {'columnas': t[1], 'tabla': t[3], 'condiciones': t[5]}
-    else:
-        # Sin Where
-        t[0] = {'columnas': t[1], 'tabla': t[3], 'condiciones': None}
     
+  
 def p_select_list(t):
     ''' select_list : MULTIPLICACION
                     | columnas'''
-    t[0] = [t[1]] if len(t) == 2 else [t[1]] + t[3]
+    t[0] = [t[1]] if len(t) == 2 else t[1]
 
 
-def p_where_clause_op(t): 
-    ''' where_clause_op : WHERE condiciones
-                        | '''
+def p_select_dato(t): 
+    '''select_dato : select_list FROM name where_clause_op
+                   | select_list FROM name'''
     
+    if len(t) == 5:
+        
+        # Si viene una clausula Where
+        t[0] = [t[1], t[3], t[4]]
+    else:
+        # Sin Where
+        t[0] = [t[1], t[3], []]
+
+    
+def p_where_clause_op(t): 
+    ''' where_clause_op : 
+                        | WHERE condiciones'''
     if len(t) == 3:
         t[0] = t[2]
     else:
-        t[0] = None
+        t[0] = []
+
+
+#UPDATE
+def p_f_update(t):
+    ''' f_update : UPDATE name SET set_list where_clause_op PTCOMA'''
+    #t[0] = UPDATE(t[2], t[4], t[5], lexer.lineno, 0)
+
+def p_set_list(t):
+    ''' set_list : set_expresion
+                 | set_expresion COMA set_list'''
+
+def p_set_expresion(t):
+    ''' set_expresion : name IGUAL expresion'''
+
+
+
 
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
+
     
 def p_columnas(t):
     ''' columnas : name
@@ -801,7 +837,13 @@ def p_columnas(t):
         t[0] = t[3]
 
                 
-    
+"""
+def p_columna(t):
+    ''' columna : name 
+                | case
+                | if 
+                | alias'''
+"""
 
 
 def p_valores(t):
