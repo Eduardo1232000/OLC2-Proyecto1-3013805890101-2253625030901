@@ -10,12 +10,7 @@ class SELECT(Instruccion):
         super().__init__(linea, columna, "SELECT")
         self.columnas = columnas
         self.tabla = name
-        self.condiciones = condiciones
-        print(f"Columnas: {self.columnas}")
-        print(f"Tabla: {self.tabla}")
-        print(f"Condiciones: {self.condiciones}")
-
-        
+        self.condiciones = condiciones        
 
     def ejecutar(self, actual, globa, ast):
         
@@ -31,8 +26,9 @@ class SELECT(Instruccion):
 
             nombre_tabla = self.tabla.obtener_valor(actual, globa, ast)
             lista_condiciones = self.condiciones
-            #
+            columnas = self.columnas
             valores_condiciones = []
+            
             for condicion in lista_condiciones:
                 if isinstance(condicion, Expresion):
                     valor_condicion = condicion.obtener_valor(actual, globa, ast)
@@ -40,7 +36,7 @@ class SELECT(Instruccion):
                 else:
                     valores_condiciones.append(condicion)
             
-            mensaje_ejecucion = f"SELECT: Base activa: {base_activa}, Tabla: {nombre_tabla}, Columnas: {self.columnas}, Condiciones: {valores_condiciones}"
+            mensaje_ejecucion = f"SELECT: Base activa: {base_activa}, Tabla: {nombre_tabla}, Columnas: {columnas}, Condiciones: {valores_condiciones}"
             ast.escribir_en_consola(mensaje_ejecucion)
             resultado = seleccionar_datos(base_activa, nombre_tabla, self.columnas, lista_condiciones)
 
