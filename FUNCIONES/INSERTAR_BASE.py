@@ -33,7 +33,7 @@ def base_agregar_tabla(nombre_base, nombre_tabla):
     except:
         return False
 
-def base_agregar_campo(nombre_base, nombre_tabla,nombre_campo,tipo_campo,nulo,primarykey,foreignkey,reference):
+def base_agregar_campo(nombre_base, nombre_tabla,nombre_campo,tipo_campo,nulo,primarykey,foreignkey,reference,columna):
     try:
         ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
         tree = ET.parse(ruta)
@@ -54,6 +54,8 @@ def base_agregar_campo(nombre_base, nombre_tabla,nombre_campo,tipo_campo,nulo,pr
             dato_campo.text = nombre_campo
 
             dato_campo = ET.SubElement(nuevo_campo, 'tipo')
+            dato_campo.set('size', str(columna))
+
             dato_campo.text = tipo_campo
 
             dato_campo = ET.SubElement(nuevo_campo, 'nulo')

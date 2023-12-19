@@ -12,6 +12,7 @@ from FUNCIONES.ARBOL.AST import *
 
 from FUNCIONES.EXPORTAR_IMPORTAR.EXPORTAR import *
 from FUNCIONES.EXPORTAR_IMPORTAR.IMPORTAR import *
+from FUNCIONES.EXPORTAR_IMPORTAR.DUMP import *
 from FUNCIONES.CREAR_REPORTES.MOSTRAR_REPORTES import *
 import gramatica
 
@@ -162,6 +163,7 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
 
     elif(opcion == "crear_dump"):
         print("Base Datos - DUMP")
+        mostrar_bases_dump(ventana_principal)
     elif(opcion == "seleccionar_base"):
         print("Base Datos - Seleccionar")
 

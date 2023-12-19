@@ -124,9 +124,11 @@ class CREATE_TABLE(Instruccion):
                         elif(isinstance(dato,TIPODATO)):
                             tipo = dato.tipo
                             size = dato.obtener_size()
-                            if(dato.tipo == TIPO.NCHAR):
-                                tipo = dato.tipo+ "(" + str(size) + ")"
+                            #if(dato.tipo == TIPO.NCHAR):
+                            #    tipo = dato.tipo+ "(" + str(size) + ")"
+
                             table.cambiar_tipo(tipo)
+                            table.columna = size
                             
                         else: #ES UNA LISTA DE CARACTERISTICAS
                             for caract in dato:
@@ -223,5 +225,5 @@ class CREATE_TABLE(Instruccion):
                     primary_key = campo.obtener_primary_key()
                     foreign = campo.obtener_foreign_key()
                     reference = campo.obtener_reference()
-                    base_agregar_campo(base_activa,nombre_tabla,nombre_campo,tipo,nulo,primary_key,foreign,reference)
+                    base_agregar_campo(base_activa,nombre_tabla,nombre_campo,tipo,nulo,primary_key,foreign,reference,campo.columna)
             ast.escribir_en_consola("TABLA "+str(nombre_tabla)+" CREADA!\n")

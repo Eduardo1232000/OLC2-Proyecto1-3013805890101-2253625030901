@@ -145,7 +145,10 @@ def t_FECHA(t):
     #r'\d\d\-\d\d\-\d\d\d\d'
     r'("|\')?\d{2}-\d{2}-\d{4}("|\')?'
     try:
-        t.value = str(t.value)
+        if t.value[0] in ['"', '\''] and t.value[0] == t.value[-1]:
+            t.value = str(t.value[1:-1])
+        else:
+            t.value = str(t.value)
     except ValueError:
         print("VALOR FECHA INCORRECTO %d",t.value)
     return t

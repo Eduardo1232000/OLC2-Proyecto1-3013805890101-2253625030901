@@ -27,6 +27,7 @@ class INSERT_INTO(Instruccion):
 
             lst_nombre = []
             lst_tipo = []
+            lst_size = []
             lst_nulo = []
             lst_foreign = []
             lst_reference = []
@@ -49,6 +50,7 @@ class INSERT_INTO(Instruccion):
 
                                 for dato in campo.findall('tipo'):  #TIPO
                                     lst_tipo.append(dato.text)
+                                    lst_size.append(dato.attrib['size'])
 
                                 for dato in campo.findall('nulo'):  #NULO
                                     lst_nulo.append(dato.text)
@@ -95,6 +97,7 @@ class INSERT_INTO(Instruccion):
             for i in range(len(lst_nombre)):            #RECORRE LAS COLUMNAS
                 nombre_columna = lst_nombre[i]
                 tipo_columna = lst_tipo[i]
+                size_tipo_columna = lst_size[i]
                 nulo_columna = lst_nulo[i]
                 foreign_columna = lst_foreign[i]
                 reference_columna = lst_reference[i]
@@ -172,7 +175,8 @@ class INSERT_INTO(Instruccion):
                             if((tipo_columna == "INT" and (tipo_valor_dato == TIPO.INT or tipo_valor_dato == TIPO.BIT)) or (tipo_columna == "BIT" and tipo_valor_dato == TIPO.BIT) or (tipo_columna == "DECIMAL" and tipo_valor_dato == TIPO.DECIMAL) or(tipo_columna == "DATE" and tipo_valor_dato == TIPO.DATE) or (tipo_columna == "DATETIME" and tipo_valor_dato == TIPO.DATETIME) or ("NVARCHAR" in tipo_columna and (tipo_valor_dato == TIPO.NVARCHAR or tipo_valor_dato == TIPO.NCHAR))):
                                 print("",end="")
                             elif("NCHAR" in tipo_columna and (tipo_valor_dato == TIPO.NVARCHAR or tipo_valor_dato == TIPO.NCHAR)):
-                                inicio_parentesis = tipo_columna.find('(')
+                                pass
+                                '''inicio_parentesis = tipo_columna.find('(')
                                 fin_parentesis = tipo_columna.find(')')
                                 if inicio_parentesis != -1 and fin_parentesis != -1 and inicio_parentesis < fin_parentesis:
                                     numero = int(tipo_columna[inicio_parentesis + 1:fin_parentesis])
@@ -180,7 +184,7 @@ class INSERT_INTO(Instruccion):
                                     if(len(valor_dato)> numero):
                                         for i in range(numero):
                                             nuevo_nom = nuevo_nom + valor_dato[i]
-                                        valor_dato = nuevo_nom
+                                        valor_dato = nuevo_nom'''
                             else:   #ALGUN TIPO DE VALOR NO ES EL CORRECTO
                                 ast.escribir_en_consola("ERROR: "+str(nombre_columna)+": "+str(valor_dato)+" es de tipo incorrecto: "+str(tipo_columna)+"-"+str(tipo_valor_dato)+"\n")
                                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT:"+str(nombre_columna)+": "+str(valor_dato)+" es de tipo incorrecto: "+str(tipo_columna)+"-"+str(tipo_valor_dato),self.linea))
