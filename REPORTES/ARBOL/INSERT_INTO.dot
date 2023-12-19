@@ -1,4 +1,0 @@
-digraph AST {
-node [shape=box, style=rounded];
-n6654160346[label="PROGRAMA" color="red"];
-}

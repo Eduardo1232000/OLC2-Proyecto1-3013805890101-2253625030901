@@ -48,7 +48,8 @@ class CREATE_TABLE(Instruccion):
             lista_campos = []
             #RECORRER LA LISTA DE CAMPOS
             for lista in self.datos:
-                table = CAMPO_TABLA("","false","false","false","false","false",self.linea,self.columna)        #OBJETO TABLA VACIO
+                table = CAMPO_TABLA("","false","true","false","false","false",self.linea,self.columna)        #OBJETO TABLA VACIO
+                #true en nulo es por si no viene ningun parametro que lo cambie
                 if(isinstance(lista,FORANEA)):
                     #print("ENCONTRE UNA LLAVE FORANEA")
                     tabla_base = lista.obtener_tabla_base()
@@ -88,8 +89,8 @@ class CREATE_TABLE(Instruccion):
                                     
                             if tabla_ref == True:
                                 break
-                    print(tabla_ref)
-                    print(campo_ref)
+                    #print(tabla_ref)
+                    #print(campo_ref)
                     if(tabla_ref == False):
                         ast.escribir_en_consola("ERROR: La tabla de referencia no existe")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: La tabla de referencia no existe!",self.linea))
@@ -138,6 +139,61 @@ class CREATE_TABLE(Instruccion):
                                         table.cambiar_primary_key("true")
                                         table.cambiar_nulo("false")
                                         numero_primary_keys +=1
+                                elif(isinstance(caract,FORANEA)):
+                                    #print("ES FORANEA RARO")
+                                    nom_base_origen = caract.base_origen.obtener_valor(actual,globa,ast)
+                                    nom_tabla_referencia = caract.referencia.obtener_valor(actual,globa,ast)
+
+                                    #VALIDAR QUE LA TABLA EXISTA Y EL CAMPO TAMBIEN
+                                    tabla_ref = False
+                                    campo_ref = False
+                                    for base in root.findall('base'):
+                                        if base.attrib['name'] == base_activa:
+                                            for tabla in base:
+                                                nombre = str(tabla.attrib['name'])
+                                                if nombre == nom_base_origen:
+                                                    tabla_ref = True
+                                                    try:
+                                                        for campo in tabla:
+                                                            if(campo.tag == 'campo'):
+                                                                for valor in campo:
+                                                                    if(valor.tag == 'nombre'):
+                                                                        nombre = valor.text
+                                                                        if(nombre == nom_tabla_referencia):
+                                                                            #print("ENCONTRE EL CAMPO")
+                                                                            campo_ref = True
+                                                                            self.primary_campo_ref = campo[3].text
+                                                                            break
+                                                                if(campo_ref == True):
+                                                                    break
+                                                        if(campo_ref == True):
+                                                            break
+                                                    except: 
+                                                        break
+                                                        
+                                                    
+                                            if tabla_ref == True:
+                                                break
+                                    #print(tabla_ref)
+                                    #print(campo_ref)
+                                    if(tabla_ref == False):
+                                        ast.escribir_en_consola("ERROR: La tabla de referencia no existe")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: La tabla de referencia no existe!",self.linea))
+                                        return
+                                    if(campo_ref == False):
+                                        ast.escribir_en_consola("ERROR: El campo de referencia no existe dentro de la tabla")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no existe",self.linea))
+                                        return
+                                    #print(self.primary_campo_ref)
+                                    if(self.primary_campo_ref == "false"):
+                                        ast.escribir_en_consola("ERROR: El campo de referencia no es primary key")
+                                        ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no es primary key",self.linea))
+                                        return
+
+                                    #RECORRER LA LISTA DE CAMPOS EN BUSCA DE LA TABLA BASE
+                                    table.cambiar_foreign_key(nom_base_origen)
+                                    table.cambiar_reference(nom_tabla_referencia)
+
 
                     #VALIDAR QUE NO SEA NULO Y SEA PRIMARY KEY AL MISMO TIEMPO
                     primary_key_val = table.obtener_primary_key()

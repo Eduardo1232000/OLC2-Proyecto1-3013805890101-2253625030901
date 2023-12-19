@@ -125,31 +125,35 @@ class INSERT_INTO(Instruccion):
                                     for tabla in base:
                                         nombre = str(tabla.attrib['name'])
                                         contador +=1
+                                        print("AUMENTA CONTADOR: "+str(contador)+" , "+str(nombre)+",  "+str(foreign_columna))
                                         if nombre == foreign_columna:
-                                            print(foreign_columna)
                                             #VALIDAR EXISTE EL CAMPO DE REFERENCIA
+                                            contador = -1
                                             for campo in tabla:
                                                 if(campo.tag == "campo"):
-                                                    print("CAMPO")
+                                                    #print("CAMPO")
+                                                    contador +=1
                                                     if(encontre_ref == True):
+                                                        contador-=1
                                                         continue
                                                     nombre_campo = campo[0].text
                                                     if(nombre_campo == reference_columna):
-                                                        print("LO ENCONTRE EL CAMPO DE REFERENCIA")
+                                                        print("LO ENCONTRE EL CAMPO DE REFERENCIA"+str(nombre_campo)+" "+str(reference_columna)+str(contador))
                                                         encontre_ref = True
                                                 elif(campo.tag == "dato"):
-                                                    print("DATO")
-                                                    print(contador)
-                                                    print(campo[contador].text)
+                                                    print("DATO "+str(contador))
+                                                    print(repr(campo[contador].text) + repr(valor_dato))
+                                                    print("")
                                                     if(encontre_ref == False):
                                                         ast.escribir_en_consola("ERROR: No existe el campo de referencia")
                                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: No existe el campo de referencia",self.linea))
                                                         return
-                                                    if(campo[contador].text == valor_dato):
+                                                    if(str(campo[contador].text) == str(valor_dato)):
                                                         encontre_valor_ref = True
+                                                        print("ENCOTRADO")
                                 print(encontre_valor_ref)                    #for valor in campo:
                                 if(encontre_valor_ref == False):
-                                    ast.escribir_en_consola("ERROR: El valor no existe en la referencia")
+                                    ast.escribir_en_consola("ERROR: El valor no existe en la referencia\n")
                                     ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: El valor no existe en la referencia",self.linea))
                                     return
 
@@ -178,8 +182,8 @@ class INSERT_INTO(Instruccion):
                                             nuevo_nom = nuevo_nom + valor_dato[i]
                                         valor_dato = nuevo_nom
                             else:   #ALGUN TIPO DE VALOR NO ES EL CORRECTO
-                                ast.escribir_en_consola("ERROR: Los tipos de los valores no coinciden con los de la tabla\n")
-                                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Los tipos no coinciden con los de la tabla",self.linea))
+                                ast.escribir_en_consola("ERROR: "+str(nombre_columna)+": "+str(valor_dato)+" es de tipo incorrecto: "+str(tipo_columna)+"-"+str(tipo_valor_dato)+"\n")
+                                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT:"+str(nombre_columna)+": "+str(valor_dato)+" es de tipo incorrecto: "+str(tipo_columna)+"-"+str(tipo_valor_dato),self.linea))
                                 return
                             #GUARDARLO EN LA LISTA
                             lista_nombres_valor.append(valor_dato)
@@ -188,7 +192,7 @@ class INSERT_INTO(Instruccion):
                             if(nulo_columna == "true"):
                                 lista_nombres_valor.append("")
                             else:
-                                ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
+                                ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL o esta mal escrita: "+str(nombre_columna)+"-"+str(nombre_columna_insert)+"\n")
                                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Se omitio una columna que no era NULL",self.linea))
                                 return
                             avanza+=1
@@ -199,7 +203,7 @@ class INSERT_INTO(Instruccion):
                     if(nulo_columna == "true"):
                         lista_nombres_valor.append("")
                     else:
-                        ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL\n")
+                        ast.escribir_en_consola("ERROR: Se omitio una columna que no era NULL o esta mal escrita\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: Se omitio una columna que no era NULL",self.linea))
                         return
 

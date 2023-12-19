@@ -131,16 +131,19 @@ t_PTCOMA            =   r'\;'
 
 
 def t_FECHAHORA(t):
-    r'\d{2}-\d{2}-\d{4}\s\d{2}:\d{2}'
+    r'("|\')?\d{2}-\d{2}-\d{4}\s\d{2}:\d{2}("|\')?'
     try:
-        t.value = t.value
+        if t.value[0] in ['"', '\''] and t.value[0] == t.value[-1]:
+            t.value = str(t.value[1:-1])
+        else:
+            t.value = str(t.value)
     except ValueError:
-        print("VALOR FECHA HORA INCORRECTO %s", t.value)
+        print("VALOR FECHA HORA INCORRECTO %s" % t.value)
     return t
 
 def t_FECHA(t):
     #r'\d\d\-\d\d\-\d\d\d\d'
-    r'\d{2}-\d{2}-\d{4}'
+    r'("|\')?\d{2}-\d{2}-\d{4}("|\')?'
     try:
         t.value = str(t.value)
     except ValueError:
@@ -177,7 +180,8 @@ def t_NBIT(t):
     return t
 
 def t_CADENA(t):
-    r'\"([^"]*)\"'
+    #r'\"([^"]*)\"'
+    r'\"[^\"]*\"|\'[^\']*\''
     try:
         t.value = str(t.value[1:-1])
     except ValueError:
@@ -1312,8 +1316,14 @@ def p_caracteristica(t):
     '''caracteristica :  caract_nulo
                         | caract_no_nulo
                         | caract_primary_key
+                        | refererencia_tabla
                         '''
     t[0] = t[1]
+
+def p_refererencia_tabla(t):
+    ''' refererencia_tabla : REFERENCE name PARABRE name PARCIERRA'''
+    t[0] = FORANEA(t[2],None,t[4],lexer.lineno,0)
+
 
 def p_caract_nulo(t):
     '''caract_nulo : NULL'''
