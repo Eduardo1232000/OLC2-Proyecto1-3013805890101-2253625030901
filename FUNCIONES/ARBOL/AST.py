@@ -24,7 +24,7 @@ class AST:
             self.errores_codigo.append(error)
 
         self.base_actual = ""
-        self.tabla_actual = ""
+        self.tabla_actual = None
 
     
     def ejecutar(self):
