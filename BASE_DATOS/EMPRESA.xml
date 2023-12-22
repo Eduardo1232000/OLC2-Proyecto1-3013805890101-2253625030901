@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='us-ascii'?>
 <database>
     <base name="EMPRESA">
         <tabla name="Trabajadores">
@@ -37,18 +37,18 @@
             <dato>
                 <valor>1</valor>
                 <valor>Alex</valor>
-                <valor>25</valor>
+                <valor>15</valor>
                 <valor>123456890</valor>
             </dato>            <dato>
                 <valor>2</valor>
-                <valor>Benja</valor>
-                <valor>26</valor>
+                <valor>Benjamin</valor>
+                <valor>25</valor>
                 <valor>546123</valor>
             </dato>
             <dato>
                 <valor>1</valor>
                 <valor>Alexandra</valor>
-                <valor>35</valor>
+                <valor>15</valor>
                 <valor>1456890</valor>
             </dato>
         </tabla>

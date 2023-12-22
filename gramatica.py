@@ -12,6 +12,7 @@ from FUNCIONES.DDL.TRUNCATE_TABLE import *
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
 from FUNCIONES.DDL.SELECT import *
+from FUNCIONES.DDL.UPDATE import *
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -926,8 +927,18 @@ def p_condiciones(t):
         else:
             t[0] = t[1] + [t[2], t[3]] if isinstance(t[1], list) else [t[1], t[2], t[3]]
     #print("p_condiciones:", t[0])
-
-
+            
+"""
+def p_expr_rel_cond(t):
+    '''expr_rel_cond : IGUAL
+                     | DIFERENTE
+                     | MAYORQUE
+                     | MENORQUE
+                     | MAYORIGUAL
+                     | MENORIGUAL'''
+    t[0] = t[1]
+"""
+    
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -1398,24 +1409,15 @@ def p_f_insert(t):
 
 
 #SELECT
-#                 | FROM name WHERE condiciones' lista en lugar de diccionario    
+   
 def p_f_select(t):
     '''f_select : SELECT select_dato PTCOMA'''
-    #t[0] = SELECT(t[2]['columnas'], t[2]['tabla'], t[2]['condiciones'], lexer.lineno, 0)
-    #print("t[2] en p_f_select:",t[2])
     t[0] = SELECT(t[2][0], t[2][1], t[2][2], lexer.lineno, 0)
-    
-    
-  
-def p_select_list(t):
-    ''' select_list : MULTIPLICACION
-                    | columnas'''
-    t[0] = [t[1]] if len(t) == 2 else t[1]
 
-
+    
 def p_select_dato(t): 
-    '''select_dato : select_list FROM name where_clause_op
-                   | select_list FROM name'''
+    '''select_dato : select_list FROM columnas where_clause_op
+                   | select_list FROM columnas'''
     
     if len(t) == 5:
         
@@ -1424,6 +1426,15 @@ def p_select_dato(t):
     else:
         # Sin Where
         t[0] = [t[1], t[3], []]
+
+  
+def p_select_list(t):
+    ''' select_list : MULTIPLICACION
+                    | columnas'''
+    t[0] = [t[1]] #if len(t) == 2 else t[1]
+
+#t[0] = [t[1]]
+
 
     
 def p_where_clause_op(t): 
@@ -1437,15 +1448,21 @@ def p_where_clause_op(t):
 
 #UPDATE
 def p_f_update(t):
-    ''' f_update : UPDATE name SET set_list where_clause_op PTCOMA'''
-    #t[0] = UPDATE(t[2], t[4], t[5], lexer.lineno, 0)
+    ''' f_update : UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA'''
+    t[0] = UPDATE(t[2], t[4], t[6], t[8], lexer.lineno, 0)
 
 def p_set_list(t):
     ''' set_list : set_expresion
                  | set_expresion COMA set_list'''
+    
+    if len(t) ==2:
+        t[0] = [t[1]]
+    else:
+        t[0] = [t[1] + t[3]]
 
 def p_set_expresion(t):
     ''' set_expresion : name IGUAL expresion'''
+    t[0] = [t[1], t[2], t[3]]
 
 
 
@@ -1454,6 +1471,7 @@ def p_set_expresion(t):
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
     print("DELETE -> "+str(t[3]))
+    
     
 def p_columnas(t):
     ''' columnas : name
@@ -1468,13 +1486,7 @@ def p_columnas(t):
         t[0] = t[3]
 
                 
-"""
-def p_columna(t):
-    ''' columna : name 
-                | case
-                | if 
-                | alias'''
-"""
+
 
 
 def p_valores(t):

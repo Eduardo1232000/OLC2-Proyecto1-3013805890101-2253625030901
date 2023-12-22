@@ -5,13 +5,17 @@ from FUNCIONES.ARBOL.VALOR import *
 
 def seleccionar_datos(base_activa, tabla, columnas, condiciones):
     
+    
     try:
-        print(condiciones)
+        print(f"Tablas DENTRO DE LA CLASE SELECCION: {tabla}")
+        print(f"COLUMNAS DENTRO DE LA CLASE SELECCION: {columnas}")
+        print(f"CONDICIONES DENTRO DE LA CLASE SELECCION: {condiciones}")
         ruta= "BASE_DATOS/" + str(base_activa)+ ".xml"
         tree = ET.parse(ruta)
         root = tree.getroot()
 
         tabla_existente = None
+
         for base in root.findall('base'):
             if base.attrib['name'] == base_activa:
                 for tabla_xml in base:
@@ -23,9 +27,12 @@ def seleccionar_datos(base_activa, tabla, columnas, condiciones):
                         break
 
         if tabla_existente is not None:
+            campos_resultado= []
+
             if columnas == ['*']:
-                campos_resultado = []
+                
                 datos_resultado = []
+                #condicion para cuando se piden todas las columnas
 
                 for campo in tabla_existente.findall('campo'):
                     campos_resultado.append(campo.find('nombre').text)
@@ -41,8 +48,20 @@ def seleccionar_datos(base_activa, tabla, columnas, condiciones):
                 return campos_resultado, datos_resultado
             
             else:
-                    
-                pass
+                #campos_resultado = columnas
+                indices_columnas = [campos_resultado.index(col) for col in columnas]
+                datos_resultado = []
+
+
+                for dato in tabla_existente.findall('dato'):
+                    fila_resultado = [valor.text for valor in dato.findall('valor')]
+
+                    if cumple_condiciones(dato, condiciones):
+                        # Filtrar las columnas seleccionadas
+                        fila_filtrada = [fila_resultado[i] for i in indices_columnas]
+                        datos_resultado.append(fila_filtrada)
+                
+                return columnas, datos_resultado
         
         else:
             print(f"Error: la tabla {tabla} no existe en DB")
@@ -80,16 +99,16 @@ def cumple_condiciones(dato, condiciones):
 
         indice_valor = None
         for j, valor in enumerate(dato.findall('valor')):
-            print("ENTRE AL CICLO FOR")
+            
             if valor.text == valor_condicion:
                 indice_valor = j
-                print(f"indice_campo: {j}")
+                
                 break
 
         if indice_valor is not None:
             # Obtenemos el valor relacionado con el campo
             valor_actual = valores_fila[indice_valor]
-            print(f"Valor_actual: {valor_actual}")
+            
 
             # Realizamos las comparaciones según el operador
             if operador == '=' and valor_actual == valor_condicion:
