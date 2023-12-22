@@ -27,6 +27,7 @@ class UPDATE(Instruccion):
             #lista_condiciones = self.condiciones
             nombre_col = self.column.obtener_valor(actual, globa, ast) # COLUMNA DE LA CONDICION A CAMBIAR
             valor_condicion = self.expr.obtener_valor(actual, globa, ast) # VALOR ACTUAL DE LA CONDICION A CAMBIAR
+            #print(f"SET_LIST: {lista_set}")
 
             ruta = "BASE_DATOS/" +str(base_activa)+".xml"
 
@@ -34,8 +35,7 @@ class UPDATE(Instruccion):
             tree = ET.parse(ruta)
             root = tree.getroot()
 
-            tabla_existente = False
-
+            
             for base in root.findall('base'):
                 if base.attrib['name'] == base_activa:
                     for tabla in base:
@@ -44,29 +44,32 @@ class UPDATE(Instruccion):
                             tabla_existente = True
 
                             # OBTENCION DE COLUMNAS
-                            for campo in tabla.findall('campo'):
-                                nombre_campo = campo.find('nombre').text
+                            
+                            # Buscar el índice de la columna de la condición
+                            indice_condicion = next(
+                                i for i, campo in enumerate(tabla.findall('campo')) if campo.find('nombre').text == nombre_col)
 
-                                for set_item in lista_set:
-                                    if nombre_campo == set_item[0].obtener_valor(actual, globa, ast):
-                                        print(f"Nombre del campo: {nombre_campo}")
-                                        nuevo_valor = set_item[2].obtener_valor(actual, globa, ast)
-                                        print(f"nuevo Valor {nuevo_valor}")
+                            # Iterar sobre los datos y actualizar el valor en la posición correspondiente
+                            for dato in tabla.findall('dato'):
+                                if dato.findall('valor')[indice_condicion].text == str(valor_condicion):
+                                    # Actualizar todos los campos en la posición correspondiente
+                                    print(f"LISTA_SET: {lista_set} \n\n\n")
+                                    for set_item in lista_set:
 
-                                        # Buscar el índice de la columna de la condición
-                                        indice_condicion = next(i for i, campo in enumerate(tabla.findall('campo')) if campo.find('nombre').text == nombre_col)
-
-                                        # Iterar sobre los datos y actualizar el valor en la posición correspondiente
-                                        for dato in tabla.findall('dato'):
-                                            if dato.findall('valor')[indice_condicion].text == str(valor_condicion):
-                                                dato.findall('valor')[tabla.findall('campo').index(campo)].text = str(nuevo_valor)
+                                        nombre_campo_set = set_item[0].obtener_valor(actual, globa, ast)
+                                        print(f"Nombre del campo dentro de set_item: {nombre_campo_set} \n\n")
+                                        nuevo_valor_set = set_item[2].obtener_valor(actual, globa, ast)
+                                        indice_campo_set = next(
+                                            i for i, campo in enumerate(tabla.findall('campo')) if campo.find('nombre').text == nombre_campo_set)
+                                        dato.findall('valor')[indice_campo_set].text = str(nuevo_valor_set)
 
                             tree.write(ruta, xml_declaration=True)
                             break
 
                     if not tabla_existente:
-                        ast.escribir_en_consola(f"ERROR: La tabla {nombre_tabla} no existe en la base: {base_activa}\n")
+                        ast.escribir_en_consola(
+                            f"ERROR: La tabla {nombre_tabla} no existe en la base: {base_activa}\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO",
-                                                            f"UPDATE: La tabla {nombre_tabla} no existe en la base: {base_activa}",
-                                                            self.linea))
+                                                                f"UPDATE: La tabla {nombre_tabla} no existe en la base: {base_activa}",
+                                                                self.linea))
                         return

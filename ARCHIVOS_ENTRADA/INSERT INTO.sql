@@ -6,7 +6,7 @@ VALUES (1,"Manzana",1);
 
 USE EMPRESA;
 
-UPDATE Trabajadores SET edad = 20, nombre = "Benjamin" WHERE edad = 35;
+UPDATE Trabajadores SET edad = 120, name = "Agustina" WHERE name = "Alejandra";
 
 USE EMPRESA;
 
