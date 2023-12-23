@@ -1,0 +1,141 @@
+<?xml version="1.0" ?>
+<database>
+    <base name="tbbanco">
+        <tabla name="tbestado">
+            <campo>
+                <nombre>idestado</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>estado</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+        </tabla>
+        <tabla name="tbidentificaciontipo">
+            <campo>
+                <nombre>ididentificaciontipo</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>identificaciontipo</nombre>
+                <tipo size="15">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+        </tabla>
+        <tabla name="tbcliente">
+            <campo>
+                <nombre>codigocliente</nombre>
+                <tipo size="15">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>primer_nombre</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>segundo_nombre</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>primer_apellido</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>segundo_apellido</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>fecha_nacimiento</nombre>
+                <tipo size="0">DATE</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>genero</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>idestado</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>tbestado</foreignkey>
+                <reference>idestado</reference>
+            </campo>
+        </tabla>
+        <tabla name="tbidentificacion">
+            <campo>
+                <nombre>ididentificacion</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>codigocliente</nombre>
+                <tipo size="15">NVARCHAR</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>tbcliente</foreignkey>
+                <reference>codigocliente</reference>
+            </campo>
+            <campo>
+                <nombre>identificacion</nombre>
+                <tipo size="20">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>ididentificaciontipo</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>tbidentificaciontipo</foreignkey>
+                <reference>ididentificaciontipo</reference>
+            </campo>
+        </tabla>
+    </base>
+</database>

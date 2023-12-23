@@ -66,8 +66,8 @@ class DELETE(Instruccion):
                         print(f"No se encontró la columna {nombre_columna} en la tabla {nombre_tabla}")
 
                         tree.write(ruta, xml_declaration=True)
-                        ast.escribir_en_consola(f"DELETE: Columnas eliminadas satisfactoriamente de la tabla {nombre_tabla} con condicion
-                                                columna {nombre_columna} {operador_relacional} {valor_condicion}\n")
+                        #ast.escribir_en_consola(f"DELETE: Columnas eliminadas satisfactoriamente de la tabla {nombre_tabla} con condicion
+                         #                       columna {nombre_columna} {operador_relacional} {valor_condicion}\n")
 
                 else:
                     # Si no hay condiciones, eliminar todos los valores de las columnas

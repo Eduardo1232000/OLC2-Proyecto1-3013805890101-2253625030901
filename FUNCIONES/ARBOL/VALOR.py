@@ -5,6 +5,7 @@ class VALOR(Expresion):
         super().__init__(linea, columna, "VALOR")
         self.text = ""
         self.valor = valor
+        #print(valor)
         self.tipo_valor = tipo_valor
         if(self.tipo_valor == "INT"):
             if(self.valor == 0 or self.valor == 1):
@@ -33,6 +34,12 @@ class VALOR(Expresion):
 
         elif(self.tipo_valor == "NVARCHAR"):   
             self.tipo = TIPODATO(TIPO.NVARCHAR)
+            
+        elif(self.tipo_valor == "ASTERISCO"):
+            self.tipo = TIPODATO(TIPO.ASTERISCO)
+            
+        elif(self.tipo_valor == "COLUMNA"):
+            self.tipo = TIPODATO(TIPO.COLUMNA)
         else:
             self.tipo = TIPODATO(TIPO.ERROR)
 
@@ -60,6 +67,11 @@ class VALOR(Expresion):
             
             elif(self.tipo.obtener_tipo_dato() ==TIPO.NCHAR):
                 return str(self.valor)  
+            
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.COLUMNA):
+                return str(self.valor)  
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.ASTERISCO):
+                return "*"  
                 
         except:
             print("NO SE PUEDE OBTENER EL VALOR DE LA EXPRESION")

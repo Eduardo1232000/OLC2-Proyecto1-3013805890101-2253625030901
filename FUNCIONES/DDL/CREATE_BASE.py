@@ -17,3 +17,4 @@ class CREATE_BASE(Instruccion):
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe una base de datos con ese nombre",self.linea))
             else:
                 ast.escribir_en_consola("BASE DE DATOS CREADA!\n")
+                ast.usar_base(self.nombre.obtener_valor(actual,globa,ast))
