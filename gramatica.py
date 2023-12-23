@@ -10,9 +10,11 @@ from FUNCIONES.DDL.FUNCION_BASE import *
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
-from FUNCIONES.DDL.DROP import*
+from FUNCIONES.DDL.DROP import *
 from FUNCIONES.DDL.SELECT import *
 from FUNCIONES.DDL.UPDATE import *
+from FUNCIONES.DDL.DELETE import *
+
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -1469,9 +1471,27 @@ def p_set_expresion(t):
 
 
 def p_f_delete(t):
-    ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
-    print("DELETE -> "+str(t[3]))
-    
+    ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
+    t[0] = DELETE(t[3], t[4], lexer.lineno, 0)
+
+
+def p_condiciones_opt(t):
+    ''' condiciones_opt : 
+                        | WHERE name operador_relacional expresion '''
+    if len(t) == 1:
+        t[0] = None  # Sin condiciones
+    else:
+        t[0] = (t[2], t[3], t[4])  # Tupla: (nombre_columna, operador_relacional, valor)
+
+def p_operador_relacional(t):
+    ''' operador_relacional : IGUAL
+                           | MENORQUE
+                           | MAYORQUE
+                           | MENORIGUAL
+                           | MAYORIGUAL
+                           | DIFERENTE '''
+    t[0] = t[1]
+
     
 def p_columnas(t):
     ''' columnas : name

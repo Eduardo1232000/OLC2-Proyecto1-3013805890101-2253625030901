@@ -1,18 +1,18 @@
 digraph AST {
 node [shape=box, style=rounded];
-n3711923646[label="PROGRAMA" color="red"];
-n1419028651[label="INSTRUCCIONES" color="yellow"];
-n8721592234[label="INSTRUCCION" color="green"];
-n2396599433[label="USE BASE" color="orange"];
-n6667395340[label="P.R: USE" color="black"];
-n2396599433 -> n6667395340; 
-n8530504440[label="EXPRESION" color="blue"];
-n9323107157[label="EMPRESA" color="black"];
-n8530504440 -> n9323107157; 
-n2396599433 -> n8530504440; 
-n3035250101[label=";" color="black"];
-n2396599433 -> n3035250101; 
-n8721592234 -> n2396599433; 
-n1419028651 -> n8721592234; 
-n3711923646 -> n1419028651; 
+n1953197369[label="PROGRAMA" color="red"];
+n9261166655[label="INSTRUCCIONES" color="yellow"];
+n4529055384[label="INSTRUCCION" color="green"];
+n194365153[label="USE BASE" color="orange"];
+n9612584844[label="P.R: USE" color="black"];
+n194365153 -> n9612584844; 
+n8052602375[label="EXPRESION" color="blue"];
+n7301524174[label="EMPRESA" color="black"];
+n8052602375 -> n7301524174; 
+n194365153 -> n8052602375; 
+n6521261755[label=";" color="black"];
+n194365153 -> n6521261755; 
+n4529055384 -> n194365153; 
+n9261166655 -> n4529055384; 
+n1953197369 -> n9261166655; 
 }
