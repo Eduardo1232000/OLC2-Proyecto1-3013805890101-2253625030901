@@ -34,8 +34,9 @@ class ALTER_TABLE(Instruccion):
             nombre_columna = self.operacion[2].obtener_valor(actual, globa, ast)
             tipo_dato = self.operacion[3]
             nombre_tipo_dato = tipo_dato.tipo
+            size = getattr(tipo_dato, 'size', 0) #OBTENEMOS EL VALOR SIZE SI EXISTE
 
-            if agregar_columna(base_activa, nombre_tabla, nombre_columna, tipo_dato.tipo, nulo=True, primarykey=False, foreignkey=False, reference=False):
+            if agregar_columna(base_activa, nombre_tabla, nombre_columna, tipo_dato.tipo, size=size, nulo=True, primarykey=False, foreignkey=False, reference=False):
                 ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo {nombre_tipo_dato} a la tabla {nombre_tabla}\n")
             else:
                 ast.escribir_en_consola(f"No se pudo agregar la columna {nombre_columna} a la tabla {nombre_tabla}\n")
@@ -45,7 +46,7 @@ class ALTER_TABLE(Instruccion):
         elif self.operacion[1] == "CONSTRAINT":
             # Lógica para procesar la adición de una restricción, por ejemplo, una llave foránea
             pass
-        # Puedes agregar más lógica según sea necesario
+        
 
     def ejecutar_drop(self, actual, globa, ast, nombre_tabla):
         if self.operacion[1] == "COLUMN":

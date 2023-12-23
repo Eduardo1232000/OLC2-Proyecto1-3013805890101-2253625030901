@@ -50,13 +50,12 @@ def columna_existe(nombre_base, nombre_tabla, nombre_columna):
     return False
 
 
-
 def agregar_columna(
     nombre_base, nombre_tabla, nombre_columna, tipo_columna,
-    nulo, primarykey, foreignkey, reference
+    size, nulo, primarykey, foreignkey, reference
 ):
     try:
-        print(f"Llegó a agregar_columna: {nombre_base}, {nombre_tabla}, {nombre_columna}, {tipo_columna}, {nulo}, {primarykey}, {foreignkey}, {reference}")
+        print(f"Llegó a agregar_columna: {nombre_base}, {nombre_tabla}, {nombre_columna}, {tipo_columna}, {size}, {nulo}, {primarykey}, {foreignkey}, {reference}")
         ruta = f"BASE_DATOS/{nombre_base}.xml"
         tree = ET.parse(ruta)
         root = tree.getroot()
@@ -72,14 +71,14 @@ def agregar_columna(
                     break
 
         if tabla_existente is not None:
-            nuevo_campo = ET.SubElement(tabla_existente, 'campo')
+            nuevo_campo = ET.Element('campo')
 
             # Nombre
             nombre_campo = ET.SubElement(nuevo_campo, 'nombre')
             nombre_campo.text = nombre_columna
 
             # Tipo
-            tipo_campo = ET.SubElement(nuevo_campo, 'tipo')
+            tipo_campo = ET.SubElement(nuevo_campo, 'tipo', {'size': str(size)})  # Añadir el atributo 'size'
             tipo_campo.text = tipo_columna
 
             # Nulo
@@ -102,6 +101,11 @@ def agregar_columna(
                 reference_campo = ET.SubElement(nuevo_campo, 'reference')
                 reference_campo.text = reference
 
+            # Encontrar el último campo existente
+            ultima_posicion = len(tabla_existente.findall('campo'))
+            # Insertar el nuevo campo después del último campo existente
+            tabla_existente.insert(ultima_posicion, nuevo_campo)
+
             xml_string = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
 
             # Eliminar líneas en blanco
@@ -116,6 +120,7 @@ def agregar_columna(
     except Exception as e:
         print(f"Error al agregar columna: {e}")
         return False
+
 
 
 def drop_columna(nombre_base, nombre_tabla, nombre_columna):

@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='us-ascii'?>
+<?xml version="1.0" ?>
 <database>
     <base name="EMPRESA">
         <tabla name="Trabajadores">
@@ -34,12 +34,29 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <campo>
+                <nombre>nacionalidad</nombre>
+                <tipo size="30">NVARCHAR</tipo>
+                <nulo>True</nulo>
+                <primarykey>False</primarykey>
+                <foreignkey>False</foreignkey>
+                <reference/>
+            </campo>
+            <campo>
+                <nombre>etnia</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>True</nulo>
+                <primarykey>False</primarykey>
+                <foreignkey>False</foreignkey>
+                <reference/>
+            </campo>
             <dato>
                 <valor>1</valor>
                 <valor>Remigio</valor>
                 <valor>85</valor>
                 <valor>123456890</valor>
-            </dato>            <dato>
+            </dato>
+            <dato>
                 <valor>2</valor>
                 <valor>Benjamin</valor>
                 <valor>75</valor>
