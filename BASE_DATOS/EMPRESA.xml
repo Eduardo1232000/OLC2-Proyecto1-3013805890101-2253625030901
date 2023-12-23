@@ -12,7 +12,7 @@
             </campo>
             <campo>
                 <nombre>name</nombre>
-                <tipo>CHAR(50)</tipo>
+                <tipo size = "50">NVARCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -46,9 +46,9 @@
                 <valor>546123</valor>
             </dato>
             <dato>
-                <valor>5</valor>
-                <valor>Lorena</valor>
-                <valor>25</valor>
+                <valor>3</valor>
+                <valor>Agustina</valor>
+                <valor>120</valor>
                 <valor>1456890</valor>
             </dato>
         </tabla>

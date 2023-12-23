@@ -4,7 +4,7 @@
         <tabla name="tabla1">
             <campo>
                 <nombre>numero1</nombre>
-                <tipo>INT</tipo>
+                <tipo size="0">INT</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -12,7 +12,7 @@
             </campo>
             <campo>
                 <nombre>numero2</nombre>
-                <tipo>DECIMAL</tipo>
+                <tipo size="0">DECIMAL</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -20,7 +20,7 @@
             </campo>
             <campo>
                 <nombre>valor1</nombre>
-                <tipo>NCHAR(5)</tipo>
+                <tipo size="5">NCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -28,7 +28,7 @@
             </campo>
             <campo>
                 <nombre>valor2</nombre>
-                <tipo>NVARCHAR</tipo>
+                <tipo size="10">NVARCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -36,7 +36,7 @@
             </campo>
             <campo>
                 <nombre>fecha1</nombre>
-                <tipo>DATE</tipo>
+                <tipo size="0">DATE</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -44,17 +44,33 @@
             </campo>
             <campo>
                 <nombre>fecha2</nombre>
-                <tipo>DATETIME</tipo>
+                <tipo size="0">DATETIME</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>1.0</valor>
+                <valor>algo</valor>
+                <valor>algo</valor>
+                <valor>01-01-2023</valor>
+                <valor>01-01-2023 10:25</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>1.0</valor>
+                <valor>algo</valor>
+                <valor>algo</valor>
+                <valor>01-01-2023</valor>
+                <valor>01-01-2023 10:25</valor>
+            </dato>
         </tabla>
         <tabla name="tabla2">
             <campo>
                 <nombre>numero1</nombre>
-                <tipo>INT</tipo>
+                <tipo size="0">INT</tipo>
                 <nulo>false</nulo>
                 <primarykey>true</primarykey>
                 <foreignkey>false</foreignkey>
@@ -62,7 +78,7 @@
             </campo>
             <campo>
                 <nombre>numero2</nombre>
-                <tipo>DECIMAL</tipo>
+                <tipo size="0">DECIMAL</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -70,7 +86,7 @@
             </campo>
             <campo>
                 <nombre>valor1</nombre>
-                <tipo>NCHAR(5)</tipo>
+                <tipo size="5">NCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -78,7 +94,7 @@
             </campo>
             <campo>
                 <nombre>valor2</nombre>
-                <tipo>NVARCHAR</tipo>
+                <tipo size="50">NVARCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -86,7 +102,7 @@
             </campo>
             <campo>
                 <nombre>fecha1</nombre>
-                <tipo>DATE</tipo>
+                <tipo size="0">DATE</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -94,7 +110,7 @@
             </campo>
             <campo>
                 <nombre>fecha2</nombre>
-                <tipo>DATETIME</tipo>
+                <tipo size="0">DATETIME</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -104,7 +120,7 @@
         <tabla name="tabla3">
             <campo>
                 <nombre>id</nombre>
-                <tipo>INT</tipo>
+                <tipo size="0">INT</tipo>
                 <nulo>false</nulo>
                 <primarykey>true</primarykey>
                 <foreignkey>false</foreignkey>
@@ -112,7 +128,7 @@
             </campo>
             <campo>
                 <nombre>numero1</nombre>
-                <tipo>INT</tipo>
+                <tipo size="0">INT</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>tabla2</foreignkey>
@@ -120,7 +136,7 @@
             </campo>
             <campo>
                 <nombre>numero2</nombre>
-                <tipo>DECIMAL</tipo>
+                <tipo size="0">DECIMAL</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -128,7 +144,7 @@
             </campo>
             <campo>
                 <nombre>valor1</nombre>
-                <tipo>NCHAR(5)</tipo>
+                <tipo size="5">NCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -136,7 +152,7 @@
             </campo>
             <campo>
                 <nombre>valor2</nombre>
-                <tipo>NVARCHAR</tipo>
+                <tipo size="50">NVARCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -144,7 +160,7 @@
             </campo>
             <campo>
                 <nombre>fecha1</nombre>
-                <tipo>DATE</tipo>
+                <tipo size="0">DATE</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -152,7 +168,7 @@
             </campo>
             <campo>
                 <nombre>fecha2</nombre>
-                <tipo>DATETIME</tipo>
+                <tipo size="0">DATETIME</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -202,5 +218,6 @@
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
         </procedure>
+
     </base>
 </database>
