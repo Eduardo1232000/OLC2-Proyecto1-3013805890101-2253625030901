@@ -16,13 +16,14 @@ class ALIAS(Expresion):
         if(isinstance(ast,AST) and isinstance(self.nombre_tabla,VALOR) and isinstance(self.nombre_columna,VALOR)):
             nom_tabla = self.nombre_tabla.obtener_valor(actual,globa,ast)
             nom_columna = self.nombre_columna.obtener_valor(actual,globa,ast)
+            self.nombre_tabla = nom_tabla
+            self.nombre_columna = nom_columna
             base_activa = ast.obtener_base_activa()
 
             ruta ="BASE_DATOS/"+str(base_activa)+".xml"
             tree = ET.parse(ruta)
             root = tree.getroot()
 
-            base_existente = False
             tabla_existe = False
 
             for base in root.findall('base'):
@@ -30,20 +31,33 @@ class ALIAS(Expresion):
                     nombre = str(tabla.attrib['name'])
                     if nombre == nom_tabla:
                         tabla_existe = True
+                        col_existe = False
                         contador = -1
+
+                        lst = []
+                        lst.append(nom_tabla)
+                        lst.append(nom_columna)
                         for columnas in tabla.findall('campo'):
                             contador +=1
                             if(columnas[0].text == nom_columna):
                                 validacion_col = True
-                                respuesta = VALOR(contador,TIPO.INT,self.linea,self.columna)
+                                respuesta = VALOR(contador,TIPO.ALIAS,self.linea,self.columna)
                                 self.tipo = respuesta.tipo
-                                return int(contador)
+                                col_existe = True
+                                break
+                        if(col_existe == True):
+                            lst_dato = []
+                            for datos in tabla.findall('dato'):
+                                lst_dato.append(datos[contador].text)
+                            lst.append(lst_dato)
+                            return lst
+
                     #SI SALE AQUI ES PORQUE YA ENCONTRO LA TABLA Y NO LA COLUMNA (YA NO BUSCA EN EL RESTO DE TABLAS)
                     if(tabla_existe == True):
-                        respuesta = VALOR(None,TIPO.ERROR,self.linea,self.columna)
+                        respuesta = VALOR(None,TIPO.ALIAS,self.linea,self.columna)
                         self.tipo = respuesta.tipo
                         return None
                             
-        respuesta = VALOR(None,TIPO.ERROR,self.linea,self.columna)
+        respuesta = VALOR(None,TIPO.ALIAS,self.linea,self.columna)
         self.tipo = respuesta.tipo
         return None

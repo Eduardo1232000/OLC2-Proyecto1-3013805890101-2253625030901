@@ -43,6 +43,7 @@ class SUBSTRAER(Expresion):
                 ast.escribir_en_consola("LA NUEVA CADENA ES: "+respuesta.valor +"\n")
                 self.tipo = respuesta.tipo
                 return val_respuesta
+            
             else:
                 ast.escribir_en_consola("ERROR: Expresiones de tipo incorrecto!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: Expresiones de tipo incorrecto",self.linea))

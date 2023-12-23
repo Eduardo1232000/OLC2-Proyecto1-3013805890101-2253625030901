@@ -142,6 +142,11 @@
                 <valor>Manna</valor>
                 <valor>1</valor>
             </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>Manna23</valor>
+                <valor>2</valor>
+            </dato>
         </tabla>
         <tabla name="producs">
             <campo>

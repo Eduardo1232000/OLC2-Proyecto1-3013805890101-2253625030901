@@ -40,6 +40,16 @@ class VALOR(Expresion):
             
         elif(self.tipo_valor == "COLUMNA"):
             self.tipo = TIPODATO(TIPO.COLUMNA)
+
+        elif(self.tipo_valor == "ALIAS"):
+            self.tipo = TIPODATO(TIPO.ALIAS)
+
+        elif(self.tipo_valor == "LISTA_COLUMNAS"):
+            self.tipo = TIPODATO(TIPO.LISTA_COLUMNAS) 
+
+        elif(self.tipo_valor == "EXPRESION_SELECT"):
+            self.tipo = TIPODATO(TIPO.LISTA_COLUMNAS)
+            
         else:
             self.tipo = TIPODATO(TIPO.ERROR)
 
@@ -69,9 +79,19 @@ class VALOR(Expresion):
                 return str(self.valor)  
             
             elif(self.tipo.obtener_tipo_dato() ==TIPO.COLUMNA):
-                return str(self.valor)  
+                return str(self.valor)
+            
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.ALIAS):
+                return self.valor
+              
             elif(self.tipo.obtener_tipo_dato() ==TIPO.ASTERISCO):
                 return "*"  
+            
+            elif(self.tipo.obtener_tipo_dato() ==TIPO.LISTA_COLUMNAS):
+                return self.valor
+            
+            elif(self.tipo.obtener_tipo_dato()== TIPO.EXPRESION_SELECT):
+                return self.valor
                 
         except:
             print("NO SE PUEDE OBTENER EL VALOR DE LA EXPRESION")

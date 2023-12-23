@@ -1,0 +1,18 @@
+digraph AST {
+node [shape=box, style=rounded];
+n3076725924[label="PROGRAMA" color="red"];
+n9881293649[label="INSTRUCCIONES" color="yellow"];
+n5039153228[label="INSTRUCCION" color="green"];
+n6223648897[label="USE BASE" color="orange"];
+n7232169631[label="P.R: USE" color="black"];
+n6223648897 -> n7232169631; 
+n4787121171[label="EXPRESION" color="blue"];
+n4405664895[label="Alimentos" color="black"];
+n4787121171 -> n4405664895; 
+n6223648897 -> n4787121171; 
+n2991389742[label=";" color="black"];
+n6223648897 -> n2991389742; 
+n5039153228 -> n6223648897; 
+n9881293649 -> n5039153228; 
+n3076725924 -> n9881293649; 
+}

@@ -10,6 +10,7 @@ from FUNCIONES.DDL.FUNCION_BASE import *
 from FUNCIONES.SELECT import *
 from FUNCIONES.ALIAS import *
 from FUNCIONES.EXPRESION_SELECT import *
+from FUNCIONES.SSL.CASE import *
 
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
@@ -64,7 +65,7 @@ tokens = (
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
     'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN','BETWEEN',
-    'IF','ELSE','THEN','WHILE','PUNTO'
+    'IF','ELSE','THEN','WHILE','PUNTO','CASE','WHEN'
 )
 
 #Tokens
@@ -114,6 +115,8 @@ t_IF                =   r'(?i)IF'
 t_ELSE              =   r'(?i)ELSE'
 t_THEN              =   r'(?i)THEN'
 t_WHILE             =   r'(?i)WHILE'
+t_CASE              =   r'(?i)CASE'
+t_WHEN              =   r'(?i)WHEN'
 
 t_PUNTO             =   r'\.'
 t_MAS               =   r'\+'
@@ -829,9 +832,21 @@ def p_expresion_select_ini(t):
 
 
 def p_expresion_select_fin(t):
-    '''expresion_select_final : expresion
-                              | alias'''
-    t[0] = t[1]
+    '''expresion_select_final : expresion_select_final IGUAL expresion_select_final
+                              | expresion_select_final signo_relacional expresion_select_final
+                              | expresion'''
+    
+    if len(t) == 2:
+        # Solo hay una expresión
+        t[0] = [t[1]]
+    else:
+        # Hay más de una expresión
+        if(t.slice[2].type == "IGUAL"):
+            objeto = IGUAL(t[1],t[3],lexer.lineno,0)
+            t[3].insert(0, objeto)
+        else: 
+            t[0] = t[3]
+
 def p_alias(t):
     '''alias : name PUNTO name'''
     t[0] = ALIAS(t[1],t[3],lexer.lineno,0)
@@ -849,16 +864,11 @@ def p_continuacion_from(t):
     
 def p_continuacion_where(t):
     '''continuacion_where : PTCOMA
-                          | WHERE expresion_select_final IGUAL expresion_select_final PTCOMA
-                          | WHERE expresion_select_final signo_relacional expresion_select_final PTCOMA'''
+                          | WHERE expresion_select_final PTCOMA'''
     if(len(t) == 2):
         t[0] = None
     else:
-        lst = []
-        lst.append(t[2])
-        lst.append(t[3])
-        lst.append(t[4])
-        t[0] = lst
+        t[0] = t[2]
 
 
 #FIN SELECT
@@ -870,6 +880,7 @@ def p_operacion_sistema(t):
                     | func_contar
                     | func_suma
                     | func_cas
+                    | exp_case
                     '''
     t[0] = t[1]
     
@@ -1577,9 +1588,9 @@ def p_dato_varchar(t):
 def p_expresion(t):
     '''expresion : exp_aritmetica
                  | exp_logica
+                 | operacion_sis
                  | llamada_funcion
                  | exp_relacional
-                 | operacion_sis
                  | variable
                  | op_between
                  | exp_if
@@ -1588,7 +1599,10 @@ def p_expresion(t):
                  | FECHA
                  | FECHAHORA
                  | CADENA
+                 | expr_select
                  | name_columna
+                 | alias
+                 
                  '''
     
     if(t.slice[1].type == "FECHA"):
@@ -1608,15 +1622,81 @@ def p_expresion(t):
     elif(t.slice[1].type == "CADENA"):
         t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
         t[0].text = '"'+str(t[1])+'"'
-        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"red")            #CREOTHEN UN NODO CON TEXTO EXPRESION
         nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[1]),lexer.lineno,"black")) #APUNTA AL VALOR
         t[0].nodo_arbol = nodo_arbol
     else:
         t[0] = t[1]
 
+def p_case(t):
+    ''' exp_case : CASE ca_whens ca_else  END'''
+    t[0] = EXP_CASE(t[2],t[3], lexer.lineno,0)
+    t[0].text = str(t[1]) +" "
+    nodo_arbol = NODO_ARBOL("CASE",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CASE",lexer.lineno,"black")) #APUNTA AL VALOR  
+    
+    nodo_temporal = NODO_ARBOL("P.R: WHENS",lexer.lineno,"black")
+    izq = None
+    der = None
+    padre = nodo_temporal
+    for i in range (len(t[2])):
+        valwhen = t[2][i]
+        exp_when = valwhen[0]
+        resp_when = valwhen[1]
+        if(isinstance(exp_when, Expresion) and isinstance(resp_when,Expresion)):
+            t[0].text += " WHEN " +str(exp_when.text) +" THEN "+ str(resp_when.text)+" "
+            
+            izq = NODO_ARBOL("P.R: WHEN",lexer.lineno,"black")
+            izq.agregar_hijo(NODO_ARBOL("P.R: WHEN",lexer.lineno,"black")) #APUNTA AL VALOR
+            izq.agregar_hijo(exp_when.nodo_arbol) #APUNTA AL VALOR
+            izq.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black")) #APUNTA AL VALOR
+            izq.agregar_hijo(resp_when.nodo_arbol) #APUNTA AL VALOR
+
+            padre.agregar_hijo(izq)
+
+            if(i< len(t[2])-1):
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black")) #APUNTA AL VALOR
+                der = (NODO_ARBOL("P.R: WHENS",lexer.lineno,"black")) #APUNTA AL VALOR
+                padre = der
+
+    t[0].text += " ELSE THEN "+t[3].text+" END"
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    nodo_temporal = NODO_ARBOL("ELSE",lexer.lineno,"black") #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: ELSE",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(t[3].nodo_arbol) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    t[0].nodo_arbol = nodo_arbol 
+
+def p_whens(t):
+    '''ca_whens : ca_when ca_whens
+                | ca_when'''
+    if len(t) == 2:
+        t[0] = [t[1]]
+    else:
+        t[2].insert(0, t[1])
+        t[0] = t[2]
+
+def p_ca_when(t):
+    '''ca_when : WHEN expresion THEN expresion'''
+    lst = []
+    lst.append(t[2])
+    lst.append(t[4])
+    t[0] = lst
+
+def p_else(t):
+    '''ca_else : ELSE THEN expresion'''
+    t[0] = t[3]
+
+
+
+
+
 def p_expr_select(t):
     ''' expr_select : expresion name_columna'''
-    t[0] = EXPRESION_SELECT(t[2],t[1])
+    t[0] = EXPRESION_SELECT(t[2],t[1],lexer.lineno,0)
+    #print("ES UNA EXPRESION SELECT")
 def p_between(t):
     ''' op_between : expresion BETWEEN expresion AND expresion'''
 

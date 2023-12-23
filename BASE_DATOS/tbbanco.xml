@@ -18,6 +18,30 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>Activo</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>Inactivo</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>Eliminado</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>Activo</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>Inactivo</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>Eliminado</valor>
+            </dato>
         </tabla>
         <tabla name="tbidentificaciontipo">
             <campo>
@@ -36,6 +60,30 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>DPI</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>NIT</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>PASAPORTE</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>DPI</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>NIT</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>PASAPORTE</valor>
+            </dato>
         </tabla>
         <tabla name="tbcliente">
             <campo>
@@ -88,7 +136,7 @@
             </campo>
             <campo>
                 <nombre>genero</nombre>
-                <tipo size="50">NVARCHAR</tipo>
+                <tipo size="1">NVARCHAR</tipo>
                 <nulo>true</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -102,6 +150,46 @@
                 <foreignkey>tbestado</foreignkey>
                 <reference>idestado</reference>
             </campo>
+            <dato>
+                <valor>GT-0001</valor>
+                <valor>PETER</valor>
+                <valor>JUAN</valor>
+                <valor>PARKER</valor>
+                <valor>SEGUNDO</valor>
+                <valor>01-01-1990</valor>
+                <valor>M</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>GT-0002</valor>
+                <valor>JULIO</valor>
+                <valor/>
+                <valor>PEREZ</valor>
+                <valor>LOPEZ</valor>
+                <valor>01-12-1995</valor>
+                <valor/>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>GT-0001</valor>
+                <valor>PETER</valor>
+                <valor>JUAN</valor>
+                <valor>PARKER</valor>
+                <valor>SEGUNDO</valor>
+                <valor>01-01-1990</valor>
+                <valor>M</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>GT-0002</valor>
+                <valor>JULIO</valor>
+                <valor/>
+                <valor>PEREZ</valor>
+                <valor>LOPEZ</valor>
+                <valor>01-12-1995</valor>
+                <valor/>
+                <valor>1</valor>
+            </dato>
         </tabla>
         <tabla name="tbidentificacion">
             <campo>
@@ -135,6 +223,151 @@
                 <primarykey>false</primarykey>
                 <foreignkey>tbidentificaciontipo</foreignkey>
                 <reference>ididentificaciontipo</reference>
+            </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>GT-0001</valor>
+                <valor>45784560101</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>GT-0001</valor>
+                <valor>94675057</valor>
+                <valor>2</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>GT-0002</valor>
+                <valor>4854560101</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>1</valor>
+                <valor>GT-0001</valor>
+                <valor>45784560101</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>GT-0001</valor>
+                <valor>94675057</valor>
+                <valor>2</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>GT-0002</valor>
+                <valor>4854560101</valor>
+                <valor>1</valor>
+            </dato>
+        </tabla>
+        <tabla name="tbproducto">
+            <campo>
+                <nombre>idproducto</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>producto</nombre>
+                <tipo size="100">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>idestado</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <dato>
+                <valor>1</valor>
+                <valor>Credito Fiduiciario</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>2</valor>
+                <valor>Credito Hipotecario</valor>
+                <valor>1</valor>
+            </dato>
+            <dato>
+                <valor>3</valor>
+                <valor>Tarjeta de Credito Oro</valor>
+                <valor>1</valor>
+            </dato>
+            <campo>
+                <nombre>tasa</nombre>
+                <tipo size="0">DECIMAL</tipo>
+                <nulo>True</nulo>
+                <primarykey>False</primarykey>
+                <foreignkey>False</foreignkey>
+                <reference/>
+            </campo>
+        </tabla>
+        <tabla name="tbcredito">
+            <campo>
+                <nombre>credito</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>nocuenta</nombre>
+                <tipo size="20">NVARCHAR</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>idcliente</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>fechaultimocorte</nombre>
+                <tipo size="0">DATE</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>idproducto</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>tbproducto</foreignkey>
+                <reference>idproducto</reference>
+            </campo>
+        </tabla>
+        <tabla name="tbobligaciontipo">
+            <campo>
+                <nombre>idobligaciontipo</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>obligaciontipo</nombre>
+                <tipo size="30">NVARCHAR</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
             </campo>
         </tabla>
     </base>
