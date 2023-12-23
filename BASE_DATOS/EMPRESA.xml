@@ -12,7 +12,7 @@
             </campo>
             <campo>
                 <nombre>name</nombre>
-                <tipo size = "50">NVARCHAR</tipo>
+                <tipo size="50">NVARCHAR</tipo>
                 <nulo>false</nulo>
                 <primarykey>false</primarykey>
                 <foreignkey>false</foreignkey>
@@ -37,7 +37,7 @@
             <dato>
                 <valor>1</valor>
                 <valor>Remigio</valor>
-                <valor>16</valor>
+                <valor>85</valor>
                 <valor>123456890</valor>
             </dato>            <dato>
                 <valor>2</valor>

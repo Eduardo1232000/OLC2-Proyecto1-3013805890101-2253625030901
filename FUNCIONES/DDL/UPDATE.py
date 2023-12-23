@@ -64,7 +64,7 @@ class UPDATE(Instruccion):
                                         dato.findall('valor')[indice_campo_set].text = str(nuevo_valor_set)
 
                             tree.write(ruta, xml_declaration=True)
-                            ast.escribir_en_consola(f"UPDATE: valroes actualizados satisfactoriamente en la tabla {nombre_tabla}\n")
+                            ast.escribir_en_consola(f"UPDATE: valores actualizados satisfactoriamente en la tabla {nombre_tabla}\n")
                             break
 
                     if not tabla_existente:

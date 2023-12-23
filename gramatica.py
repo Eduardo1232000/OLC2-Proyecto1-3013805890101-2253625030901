@@ -279,6 +279,7 @@ def p_instrucciones_evaluar(t):
                     | use_base
                     | f_insert 
                     | f_delete 
+                    | f_update
                     | sent_alter_table
                     | sent_drop
                     | sent_truncate
@@ -1265,7 +1266,7 @@ def p_alter_add(t):
                  | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
     if len(t) == 5:
         t[0] = ("ADD", "COLUMN", t[3], t[4])
-        print(f"tipo de dato en p_alter_add: {t[4]}")
+        #print(f"tipo de dato en p_alter_add: {t[4]}")
     elif len(t) == 14:
         t[0] = ("ADD_CONSTRAINT", t[3], "FOREIGN KEY", t[5], "REFERENCES", t[10], t[12], t[13])
     else:
@@ -1325,7 +1326,7 @@ def p_sent_truncate(t):
     nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
-    print("Estoy recibiendo la gramatica correcta?")
+    #print("Estoy recibiendo la gramatica correcta?")
 
 
 
