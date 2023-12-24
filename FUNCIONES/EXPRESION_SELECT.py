@@ -22,6 +22,7 @@ class EXPRESION_SELECT(Expresion):
             val = VALOR("",TIPO.EXPRESION_SELECT,self.linea, self.columna)
             self.tipo = val.tipo
             exp = self.operacion.obtener_valor(actual,globa,ast)
+            print(exp)
             exp[1] = str(nom_columna)
             print(exp)
             return exp

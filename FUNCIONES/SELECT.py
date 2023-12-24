@@ -4,6 +4,8 @@ from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ERROR_LSS import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.EXPRESION_SELECT import *
+from FUNCIONES.FUNCIONES_SISTEMA.SELECT_SUMA import *
+from FUNCIONES.FUNCIONES_SISTEMA.CONTAR import *
 
 class SELECT(Instruccion):        
     def __init__(self,expresion_select,continuacion_from, linea, columna):
@@ -16,10 +18,10 @@ class SELECT(Instruccion):
         salida = ""
         if(isinstance(ast, AST)):
             base_activa = ast.obtener_base_activa()
-            if(base_activa == ""):  #SI NO EXISTE LA BASE
-                ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
-                ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No hay una base de datos seleccionada",self.linea))
-                return
+            #if(base_activa == ""):  #SI NO EXISTE LA BASE
+            #    ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
+            #    ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No hay una base de datos seleccionada",self.linea))
+            #    return
             if(len(self.expresion_select) == 1 and self.continuacion_from == None): #1 EXPRESION, NO TIENE FROM, NO TIENE WHERE
                 ast.tabla_actual = None #PARA QUE DE ERROR EN CUALQUIER EXPRESION QUE USE NOMBRE DE COLUMNA
                 expr = self.expresion_select[0]
@@ -62,10 +64,17 @@ class SELECT(Instruccion):
                     solo_columnas = True
 
                     #VALIDAR SI ES UN ASTERISCO
+                    ast.usar_tabla(tabla_from)
+
                     expr = lista_expresiones[0].obtener_valor(actual,globa,ast)
                     tipo_expr = lista_expresiones[0].tipo.obtener_tipo_dato()
                     #print(tipo_expr)
+                    
+                    
+                    
+
                     if(tipo_expr == TIPO.ASTERISCO):  #SOLO UN CASO PUEDE TENER ESTO Y ES CUANDO VIENE *
+                        
                         print("VIENE *")
                         for tab in valores_froms:
                             obj_tabla = self.obtener_objeto_tabla(ruta,tab)
@@ -82,10 +91,23 @@ class SELECT(Instruccion):
                             
                             #GUARDADO DE DATOS EN LISTAS
                             for expr in lista_expresiones: #OBTIENE LOS VALORES DE LAS EXPRESIONES Y LAS GUARDA EN LISTAS
+
+                                
+
                                 valor_expr = expr.obtener_valor(actual,globa,ast)
-                                print(expr)
-                                print(valor_expr)
+                                if(isinstance(expr,SELECT_SUMA)):                                   
+                                    salida += "SUMA: "+str(valor_expr)
+                                    salida += "\n"
+                                    continue
+                                elif(isinstance(expr, CONTAR)):
+                                    salida += "CONTAR: "+str(valor_expr)
+                                    salida += "\n"
+                                    continue
+                                    
+                                #print(expr)
+                                #print(valor_expr)
                                 tipo_expr = expr.tipo.obtener_tipo_dato()
+
                                 if(tipo_expr == TIPO.COLUMNA):                                      #ES COLUMNA
                                     lista_colum = self.obtener_lista_datos(obj_tabla,valor_expr)
                                     if(lista_colum !=None):
@@ -165,6 +187,7 @@ class SELECT(Instruccion):
                         #VALIDAR SI ES UN ASTERISCO
                         expr = lista_expresiones[0].obtener_valor(actual,globa,ast)
                         tipo_expr = lista_expresiones[0].tipo.obtener_tipo_dato()
+                    
                         if(tipo_expr == TIPO.ASTERISCO):  #SOLO UN CASO PUEDE TENER ESTO Y ES CUANDO VIENE *
                             for tab in valores_froms:
                                 obj_tabla = self.obtener_objeto_tabla(ruta,tab)
@@ -180,8 +203,25 @@ class SELECT(Instruccion):
                                 
                                 #GUARDADO DE DATOS EN LISTAS
                                 for expr in lista_expresiones: #OBTIENE LOS VALORES DE LAS EXPRESIONES Y LAS GUARDA EN LISTAS
+                                    if(isinstance(expr,SELECT_SUMA)): 
+                                        expr.validaciones_where = validaciones    
+                                        val = expr.obtener_valor(actual,globa,ast)                            
+                                        salida += "SUMA: "+str(val)
+                                        salida += "\n"
+                                        continue
+                                    elif(isinstance(expr, CONTAR)):
+                                        expr.validaciones_where = validaciones  
+                                        val = expr.obtener_valor(actual,globa,ast) 
+                                        salida += "CONTAR: "+str(val)
+                                        salida += "\n"
+                                        continue
                                     valor_expr = expr.obtener_valor(actual,globa,ast)
                                     tipo_expr = expr.tipo.obtener_tipo_dato()
+
+                                    
+
+
+
                                     if(tipo_expr == TIPO.COLUMNA):                                      #ES COLUMNA
                                         lista_colum = self.obtener_lista_datos(obj_tabla,valor_expr)
                                         if(lista_colum !=None):

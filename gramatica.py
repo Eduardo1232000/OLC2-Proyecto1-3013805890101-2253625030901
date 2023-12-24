@@ -809,6 +809,83 @@ def p_asignacion_variable(t):
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT expresiones_select_ini continuacion_from'''
     t[0] = SELECT(t[2],t[3],lexer.lineno,0)
+    nodo_arbol = NODO_ARBOL("SELECT",lexer.lineno,"ORANGE")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black"))
+    nodo_temporal = NODO_ARBOL("expresiones",lexer.lineno,"ORANGE")
+    izq = None
+    der = None
+    padre = nodo_temporal
+
+    t[0].text = str(t[1]) + " "
+
+    for i in range (len(t[2])):
+        expr = t[2][i]
+        izq = expr.nodo_arbol
+        padre.agregar_hijo(izq)
+
+        if(i < len(t[2])-1):
+            der = NODO_ARBOL("expresiones",lexer.lineno,"ORANGE")
+            padre.agregar_hijo(der)
+            padre = der
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    
+
+    if(t[3] == None):
+        t[0].text += ";"
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+    else:
+        t[0].text += " FROM "
+        nodo_from = (NODO_ARBOL("P.R: FROM",lexer.lineno,"red"))
+        nodo_temporal = NODO_ARBOL("COLUMNAS",lexer.lineno,"red")
+        izq = None
+        der = None
+        padre = nodo_temporal
+        for i in range(len(t[3][0])):
+            expr = t[3][0][i]
+            izq = expr.nodo_arbol
+            padre.agregar_hijo(izq)
+
+            if(i < len(t[3][0])-1):
+                der = NODO_ARBOL("COLUMNAS", lexer.lineno,"red")
+                padre.agregar_hijo(der)
+                padre = der
+
+            expr = t[3][0][i]
+        nodo_from.agregar_hijo(nodo_temporal)
+        nodo_arbol.agregar_hijo(nodo_from)
+
+
+        if(t[3][1] ==None):
+            nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno,"black"))
+        else:
+            nodo_temporal = NODO_ARBOL("CONDICIONES WHERE",lexer.lineno,"red")
+
+            izq = None
+            der = None
+            padre = nodo_temporal
+            nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"red"))
+            print(t[3][1])
+            for j in range(len(t[3][1])):
+                expr_where = t[3][1][j]
+
+                izq = expr_where.nodo_arbol
+                padre.agregar_hijo(izq)
+
+                if(j < len(t[3][1])-1):
+                    der = NODO_ARBOL("CONDICIONES_WHERE",lexer.lineno,"red")
+                    padre.agregar_hijo(der)
+                    padre = der
+            nodo_arbol.agregar_hijo(nodo_temporal)
+            nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+
+                
+    
+    t[0].nodo_arbol = nodo_arbol
+
+
+
+
+
 
 def p_expresiones_select_ini(t):
     '''expresiones_select_ini : expresion_select_inicio COMA expresiones_select_ini
@@ -827,6 +904,9 @@ def p_expresion_select_ini(t):
     
     if(t.slice[1].type == "MULTIPLICACION"):
         t[0] = VALOR("*",TIPO.ASTERISCO,lexer.lineno,0)
+        t[0].text = str(t[1])
+        nodo_arbol = NODO_ARBOL("*",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+        t[0].nodo_arbol = nodo_arbol 
     else:
         t[0] = t[1]
 
@@ -843,13 +923,24 @@ def p_expresion_select_fin(t):
         # Hay más de una expresión
         if(t.slice[2].type == "IGUAL"):
             objeto = IGUAL(t[1],t[3],lexer.lineno,0)
+            objeto.text = str(t[1].text) +" "+ str(t[2])+" "+str(t[3].text)
+            nodo_arbol = NODO_ARBOL("IGUAL",lexer.lineno,"red")
+            nodo_arbol.agregar_hijo(t[1].text)
+            nodo_arbol.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
+            nodo_arbol.agregar_hijo(t[3].text)
             t[3].insert(0, objeto)
+            objeto.nodo_arbol = nodo_arbol
         else: 
             t[0] = t[3]
 
 def p_alias(t):
     '''alias : name PUNTO name'''
     t[0] = ALIAS(t[1],t[3],lexer.lineno,0)
+    nodo_arbol = NODO_ARBOL("ALIAS",lexer.lineno,"red")
+    nodo_arbol.agregar_hijo(t[1].text)
+    nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[2]),lexer.lineno,"red"))
+    nodo_arbol.agregar_hijo(t[3].text)
+    t[0].nodo_arbol = nodo_arbol
 
 def p_continuacion_from(t):
     '''continuacion_from : PTCOMA
@@ -928,24 +1019,17 @@ def p_hoy(t):
     t[0].nodo_arbol = nodo_arbol
     
 def p_contar(t):
-    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
-                   | CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
-    t[0] = CONTAR(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
+    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA '''
+    t[0] = CONTAR(lexer.lineno,0)
 
-    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) +" "+str(t[5])+" "+str(t[6].text)+" "+str(t[7])+" "+str(t[8].text)+str(t[9])+" "+str(t[10].text)+str(t[11])
+    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) 
     nodo_arbol = NODO_ARBOL("FUNCION DEL SISTEMA",lexer.lineno,"ORANGE")
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CONTAR",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(NODO_ARBOL("*",lexer.lineno,"black"))  
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[6].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[8].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(t[9],lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(t[10].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+
     t[0].nodo_arbol = nodo_arbol
 
 def p_signo_relacional(t):
@@ -957,24 +1041,16 @@ def p_signo_relacional(t):
     t[0] = t[1]
 
 def p_suma(t):
-    '''func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
-                 | SUMA PARABRE name PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
-    t[0] = SELECT_SUMA(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
+    '''func_suma : SUMA PARABRE name PARCIERRA '''
+    t[0] = SELECT_SUMA(t[3],TIPO.VALOR_UNICO,lexer.lineno,0)
 
-    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])+ " "+str(t[5])+" "+str(t[6].text) +" "+str(t[7])+" "+str(t[8].text)+" "+str(t[9]) +" "+str(t[10].text)+str(t[11])
+    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])
     nodo_arbol = NODO_ARBOL("FUNCION DEL SISTEMA",lexer.lineno,"ORANGE")
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SUMA",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[6].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[8].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(t[10].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
     t[0].nodo_arbol = nodo_arbol
 
 def p_cas(t):
@@ -1696,6 +1772,15 @@ def p_else(t):
 def p_expr_select(t):
     ''' expr_select : expresion name_columna'''
     t[0] = EXPRESION_SELECT(t[2],t[1],lexer.lineno,0)
+    t[0].text = t[1].text +" "+t[2].text
+
+    nodo_arbol = NODO_ARBOL("EXPRESION SELECT",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+    nodo_arbol.agregar_hijo(t[1].nodo_arbol)
+    nodo_arbol.agregar_hijo(t[2].nodo_arbol) #APUNTA AL VALOR
+    t[0].nodo_arbol = nodo_arbol 
+
+    
+
     #print("ES UNA EXPRESION SELECT")
 def p_between(t):
     ''' op_between : expresion BETWEEN expresion AND expresion'''

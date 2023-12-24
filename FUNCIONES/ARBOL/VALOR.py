@@ -49,6 +49,9 @@ class VALOR(Expresion):
 
         elif(self.tipo_valor == "EXPRESION_SELECT"):
             self.tipo = TIPODATO(TIPO.LISTA_COLUMNAS)
+
+        elif(self.tipo_valor == "VALOR_UNICO"):
+            self.tipo = TIPODATO(TIPO.VALOR_UNICO)
             
         else:
             self.tipo = TIPODATO(TIPO.ERROR)
@@ -91,6 +94,9 @@ class VALOR(Expresion):
                 return self.valor
             
             elif(self.tipo.obtener_tipo_dato()== TIPO.EXPRESION_SELECT):
+                return self.valor
+            
+            elif(self.tipo.obtener_tipo_dato()== TIPO.VALOR_UNICO):
                 return self.valor
                 
         except:

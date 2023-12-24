@@ -97,7 +97,7 @@ class CONCATENAR(Expresion):
                     print(lista_respuesta1)
                     return lista_respuesta1
                 else:
-                    print("ERROR INESPERADO EN IGUAL")
+                    print("ERROR INESPERADO EN CONCATENAR")
                 
                 
             else:
