@@ -95,5 +95,29 @@
                 <reference>false</reference>
             </campo>
         </tabla>
+        <procedure name="procedure4">
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
+        <procedure name="procedure2">
+            <parameters>
+                <parameter name="var1" type="INT" size="0"/>
+            </parameters>
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
+        <procedure name="procedure3">
+            <parameters>
+                <parameter name="var3" type="DECIMAL" size="0"/>
+            </parameters>
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
     </base>
 </database>

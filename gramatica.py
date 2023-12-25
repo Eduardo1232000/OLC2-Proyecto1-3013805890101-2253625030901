@@ -4,6 +4,8 @@ from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.VARIABLES import *
+from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import *
+from FUNCIONES.DDL.ALTER_FUNCION_BASE import *
 from FUNCIONES.DDL.PROCEDURE_BASE import *
 from FUNCIONES.DDL.FUNCION_BASE import *
 
@@ -283,6 +285,7 @@ def p_instrucciones_evaluar(t):
                     | sent_alter_table
                     | sent_drop
                     | sent_truncate
+                    | alter_procedure
                     | declarar_var
                     | asignacion_variable
                     | declarar_procedure
@@ -1255,8 +1258,10 @@ def p_alter_table(t) :
     t[0] = ALTER_TABLE(t[3], t[4], lexer.lineno, 0)
     #AGREGAR TEXTO 
     #AGREGAR NODOS ARBOL
+
+#caracteristica
 def p_alter_action(t):
-    '''alter_action : alter_add
+    '''alter_action : alter_add 
                     | alter_drop
                     | alter_modify'''
     t[0] = t[1]
@@ -1585,9 +1590,17 @@ def p_columnas(t):
         t[3].insert(0, t[1])
         t[0] = t[3]
 
+
+def p_alter_procedure(t):
+    ''' alter_procedure : ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA
+                        | ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA'''
+    
+    if len(t) == 12:
+        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", t[5], t[9], lexer.lineno, 0)
+    
+    else:
+        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
                 
-
-
 
 def p_valores(t):
     ''' valores : expresion

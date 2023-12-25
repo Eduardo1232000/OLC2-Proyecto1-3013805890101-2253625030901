@@ -1,27 +1,22 @@
-USE Prueba_archivo;
-CREATE PROCEDURE procedure4
+USE EMPRESA;
+
+ALTER PROCEDURE procedure4
 AS
 BEGIN 
 	DECLARE @VALOR1 INT;
 	SET @VALOR1= @var1;
 END;
 
-CREATE PROCEDURE procedure2 (@var1 INT) 
+ALTER PROCEDURE procedure2 (@var1 INT) 
 AS
 BEGIN
 	DECLARE @VALOR1 INT;
 	SET @VALOR1= @var1;
 END;
 
-CREATE PROCEDURE procedure3 (@var1 AS INT , @var2 AS NCHAR(5)) 
+ALTER PROCEDURE procedure3 (@var1 AS INT , @var2 AS NCHAR(5)) 
 AS
 BEGIN
 	DECLARE @VALOR1 INT;
 	SET @VALOR1= @var1;
 END;
-
-
-
-
-
-
