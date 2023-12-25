@@ -820,6 +820,9 @@ def p_funcion_sistema(t):
 
     for i in range (len(t[2])):
         expr = t[2][i]
+        if(i !=0):
+            t[0].text +=", "
+        t[0].text += expr.text
         izq = expr.nodo_arbol
         padre.agregar_hijo(izq)
 
@@ -833,6 +836,7 @@ def p_funcion_sistema(t):
     if(t[3] == None):
         t[0].text += ";"
         nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+        t[0].text += ";"
     else:
         t[0].text += " FROM "
         nodo_from = (NODO_ARBOL("P.R: FROM",lexer.lineno,"red"))
@@ -841,7 +845,10 @@ def p_funcion_sistema(t):
         der = None
         padre = nodo_temporal
         for i in range(len(t[3][0])):
+            
             expr = t[3][0][i]
+            
+            t[0].text += expr.text
             izq = expr.nodo_arbol
             padre.agregar_hijo(izq)
 
@@ -857,6 +864,7 @@ def p_funcion_sistema(t):
 
         if(t[3][1] ==None):
             nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno,"black"))
+            t[0].text += ";"
         else:
             nodo_temporal = NODO_ARBOL("CONDICIONES WHERE",lexer.lineno,"red")
 
@@ -864,9 +872,12 @@ def p_funcion_sistema(t):
             der = None
             padre = nodo_temporal
             nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"red"))
-            print(t[3][1])
+            t[0].text += " WHERE "
+            #print(t[3][1])
             for j in range(len(t[3][1])):
                 expr_where = t[3][1][j]
+  
+                t[0].text += expr_where.text
 
                 izq = expr_where.nodo_arbol
                 padre.agregar_hijo(izq)

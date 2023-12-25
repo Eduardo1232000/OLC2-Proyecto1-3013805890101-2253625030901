@@ -14,7 +14,7 @@ class SELECT(Instruccion):
         self.continuacion_from = continuacion_from
 
     def ejecutar(self, actual, globa, ast):
-        #print(self.text)
+        print(self.text)
         salida = ""
         if(isinstance(ast, AST)):
             base_activa = ast.obtener_base_activa()
