@@ -15,6 +15,92 @@ class EXP_OR(Expresion):
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
             tipo_expr2 = self.expr2.tipo.obtener_tipo_dato()
 
+
+            if(tipo_expr1 == TIPO.LISTA_COLUMNAS or tipo_expr2 == TIPO.LISTA_COLUMNAS):
+                #EN OR SOLO VAMOS A UNIR LAS 2 LISTAS, SOLO SI SON DE LA MISMA TABLA
+                lst = []
+                
+                for i in range(len(expr1)):
+                    lst1 = expr1[i]
+                    nombre_t = expr1[i][0]
+                    datos_t = expr1[i][2]
+                    if(len(lst)!=0):
+                        for j in range(len(lst)):
+                            nombre_ref = lst[j][0]
+                            datos_ref = lst[j][2]
+                            if(nombre_ref == nombre_t):
+                                print("LA LISTA YA ESTA EN LA RESPUESTA: COMPARARLO")
+                                lst_datos =[]
+
+                                for dato_t in datos_t:
+                                    if(dato_t in lst_datos):
+                                        pass
+                                    else:
+                                        lst_datos.append(dato_t) 
+
+                                for dato_ref in datos_ref:
+                                    if(dato_ref in lst_datos):
+                                        pass
+                                    else:
+                                        lst_datos.append(dato_ref)
+
+                                lst[j][2] = lst_datos
+                                break
+                    else:
+                        lst.append(lst1)
+
+                for i in range(len(expr2)):
+                    lst1 = expr2[i]
+                    nombre_t = expr2[i][0]
+                    datos_t = expr2[i][2]
+                    if(len(lst)!=0):
+                        encontro = False
+                        for j in range(len(lst)):
+                            nombre_ref = lst[j][0]
+                            datos_ref = lst[j][2]
+                            if(nombre_ref == nombre_t):
+                                encontro = True
+                                print("LA LISTA YA ESTA EN LA RESPUESTA: COMPARARLO")
+                                lst_datos =[]
+                                
+                                for dato_t in datos_t:
+                                    if(dato_t in lst_datos):
+                                        pass
+                                    else:
+                                        lst_datos.append(dato_t) 
+
+                                for dato_ref in datos_ref:
+                                    if(dato_ref in lst_datos):
+                                        pass
+                                    else:
+                                        lst_datos.append(dato_ref)
+                                            
+                                lst[j][2] = lst_datos
+                                print(lst_datos)
+                                break
+                        if(encontro == False):
+                            lst.append(lst1)
+
+                    else:
+                        lst.append(lst1)
+
+                val = VALOR("",TIPO.LISTA_COLUMNAS,self.linea,self.columna)
+                self.tipo = val.tipo
+                print(lst)
+                return lst
+
+
+
+
+
+
+
+
+
+
+
+
+
             if(((tipo_expr1==TIPO.INT or tipo_expr1==TIPO.BIT or tipo_expr1==TIPO.DECIMAL)and(tipo_expr2==TIPO.INT or tipo_expr2==TIPO.BIT or tipo_expr2==TIPO.DECIMAL))):
                 if((int(expr1)==0 or int(expr1)==1) and(int(expr2)==0 or int(expr2)==1)):
                     if((expr1 == 1) or expr2 == 1):

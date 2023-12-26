@@ -1,5 +1,7 @@
 USE EMPRESA;
 
-DELETE FROM nombre_tabla;
+DELETE FROM Trabajadores;
 
-DELETE FROM nombre_tabla WHERE condicion;
+DELETE FROM Trabajadores  WHERE name = "Remigio";
+
+DELETE FROM Trabajadores  WHERE edad <= 100;

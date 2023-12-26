@@ -4,22 +4,23 @@ from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.VARIABLES import *
-from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import *
-from FUNCIONES.DDL.ALTER_FUNCTION_BASE import *
+from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import * #ALTER_PROCEDURE_BASE DROP AND TRUNCATE PROCEDURE
+from FUNCIONES.DDL.ALTER_FUNCTION_BASE import * #ALTER_FUNCTION_BASE AQUI TAMBIÉN VOY A AGREGAR LOS DE DROP AND TRUNCATE FUNCTION
 from FUNCIONES.DDL.PROCEDURE_BASE import *
 from FUNCIONES.DDL.FUNCION_BASE import *
 
 from FUNCIONES.SELECT import *
 from FUNCIONES.ALIAS import *
 from FUNCIONES.EXPRESION_SELECT import *
+from FUNCIONES.SSL.CASE import *
 
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import *
-from FUNCIONES.DDL.SELECT import *
-from FUNCIONES.DDL.UPDATE import *
-from FUNCIONES.DDL.DELETE import *
+
+from FUNCIONES.DDL.UPDATE import * #UPDATE
+from FUNCIONES.DDL.DELETE import * #DROP
 
 
 from FUNCIONES.DDL.INSERT_INTO import *
@@ -54,7 +55,7 @@ from FUNCIONES.SSL.RETURN import *
 from FUNCIONES.SSL.IF import *
 from FUNCIONES.SSL.WHILE import *
 
-
+#UPDATE
 tokens = (
     'SELECT', 'FROM','USE', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENA', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
@@ -70,7 +71,7 @@ tokens = (
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
     'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN','BETWEEN',
-    'IF','ELSE','THEN','WHILE','PUNTO'
+    'IF','ELSE','THEN','WHILE','PUNTO', 'CASE', 'WHEN'
 )
 
 #Tokens
@@ -88,7 +89,7 @@ t_FOREIGN           =   r'FOREIGN'
 t_REFERENCE         =   r'REFERENCE'
 t_KEY               =   r'KEY'
 t_SELECT            =   r'SELECT' 
-t_UPDATE            =   r'UPDATE'
+t_UPDATE            =   r'UPDATE' #AGREGADO@@@@!!!!
 t_FROM              =   r'FROM'
 t_USE               =   r'USE'
 t_WHERE             =   r'WHERE'
@@ -120,6 +121,8 @@ t_IF                =   r'IF'
 t_ELSE              =   r'ELSE'
 t_THEN              =   r'THEN'
 t_WHILE             =   r'WHILE'
+t_CASE              =   r'CASE'
+t_WHEN              =   r'WHEN'
 
 t_PUNTO             =   r'\.'
 t_MAS               =   r'\+'
@@ -274,6 +277,7 @@ def p_instrucciones_lista(t):
         #AGREGAR LOS ERRORES LEXICOS Y SINTACTICOS
 
     
+#AGREGADO f_delete, f_update, alter_procedure, alter_function
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
                     | sent_create_database
@@ -811,10 +815,97 @@ def p_asignacion_variable(t):
 
 #SELECT
 
-
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT expresiones_select_ini continuacion_from'''
     t[0] = SELECT(t[2],t[3],lexer.lineno,0)
+    nodo_arbol = NODO_ARBOL("SELECT",lexer.lineno,"ORANGE")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black"))
+    nodo_temporal = NODO_ARBOL("expresiones",lexer.lineno,"ORANGE")
+    izq = None
+    der = None
+    padre = nodo_temporal
+
+    t[0].text = str(t[1]) + " "
+
+    for i in range (len(t[2])):
+        expr = t[2][i]
+        if(i !=0):
+            t[0].text +=", "
+        t[0].text += expr.text
+        izq = expr.nodo_arbol
+        padre.agregar_hijo(izq)
+
+        if(i < len(t[2])-1):
+            der = NODO_ARBOL("expresiones",lexer.lineno,"ORANGE")
+            padre.agregar_hijo(der)
+            padre = der
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    
+
+    if(t[3] == None):
+        t[0].text += ";"
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+        t[0].text += ";"
+    else:
+        t[0].text += " FROM "
+        nodo_from = (NODO_ARBOL("P.R: FROM",lexer.lineno,"red"))
+        nodo_temporal = NODO_ARBOL("COLUMNAS",lexer.lineno,"red")
+        izq = None
+        der = None
+        padre = nodo_temporal
+        for i in range(len(t[3][0])):
+            
+            expr = t[3][0][i]
+            
+            t[0].text += expr.text
+            izq = expr.nodo_arbol
+            padre.agregar_hijo(izq)
+
+            if(i < len(t[3][0])-1):
+                der = NODO_ARBOL("COLUMNAS", lexer.lineno,"red")
+                padre.agregar_hijo(der)
+                padre = der
+
+            expr = t[3][0][i]
+        nodo_from.agregar_hijo(nodo_temporal)
+        nodo_arbol.agregar_hijo(nodo_from)
+
+
+        if(t[3][1] ==None):
+            nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno,"black"))
+            t[0].text += ";"
+        else:
+            nodo_temporal = NODO_ARBOL("CONDICIONES WHERE",lexer.lineno,"red")
+
+            izq = None
+            der = None
+            padre = nodo_temporal
+            nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"red"))
+            t[0].text += " WHERE "
+            #print(t[3][1])
+            for j in range(len(t[3][1])):
+                expr_where = t[3][1][j]
+  
+                t[0].text += expr_where.text
+
+                izq = expr_where.nodo_arbol
+                padre.agregar_hijo(izq)
+
+                if(j < len(t[3][1])-1):
+                    der = NODO_ARBOL("CONDICIONES_WHERE",lexer.lineno,"red")
+                    padre.agregar_hijo(der)
+                    padre = der
+            nodo_arbol.agregar_hijo(nodo_temporal)
+            nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+
+                
+    
+    t[0].nodo_arbol = nodo_arbol
+
+
+
+
+
 
 def p_expresiones_select_ini(t):
     '''expresiones_select_ini : expresion_select_inicio COMA expresiones_select_ini
@@ -833,17 +924,43 @@ def p_expresion_select_ini(t):
     
     if(t.slice[1].type == "MULTIPLICACION"):
         t[0] = VALOR("*",TIPO.ASTERISCO,lexer.lineno,0)
+        t[0].text = str(t[1])
+        nodo_arbol = NODO_ARBOL("*",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+        t[0].nodo_arbol = nodo_arbol 
     else:
         t[0] = t[1]
 
 
 def p_expresion_select_fin(t):
-    '''expresion_select_final : expresion
-                              | alias'''
-    t[0] = t[1]
+    '''expresion_select_final : expresion_select_final IGUAL expresion_select_final
+                              | expresion_select_final signo_relacional expresion_select_final
+                              | expresion'''
+    
+    if len(t) == 2:
+        # Solo hay una expresión
+        t[0] = [t[1]]
+    else:
+        # Hay más de una expresión
+        if(t.slice[2].type == "IGUAL"):
+            objeto = IGUAL(t[1],t[3],lexer.lineno,0)
+            objeto.text = str(t[1].text) +" "+ str(t[2])+" "+str(t[3].text)
+            nodo_arbol = NODO_ARBOL("IGUAL",lexer.lineno,"red")
+            nodo_arbol.agregar_hijo(t[1].text)
+            nodo_arbol.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
+            nodo_arbol.agregar_hijo(t[3].text)
+            t[3].insert(0, objeto)
+            objeto.nodo_arbol = nodo_arbol
+        else: 
+            t[0] = t[3]
+
 def p_alias(t):
     '''alias : name PUNTO name'''
     t[0] = ALIAS(t[1],t[3],lexer.lineno,0)
+    nodo_arbol = NODO_ARBOL("ALIAS",lexer.lineno,"red")
+    nodo_arbol.agregar_hijo(t[1].text)
+    nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[2]),lexer.lineno,"red"))
+    nodo_arbol.agregar_hijo(t[3].text)
+    t[0].nodo_arbol = nodo_arbol
 
 def p_continuacion_from(t):
     '''continuacion_from : PTCOMA
@@ -858,19 +975,17 @@ def p_continuacion_from(t):
     
 def p_continuacion_where(t):
     '''continuacion_where : PTCOMA
-                          | WHERE expresion_select_final IGUAL expresion_select_final PTCOMA
-                          | WHERE expresion_select_final signo_relacional expresion_select_final PTCOMA'''
+                          | WHERE expresion_select_final PTCOMA'''
     if(len(t) == 2):
         t[0] = None
     else:
-        lst = []
-        lst.append(t[2])
-        lst.append(t[3])
-        lst.append(t[4])
-        t[0] = lst
+        t[0] = t[2]
 
 
 #FIN SELECT
+
+
+
 
 
 #Elimine                     | select_dato 
@@ -881,6 +996,7 @@ def p_operacion_sistema(t):
                     | func_contar
                     | func_suma
                     | func_cas
+                    | exp_case
                     '''
     t[0] = t[1]
     
@@ -928,24 +1044,17 @@ def p_hoy(t):
     t[0].nodo_arbol = nodo_arbol
     
 def p_contar(t):
-    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
-                   | CONTAR PARABRE MULTIPLICACION PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
-    t[0] = CONTAR(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
+    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA '''
+    t[0] = CONTAR(lexer.lineno,0)
 
-    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) +" "+str(t[5])+" "+str(t[6].text)+" "+str(t[7])+" "+str(t[8].text)+str(t[9])+" "+str(t[10].text)+str(t[11])
+    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3])+str(t[4]) 
     nodo_arbol = NODO_ARBOL("FUNCION DEL SISTEMA",lexer.lineno,"ORANGE")
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CONTAR",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(NODO_ARBOL("*",lexer.lineno,"black"))  
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[6].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[8].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(t[9],lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(t[10].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+
     t[0].nodo_arbol = nodo_arbol
 
 def p_signo_relacional(t):
@@ -957,24 +1066,16 @@ def p_signo_relacional(t):
     t[0] = t[1]
 
 def p_suma(t):
-    '''func_suma : SUMA PARABRE name PARCIERRA FROM name WHERE name IGUAL expresion PTCOMA
-                 | SUMA PARABRE name PARCIERRA FROM name WHERE name signo_relacional expresion PTCOMA'''
-    t[0] = SELECT_SUMA(t[3],t[6],t[8],t[9],t[10],lexer.lineno,0)
+    '''func_suma : SUMA PARABRE name PARCIERRA '''
+    t[0] = SELECT_SUMA(t[3],TIPO.VALOR_UNICO,lexer.lineno,0)
 
-    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])+ " "+str(t[5])+" "+str(t[6].text) +" "+str(t[7])+" "+str(t[8].text)+" "+str(t[9]) +" "+str(t[10].text)+str(t[11])
+    t[0].text = str(t[1]) +" "+str(t[2])+str(t[3].text)+str(t[4])
     nodo_arbol = NODO_ARBOL("FUNCION DEL SISTEMA",lexer.lineno,"ORANGE")
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SELECT",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SUMA",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[6].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black")) 
-    nodo_arbol.agregar_hijo(t[8].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(t[10].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
     t[0].nodo_arbol = nodo_arbol
 
 def p_cas(t):
@@ -992,34 +1093,11 @@ def p_cas(t):
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
 
-
 def p_condiciones(t):
     '''condiciones : expresion
                     | expresion AND condiciones
                     | expresion OR condiciones
                     | name IGUAL expresion'''
-
-    if len(t) == 2:
-        t[0] = [t[1]]  # Una sola expresión
-    elif len(t) == 4:
-        
-        if(t.slice[2].type == "IGUAL"):
-            t[0] = [t[1], t[2], t[3]]  # Esto es para la condición name exp_rel expresion
-        else:
-            t[0] = t[1] + [t[2], t[3]] if isinstance(t[1], list) else [t[1], t[2], t[3]]
-    #print("p_condiciones:", t[0])
-            
-"""
-def p_expr_rel_cond(t):
-    '''expr_rel_cond : IGUAL
-                     | DIFERENTE
-                     | MAYORQUE
-                     | MENORQUE
-                     | MAYORIGUAL
-                     | MENORIGUAL'''
-    t[0] = t[1]
-"""
-    
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -1496,43 +1574,6 @@ def p_f_insert(t):
 
 
 
-#SELECT
-   
-def p_f_select(t):
-    '''f_select : SELECT select_dato PTCOMA'''
-    t[0] = SELECT(t[2][0], t[2][1], t[2][2], lexer.lineno, 0)
-
-    
-def p_select_dato(t): 
-    '''select_dato : select_list FROM columnas where_clause_op
-                   | select_list FROM columnas'''
-    
-    if len(t) == 5:
-        
-        # Si viene una clausula Where
-        t[0] = [t[1], t[3], t[4]]
-    else:
-        # Sin Where
-        t[0] = [t[1], t[3], []]
-
-  
-def p_select_list(t):
-    ''' select_list : MULTIPLICACION
-                    | columnas'''
-    t[0] = [t[1]] #if len(t) == 2 else t[1]
-
-#t[0] = [t[1]]
-
-
-    
-def p_where_clause_op(t): 
-    ''' where_clause_op : 
-                        | WHERE condiciones'''
-    if len(t) == 3:
-        t[0] = t[2]
-    else:
-        t[0] = []
-
 
 #UPDATE
 def p_f_update(t):
@@ -1553,8 +1594,11 @@ def p_set_expresion(t):
     t[0] = [t[1], t[2], t[3]]
 
 
+#FIN UPDATE    
 
 
+
+#DELETE
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
@@ -1578,7 +1622,9 @@ def p_operador_relacional(t):
                            | DIFERENTE '''
     t[0] = t[1]
 
-    
+#FIN DELETE
+
+
 def p_columnas(t):
     ''' columnas : name
                 | name COMA columnas'''
@@ -1592,6 +1638,7 @@ def p_columnas(t):
         t[0] = t[3]
 
 
+#MODIFICACIONES DE PROCEDURE
 def p_alter_procedure(t):
     ''' alter_procedure : ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA
                         | ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA'''
@@ -1603,6 +1650,7 @@ def p_alter_procedure(t):
         t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
 
 
+"""
 def p_sent_truncate_procedure(t):
     '''sent_truncate_procedure : TRUNCATE PROCEDURE name PTCOMA'''
     t[0] = TRUNCATE_PROCEDURE(t[3], lexer.lineno, 0)
@@ -1611,7 +1659,13 @@ def p_sent_drop_procedure(t):
     '''sent_drop_procedure : DROP PROCEDURE name PTCOMA'''
     t[0] = DROP_PROCEDURE(t[3], lexer.lineno,0)
 
+"""
 
+#AQUI TERMINAN PARA PROCEDURE
+
+
+
+#PROCESOS PARA FUNCTIONS
 def p_alter_funcion(t):
     ''' alter_function : ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA
                          | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
@@ -1622,6 +1676,7 @@ def p_alter_funcion(t):
         t[0] = ALTER_FUNCTION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
 
 
+"""
 def p_sent_truncate_function(t):
     '''sent_truncate_function : TRUNCATE FUNCTION name PTCOMA'''
     t[0] = TRUNCATE_FUNCTION(t[3], lexer.lineno, 0)
@@ -1629,7 +1684,9 @@ def p_sent_truncate_function(t):
 def p_sent_drop_function(t):
     '''sent_drop_function : DROP FUNCTION name PTCOMA'''
     t[0] = DROP_FUNCTION(t[3], lexer.lineno,0)
+"""
 
+#AQUI TERMINA PARA FUNCTION
                 
 
 def p_valores(t):
@@ -1729,9 +1786,9 @@ def p_dato_varchar(t):
 def p_expresion(t):
     '''expresion : exp_aritmetica
                  | exp_logica
+                 | operacion_sis
                  | llamada_funcion
                  | exp_relacional
-                 | operacion_sis
                  | variable
                  | op_between
                  | exp_if
@@ -1740,7 +1797,10 @@ def p_expresion(t):
                  | FECHA
                  | FECHAHORA
                  | CADENA
+                 | expr_select
                  | name_columna
+                 | alias
+                 
                  '''
     
     if(t.slice[1].type == "FECHA"):
@@ -1760,15 +1820,90 @@ def p_expresion(t):
     elif(t.slice[1].type == "CADENA"):
         t[0] = VALOR(t[1],"CADENA",lexer.lineno,0)
         t[0].text = '"'+str(t[1])+'"'
-        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"red")            #CREOTHEN UN NODO CON TEXTO EXPRESION
         nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[1]),lexer.lineno,"black")) #APUNTA AL VALOR
         t[0].nodo_arbol = nodo_arbol
     else:
         t[0] = t[1]
 
+def p_case(t):
+    ''' exp_case : CASE ca_whens ca_else  END'''
+    t[0] = EXP_CASE(t[2],t[3], lexer.lineno,0)
+    t[0].text = str(t[1]) +" "
+    nodo_arbol = NODO_ARBOL("CASE",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CASE",lexer.lineno,"black")) #APUNTA AL VALOR  
+    
+    nodo_temporal = NODO_ARBOL("P.R: WHENS",lexer.lineno,"black")
+    izq = None
+    der = None
+    padre = nodo_temporal
+    for i in range (len(t[2])):
+        valwhen = t[2][i]
+        exp_when = valwhen[0]
+        resp_when = valwhen[1]
+        if(isinstance(exp_when, Expresion) and isinstance(resp_when,Expresion)):
+            t[0].text += " WHEN " +str(exp_when.text) +" THEN "+ str(resp_when.text)+" "
+            
+            izq = NODO_ARBOL("P.R: WHEN",lexer.lineno,"black")
+            izq.agregar_hijo(NODO_ARBOL("P.R: WHEN",lexer.lineno,"black")) #APUNTA AL VALOR
+            izq.agregar_hijo(exp_when.nodo_arbol) #APUNTA AL VALOR
+            izq.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black")) #APUNTA AL VALOR
+            izq.agregar_hijo(resp_when.nodo_arbol) #APUNTA AL VALOR
+
+            padre.agregar_hijo(izq)
+
+            if(i< len(t[2])-1):
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black")) #APUNTA AL VALOR
+                der = (NODO_ARBOL("P.R: WHENS",lexer.lineno,"black")) #APUNTA AL VALOR
+                padre = der
+
+    t[0].text += " ELSE THEN "+t[3].text+" END"
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    nodo_temporal = NODO_ARBOL("ELSE",lexer.lineno,"black") #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: ELSE",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(t[3].nodo_arbol) #APUNTA AL VALOR
+    nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black")) #APUNTA AL VALOR
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    t[0].nodo_arbol = nodo_arbol 
+
+def p_whens(t):
+    '''ca_whens : ca_when ca_whens
+                | ca_when'''
+    if len(t) == 2:
+        t[0] = [t[1]]
+    else:
+        t[2].insert(0, t[1])
+        t[0] = t[2]
+
+def p_ca_when(t):
+    '''ca_when : WHEN expresion THEN expresion'''
+    lst = []
+    lst.append(t[2])
+    lst.append(t[4])
+    t[0] = lst
+
+def p_else(t):
+    '''ca_else : ELSE THEN expresion'''
+    t[0] = t[3]
+
+
+
+
+
 def p_expr_select(t):
     ''' expr_select : expresion name_columna'''
-    t[0] = EXPRESION_SELECT(t[2],t[1])
+    t[0] = EXPRESION_SELECT(t[2],t[1],lexer.lineno,0)
+    t[0].text = t[1].text +" "+t[2].text
+
+    nodo_arbol = NODO_ARBOL("EXPRESION SELECT",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION
+    nodo_arbol.agregar_hijo(t[1].nodo_arbol)
+    nodo_arbol.agregar_hijo(t[2].nodo_arbol) #APUNTA AL VALOR
+    t[0].nodo_arbol = nodo_arbol 
+
+    
+
+    #print("ES UNA EXPRESION SELECT")
 def p_between(t):
     ''' op_between : expresion BETWEEN expresion AND expresion'''
 

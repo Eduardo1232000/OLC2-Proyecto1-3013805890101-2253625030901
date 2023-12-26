@@ -50,6 +50,14 @@
                 <foreignkey>False</foreignkey>
                 <reference/>
             </campo>
+            <campo>
+                <nombre>comunidades</nombre>
+                <tipo size="50">NVARCHAR</tipo>
+                <nulo>True</nulo>
+                <primarykey>False</primarykey>
+                <foreignkey>False</foreignkey>
+                <reference/>
+            </campo>
             <dato>
                 <valor>1</valor>
                 <valor>Remigio</valor>
@@ -64,8 +72,8 @@
             </dato>
             <dato>
                 <valor>3</valor>
-                <valor>Agustina</valor>
-                <valor>120</valor>
+                <valor>Alejandra</valor>
+                <valor>20</valor>
                 <valor>1456890</valor>
             </dato>
         </tabla>
@@ -97,25 +105,27 @@
         </tabla>
         <procedure name="procedure4">
             <sentencias>
-                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
+            <parameters/>
         </procedure>
         <procedure name="procedure2">
             <parameters>
-                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var1" type="DECIMAL" size="0"/>
             </parameters>
             <sentencias>
-                <sentencia>DECLARE @VALOR1 INT;</sentencia>
+                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
         </procedure>
         <procedure name="procedure3">
             <parameters>
-                <parameter name="var3" type="DECIMAL" size="0"/>
+                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var2" type="NCHAR" size="5"/>
             </parameters>
             <sentencias>
-                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
         </procedure>
@@ -161,11 +171,5 @@
                 <sentencia>RETURN @VALOR1 + @VALOR2;</sentencia>
             </sentencias>
         </funcion>
-        <procedure name="procedure16">
-            <sentencias>
-                <sentencia>DECLARE @VALOR1 INT;</sentencia>
-                <sentencia>SET @VALOR1 = @var1;</sentencia>
-            </sentencias>
-        </procedure>
     </base>
 </database>

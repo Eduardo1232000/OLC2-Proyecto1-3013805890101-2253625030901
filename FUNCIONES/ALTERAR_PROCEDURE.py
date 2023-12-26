@@ -63,11 +63,21 @@ def modificar_procedure(procedure, lista_parametros, lista_instrucciones, ast):
     # Obtener la referencia a la sección de parameters existente
     parameters_existente = procedure.find(".//parameters")
 
-    # Eliminar los nodos existentes para actualizarlos
-    for child in parameters_existente.findall("parameter"):
-        parameters_existente.remove(child)
+    # Verificar si existe la sección de parameters antes de continuar
+    if parameters_existente is not None:
+        # Eliminar los nodos existentes para actualizarlos
+        for child in parameters_existente.findall("parameter"):
+            parameters_existente.remove(child)
 
-    if len(lista_parametros) != 0:
+        if len(lista_parametros) != 0:
+            for param in lista_parametros:
+                nuevo_param = ET.SubElement(parameters_existente, "parameter")
+                nuevo_param.set("name", param[0])
+                nuevo_param.set("type", param[1])
+                nuevo_param.set("size", str(param[2]))
+    else:
+        # Si no existe la sección de parameters, puedes crearla
+        parameters_existente = ET.SubElement(procedure, "parameters")
         for param in lista_parametros:
             nuevo_param = ET.SubElement(parameters_existente, "parameter")
             nuevo_param.set("name", param[0])
@@ -77,13 +87,22 @@ def modificar_procedure(procedure, lista_parametros, lista_instrucciones, ast):
     # Obtener la referencia a la sección de sentencias existente
     sentencias_existente = procedure.find(".//sentencias")
 
-    # Eliminar los nodos existentes para actualizarlos
-    for child in sentencias_existente.findall("sentencia"):
-        sentencias_existente.remove(child)
+    # Verificar si existe la sección de sentencias antes de continuar
+    if sentencias_existente is not None:
+        # Eliminar los nodos existentes para actualizarlos
+        for child in sentencias_existente.findall("sentencia"):
+            sentencias_existente.remove(child)
 
-    for sent in lista_instrucciones:
-        nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
-        nuevo_sent.text = sent
+        for sent in lista_instrucciones:
+            nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
+            nuevo_sent.text = sent
+    else:
+        # Si no existe la sección de sentencias, puedes crearla
+        sentencias_existente = ET.SubElement(procedure, "sentencias")
+        for sent in lista_instrucciones:
+            nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
+            nuevo_sent.text = sent
 
     ast.escribir_en_consola("PROCEDURE MODIFICADO\n")
+
 
