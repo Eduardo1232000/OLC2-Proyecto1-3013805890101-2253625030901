@@ -106,7 +106,7 @@
                 <parameter name="var1" type="INT" size="0"/>
             </parameters>
             <sentencias>
-                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
         </procedure>
@@ -119,5 +119,47 @@
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
             </sentencias>
         </procedure>
+        <procedure name="procedure1">
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
+        <procedure name="procedure6">
+            <parameters>
+                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var2" type="NCHAR" size="5"/>
+            </parameters>
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
+        <funcion name="funcion1">
+            <retorno type="NCHAR" size="50"/>
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 NCHAR(10);</sentencia>
+                <sentencia>SET @VALOR1 = hola;</sentencia>
+                <sentencia>RETURN @VALOR1;</sentencia>
+            </sentencias>
+        </funcion>
+        <funcion name="funcion10">
+            <retorno type="NVARCHAR" size="50"/>
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 NVARCHAR(10);</sentencia>
+                <sentencia>SET @VALOR1 = 10;</sentencia>
+                <sentencia>RETURN @VALOR1;</sentencia>
+            </sentencias>
+        </funcion>
+        <funcion name="funcion5">
+            <retorno type="NCHAR" size="50"/>
+            <parameters>
+                <parameter name="VALOR1" type="NCHAR" size="4"/>
+                <parameter name="VALOR2" type="NCHAR" size="4"/>
+            </parameters>
+            <sentencias>
+                <sentencia>RETURN @VALOR1 + @VALOR2;</sentencia>
+            </sentencias>
+        </funcion>
     </base>
 </database>

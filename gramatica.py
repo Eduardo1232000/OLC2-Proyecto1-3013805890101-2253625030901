@@ -5,7 +5,7 @@ from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.VARIABLES import *
 from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import *
-from FUNCIONES.DDL.ALTER_FUNCION_BASE import *
+from FUNCIONES.DDL.ALTER_FUNCTION_BASE import *
 from FUNCIONES.DDL.PROCEDURE_BASE import *
 from FUNCIONES.DDL.FUNCION_BASE import *
 
@@ -286,6 +286,7 @@ def p_instrucciones_evaluar(t):
                     | sent_drop
                     | sent_truncate
                     | alter_procedure
+                    | alter_function
                     | declarar_var
                     | asignacion_variable
                     | declarar_procedure
@@ -1600,6 +1601,15 @@ def p_alter_procedure(t):
     
     else:
         t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
+
+def p_alter_funcion(t):
+    ''' alter_function : ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA
+                         | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
+    if(len(t)==11):
+        t[0] = ALTER_FUNCTION_BASE(t[3],t[5],"FUNCION",None,t[8],lexer.lineno,0)
+
+    else:
+        t[0] = ALTER_FUNCTION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
                 
 
 def p_valores(t):
