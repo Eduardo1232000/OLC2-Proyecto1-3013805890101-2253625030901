@@ -136,10 +136,10 @@
             </sentencias>
         </procedure>
         <funcion name="funcion1">
-            <retorno type="NCHAR" size="50"/>
+            <retorno type="INT" size="0"/>
             <sentencias>
-                <sentencia>DECLARE @VALOR1 NCHAR(10);</sentencia>
-                <sentencia>SET @VALOR1 = hola;</sentencia>
+                <sentencia>DECLARE @VALOR1 DECIMAL;</sentencia>
+                <sentencia>SET @VALOR1 = 15.0;</sentencia>
                 <sentencia>RETURN @VALOR1;</sentencia>
             </sentencias>
         </funcion>
@@ -161,5 +161,11 @@
                 <sentencia>RETURN @VALOR1 + @VALOR2;</sentencia>
             </sentencias>
         </funcion>
+        <procedure name="procedure16">
+            <sentencias>
+                <sentencia>DECLARE @VALOR1 INT;</sentencia>
+                <sentencia>SET @VALOR1 = @var1;</sentencia>
+            </sentencias>
+        </procedure>
     </base>
 </database>

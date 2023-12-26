@@ -1602,6 +1602,16 @@ def p_alter_procedure(t):
     else:
         t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
 
+
+def p_sent_truncate_procedure(t):
+    '''sent_truncate_procedure : TRUNCATE PROCEDURE name PTCOMA'''
+    t[0] = TRUNCATE_PROCEDURE(t[3], lexer.lineno, 0)
+
+def p_sent_drop_procedure(t):
+    '''sent_drop_procedure : DROP PROCEDURE name PTCOMA'''
+    t[0] = DROP_PROCEDURE(t[3], lexer.lineno,0)
+
+
 def p_alter_funcion(t):
     ''' alter_function : ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA
                          | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
@@ -1610,6 +1620,16 @@ def p_alter_funcion(t):
 
     else:
         t[0] = ALTER_FUNCTION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
+
+
+def p_sent_truncate_function(t):
+    '''sent_truncate_function : TRUNCATE FUNCTION name PTCOMA'''
+    t[0] = TRUNCATE_FUNCTION(t[3], lexer.lineno, 0)
+
+def p_sent_drop_function(t):
+    '''sent_drop_function : DROP FUNCTION name PTCOMA'''
+    t[0] = DROP_FUNCTION(t[3], lexer.lineno,0)
+
                 
 
 def p_valores(t):
