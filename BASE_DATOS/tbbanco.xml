@@ -286,6 +286,14 @@
                 <foreignkey>false</foreignkey>
                 <reference>false</reference>
             </campo>
+            <campo>
+                <nombre>tasa</nombre>
+                <tipo size="0">DECIMAL</tipo>
+                <nulo>True</nulo>
+                <primarykey>False</primarykey>
+                <foreignkey>False</foreignkey>
+                <reference/>
+            </campo>
             <dato>
                 <valor>1</valor>
                 <valor>Credito Fiduiciario</valor>
@@ -301,14 +309,6 @@
                 <valor>Tarjeta de Credito Oro</valor>
                 <valor>1</valor>
             </dato>
-            <campo>
-                <nombre>tasa</nombre>
-                <tipo size="0">DECIMAL</tipo>
-                <nulo>True</nulo>
-                <primarykey>False</primarykey>
-                <foreignkey>False</foreignkey>
-                <reference/>
-            </campo>
         </tabla>
         <tabla name="tbcredito">
             <campo>

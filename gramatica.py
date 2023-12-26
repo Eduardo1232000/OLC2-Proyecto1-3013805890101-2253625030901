@@ -4,6 +4,8 @@ from FUNCIONES.DDL.CREATE_BASE import *
 from FUNCIONES.DDL.USE_BASE import *
 from FUNCIONES.DDL.CREATE_TABLE import * 
 from FUNCIONES.DDL.VARIABLES import *
+from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import * #ALTER_PROCEDURE_BASE DROP AND TRUNCATE PROCEDURE
+from FUNCIONES.DDL.ALTER_FUNCTION_BASE import * #ALTER_FUNCTION_BASE AQUI TAMBIÉN VOY A AGREGAR LOS DE DROP AND TRUNCATE FUNCTION
 from FUNCIONES.DDL.PROCEDURE_BASE import *
 from FUNCIONES.DDL.FUNCION_BASE import *
 
@@ -15,7 +17,11 @@ from FUNCIONES.SSL.CASE import *
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
-from FUNCIONES.DDL.DROP import*
+from FUNCIONES.DDL.DROP import *
+
+from FUNCIONES.DDL.UPDATE import * #UPDATE
+from FUNCIONES.DDL.DELETE import * #DROP
+
 
 from FUNCIONES.DDL.INSERT_INTO import *
 
@@ -49,7 +55,7 @@ from FUNCIONES.SSL.RETURN import *
 from FUNCIONES.SSL.IF import *
 from FUNCIONES.SSL.WHILE import *
 
-
+#UPDATE
 tokens = (
     'SELECT', 'FROM','USE', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENA', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
@@ -60,63 +66,63 @@ tokens = (
     'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
     'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'NCHAR', 'NVARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
-    'INSERT', 'INTO', 'VALUES', 'DELETE',
+    'INSERT', 'INTO', 'VALUES', 'DELETE', 'UPDATE',
     'ALTER', 'DROP', 'TRUNCATE',
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
     'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN','BETWEEN',
-    'IF','ELSE','THEN','WHILE','PUNTO','CASE','WHEN'
+    'IF','ELSE','THEN','WHILE','PUNTO', 'CASE', 'WHEN'
 )
 
 #Tokens
-
-t_INT               =   r'(?i)INT'
-t_BIT               =   r'(?i)BIT'
-t_DECIMAL           =   r'(?i)DECIMAL'
-t_DATETIME          =   r'(?i)DATETIME'
-t_DATE              =   r'(?i)DATE'
-t_NCHAR             =   r'(?i)NCHAR'
-t_NVARCHAR          =   r'(?i)NVARCHAR'
-t_NOT               =   r'(?i)NOT'
-t_NULL              =   r'(?i)NULL'
-t_PRIMARY           =   r'(?i)PRIMARY'
-t_FOREIGN           =   r'(?i)FOREIGN'
-t_REFERENCE         =   r'(?i)REFERENCE'
-t_KEY               =   r'(?i)KEY'
-t_SELECT            =   r'(?i)SELECT' 
-t_FROM              =   r'(?i)FROM'
-t_USE               =   r'(?i)USE'
-t_WHERE             =   r'(?i)WHERE'
-t_CAS               =   r'(?i)CAS'
-t_AS                =   r'(?i)AS'
-t_CREATE            =   r'(?i)CREATE'
-t_TABLE             =   r'(?i)TABLE'
-t_DATA              =   r'(?i)DATA'
-t_BASE              =   r'(?i)BASE'
-t_CONCATENA         =   r'(?i)CONCATENA'
-t_SUBSTRAER         =   r'(?i)SUBSTRAER'
-t_HOY               =   r'(?i)HOY'
-t_CONTAR            =   r'(?i)CONTAR'
-t_SUMA              =   r'(?i)SUMA'
-t_INSERT            =   r'(?i)INSERT'
-t_INTO              =   r'(?i)INTO'
-t_VALUES            =   r'(?i)VALUES'
-t_DELETE            =   r'(?i)DELETE'
-t_DECLARE           =   r'(?i)DECLARE'
-t_SET               =   r'(?i)SET'
-t_PROCEDURE         =   r'(?i)PROCEDURE'
-t_FUNCTION          =   r'(?i)FUNCTION'
-t_BEGIN             =   r'(?i)BEGIN'
-t_END               =   r'(?i)END'
-t_EXEC              =   r'(?i)EXEC'
-t_RETURN            =   r'(?i)RETURN'
-t_BETWEEN           =   r'(?i)BETWEEN'
-t_IF                =   r'(?i)IF'
-t_ELSE              =   r'(?i)ELSE'
-t_THEN              =   r'(?i)THEN'
-t_WHILE             =   r'(?i)WHILE'
-t_CASE              =   r'(?i)CASE'
-t_WHEN              =   r'(?i)WHEN'
+t_INT               =   r'INT'
+t_BIT               =   r'BIT'
+t_DECIMAL           =   r'DECIMAL'
+t_DATETIME          =   r'DATETIME'
+t_DATE              =   r'DATE'
+t_NCHAR             =   r'NCHAR'
+t_NVARCHAR          =   r'NVARCHAR'
+t_NOT               =   r'NOT'
+t_NULL              =   r'NULL'
+t_PRIMARY           =   r'PRIMARY'
+t_FOREIGN           =   r'FOREIGN'
+t_REFERENCE         =   r'REFERENCE'
+t_KEY               =   r'KEY'
+t_SELECT            =   r'SELECT' 
+t_UPDATE            =   r'UPDATE' #AGREGADO@@@@!!!!
+t_FROM              =   r'FROM'
+t_USE               =   r'USE'
+t_WHERE             =   r'WHERE'
+t_CAS               =   r'CAS'
+t_AS                =   r'AS'
+t_CREATE            =   r'CREATE'
+t_TABLE             =   r'TABLE'
+t_DATA              =   r'DATA'
+t_BASE              =   r'BASE'
+t_CONCATENA         =   r'CONCATENA'
+t_SUBSTRAER         =   r'SUBSTRAER'
+t_HOY               =   r'HOY'
+t_CONTAR            =   r'CONTAR'
+t_SUMA              =   r'SUMA'
+t_INSERT            =   r'INSERT'
+t_INTO              =   r'INTO'
+t_VALUES            =   r'VALUES'
+t_DELETE            =   r'DELETE'
+t_DECLARE           =   r'DECLARE'
+t_SET               =   r'SET'
+t_PROCEDURE         =   r'PROCEDURE'
+t_FUNCTION          =   r'FUNCTION'
+t_BEGIN             =   r'BEGIN'
+t_END               =   r'END'
+t_EXEC              =   r'EXEC'
+t_RETURN            =   r'RETURN'
+t_BETWEEN           =   r'BETWEEN'
+t_IF                =   r'IF'
+t_ELSE              =   r'ELSE'
+t_THEN              =   r'THEN'
+t_WHILE             =   r'WHILE'
+t_CASE              =   r'CASE'
+t_WHEN              =   r'WHEN'
 
 t_PUNTO             =   r'\.'
 t_MAS               =   r'\+'
@@ -271,6 +277,7 @@ def p_instrucciones_lista(t):
         #AGREGAR LOS ERRORES LEXICOS Y SINTACTICOS
 
     
+#AGREGADO f_delete, f_update, alter_procedure, alter_function
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
                     | sent_create_database
@@ -278,9 +285,12 @@ def p_instrucciones_evaluar(t):
                     | use_base
                     | f_insert 
                     | f_delete 
+                    | f_update
                     | sent_alter_table
                     | sent_drop
                     | sent_truncate
+                    | alter_procedure
+                    | alter_function
                     | declarar_var
                     | asignacion_variable
                     | declarar_procedure
@@ -805,7 +815,6 @@ def p_asignacion_variable(t):
 
 #SELECT
 
-
 def p_funcion_sistema(t):
     ''' f_sistema : SELECT expresiones_select_ini continuacion_from'''
     t[0] = SELECT(t[2],t[3],lexer.lineno,0)
@@ -975,6 +984,11 @@ def p_continuacion_where(t):
 
 #FIN SELECT
 
+
+
+
+
+#Elimine                     | select_dato 
 def p_operacion_sistema(t):
     '''operacion_sis : func_concatena
                     | func_substraer
@@ -1079,10 +1093,11 @@ def p_cas(t):
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
 
-def p_condiciones (t):
+def p_condiciones(t):
     '''condiciones : expresion
                     | expresion AND condiciones
-                    | expresion OR condiciones '''
+                    | expresion OR condiciones
+                    | name IGUAL expresion'''
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -1140,6 +1155,7 @@ def p_expresion_relacional(t):
                         | exr_menorigual
                         | exr_mayorigual'''
     t[0] = t[1]
+
 
 def p_igual(t):
     '''exr_igual : expresion IGUALIGUAL expresion'''
@@ -1321,8 +1337,10 @@ def p_alter_table(t) :
     t[0] = ALTER_TABLE(t[3], t[4], lexer.lineno, 0)
     #AGREGAR TEXTO 
     #AGREGAR NODOS ARBOL
+
+#caracteristica
 def p_alter_action(t):
-    '''alter_action : alter_add
+    '''alter_action : alter_add 
                     | alter_drop
                     | alter_modify'''
     t[0] = t[1]
@@ -1332,7 +1350,7 @@ def p_alter_add(t):
                  | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
     if len(t) == 5:
         t[0] = ("ADD", "COLUMN", t[3], t[4])
-        print(f"tipo de dato en p_alter_add: {t[4]}")
+        #print(f"tipo de dato en p_alter_add: {t[4]}")
     elif len(t) == 14:
         t[0] = ("ADD_CONSTRAINT", t[3], "FOREIGN KEY", t[5], "REFERENCES", t[10], t[12], t[13])
     else:
@@ -1392,7 +1410,7 @@ def p_sent_truncate(t):
     nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
-    print("Estoy recibiendo la gramatica correcta?")
+    #print("Estoy recibiendo la gramatica correcta?")
 
 
 
@@ -1554,14 +1572,59 @@ def p_f_insert(t):
     
     t[0].nodo_arbol = nodo_arbol
 
+
+
+
+#UPDATE
+def p_f_update(t):
+    ''' f_update : UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA'''
+    t[0] = UPDATE(t[2], t[4], t[6], t[8], lexer.lineno, 0)
+
+def p_set_list(t):
+    ''' set_list : set_expresion
+                 | set_expresion COMA set_list'''
     
+    if len(t) ==2:
+        t[0] = [t[1]]
+    else:
+        t[0] = [t[1]] + t[3]
+
+def p_set_expresion(t):
+    ''' set_expresion : name IGUAL expresion'''
+    t[0] = [t[1], t[2], t[3]]
+
+
+#FIN UPDATE    
+
+
+
+#DELETE
 
 def p_f_delete(t):
-    ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
-    print("DELETE -> "+str(t[3]))
-    #AGREGAR TEXT
-    #AGREGAR NODO_ARBOL
-    
+    ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
+    t[0] = DELETE(t[3], t[4], lexer.lineno, 0)
+
+
+def p_condiciones_opt(t):
+    ''' condiciones_opt : 
+                        | WHERE name operador_relacional expresion '''
+    if len(t) == 1:
+        t[0] = None  # Sin condiciones
+    else:
+        t[0] = (t[2], t[3], t[4])  # Tupla: (nombre_columna, operador_relacional, valor)
+
+def p_operador_relacional(t):
+    ''' operador_relacional : IGUAL
+                           | MENORQUE
+                           | MAYORQUE
+                           | MENORIGUAL
+                           | MAYORIGUAL
+                           | DIFERENTE '''
+    t[0] = t[1]
+
+#FIN DELETE
+
+
 def p_columnas(t):
     ''' columnas : name
                 | name COMA columnas'''
@@ -1574,9 +1637,57 @@ def p_columnas(t):
         t[3].insert(0, t[1])
         t[0] = t[3]
 
-                
-    
 
+#MODIFICACIONES DE PROCEDURE
+def p_alter_procedure(t):
+    ''' alter_procedure : ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA
+                        | ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA'''
+    
+    if len(t) == 12:
+        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", t[5], t[9], lexer.lineno, 0)
+    
+    else:
+        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
+
+
+"""
+def p_sent_truncate_procedure(t):
+    '''sent_truncate_procedure : TRUNCATE PROCEDURE name PTCOMA'''
+    t[0] = TRUNCATE_PROCEDURE(t[3], lexer.lineno, 0)
+
+def p_sent_drop_procedure(t):
+    '''sent_drop_procedure : DROP PROCEDURE name PTCOMA'''
+    t[0] = DROP_PROCEDURE(t[3], lexer.lineno,0)
+
+"""
+
+#AQUI TERMINAN PARA PROCEDURE
+
+
+
+#PROCESOS PARA FUNCTIONS
+def p_alter_funcion(t):
+    ''' alter_function : ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA
+                         | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
+    if(len(t)==11):
+        t[0] = ALTER_FUNCTION_BASE(t[3],t[5],"FUNCION",None,t[8],lexer.lineno,0)
+
+    else:
+        t[0] = ALTER_FUNCTION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
+
+
+"""
+def p_sent_truncate_function(t):
+    '''sent_truncate_function : TRUNCATE FUNCTION name PTCOMA'''
+    t[0] = TRUNCATE_FUNCTION(t[3], lexer.lineno, 0)
+
+def p_sent_drop_function(t):
+    '''sent_drop_function : DROP FUNCTION name PTCOMA'''
+    t[0] = DROP_FUNCTION(t[3], lexer.lineno,0)
+"""
+
+#AQUI TERMINA PARA FUNCTION
+                
 
 def p_valores(t):
     ''' valores : expresion

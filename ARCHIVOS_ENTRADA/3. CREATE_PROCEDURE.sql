@@ -1,5 +1,5 @@
 USE Prueba_archivo;
-CREATE PROCEDURE procedure1
+CREATE PROCEDURE procedure4
 AS
 BEGIN 
 	DECLARE @VALOR1 INT;
