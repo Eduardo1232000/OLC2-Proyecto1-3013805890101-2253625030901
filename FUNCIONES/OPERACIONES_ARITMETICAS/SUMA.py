@@ -17,7 +17,7 @@ class SUMA(Expresion):
             numero2 = self.numero2.obtener_valor(actual,globa,ast)
             self.numero1.tipo
             if(numero1 =="ERROR" or numero2 =="ERROR"):
-                ast.escribir_en_consola("ERROR: ")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: ")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUMA: Hay un problema con un valor",self.linea))
                 respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                 self.tipo = respuesta.tipo
@@ -67,6 +67,6 @@ class SUMA(Expresion):
         else:
             respuesta = VALOR(0,TIPO.ERROR,self.linea,self.columna)
         #BORRAR
-        ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
+        #ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
         self.tipo = respuesta.tipo
         return respuesta.obtener_valor(actual,globa,ast)

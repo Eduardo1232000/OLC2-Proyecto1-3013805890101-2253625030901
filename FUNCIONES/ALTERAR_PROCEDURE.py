@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import os
-
 def agregar_o_modificar_procedure(nombre_base, nombre_procedure, lista_parametros, lista_instrucciones, ast):
     ruta = "BASE_DATOS/" + str(nombre_base) + ".xml"
     tree = ET.parse(ruta)
@@ -37,72 +36,56 @@ def agregar_o_modificar_procedure(nombre_base, nombre_procedure, lista_parametro
     with open(ruta, 'w', encoding='utf-8') as archivo:
         archivo.write(xml_string)
 
-    ast.escribir_en_consola("PROCEDURE AGREGADO\n")
+    ast.escribir_en_consola("SE HIZO EL CAMBIO\n")
 
 def agregar_procedure(base, nombre_procedure, lista_parametros, lista_instrucciones, ast):
     nuevo_procedure = ET.SubElement(base, "procedure")
     nuevo_procedure.set("name", nombre_procedure)
 
+    # Agregar parámetros ordenados
     if len(lista_parametros) != 0:
         nuevo_parameters = ET.SubElement(nuevo_procedure, "parameters")
-        for param in lista_parametros:
+        for param in sorted(lista_parametros, key=lambda x: x[0]):
             nuevo_param = ET.SubElement(nuevo_parameters, "parameter")
             nuevo_param.set("name", str(param[0]))
             nuevo_param.set("type", str(param[1]))
             nuevo_param.set("size", str(param[2]))
 
+    # Agregar sentencias ordenadas
     nuevo_sentencias = ET.SubElement(nuevo_procedure, "sentencias")
     for sent in lista_instrucciones:
         nuevo_sent = ET.SubElement(nuevo_sentencias, "sentencia")
         nuevo_sent.text = sent
 
-    ast.escribir_en_consola("PROCEDURE MODFICADO\n")
-
+    ast.escribir_en_consola("AGREGAMOS UN PROCEDURE\n")
 
 def modificar_procedure(procedure, lista_parametros, lista_instrucciones, ast):
-    # Obtener la referencia a la sección de parameters existente
+    # Obtener o crear la sección de parameters
     parameters_existente = procedure.find(".//parameters")
-
-    # Verificar si existe la sección de parameters antes de continuar
     if parameters_existente is not None:
-        # Eliminar los nodos existentes para actualizarlos
-        for child in parameters_existente.findall("parameter"):
-            parameters_existente.remove(child)
-
-        if len(lista_parametros) != 0:
-            for param in lista_parametros:
-                nuevo_param = ET.SubElement(parameters_existente, "parameter")
-                nuevo_param.set("name", param[0])
-                nuevo_param.set("type", param[1])
-                nuevo_param.set("size", str(param[2]))
+        parameters_existente.clear()
     else:
-        # Si no existe la sección de parameters, puedes crearla
         parameters_existente = ET.SubElement(procedure, "parameters")
-        for param in lista_parametros:
+
+    # Agregar parámetros ordenados
+    if len(lista_parametros) != 0:
+        for param in sorted(lista_parametros, key=lambda x: x[0]):
             nuevo_param = ET.SubElement(parameters_existente, "parameter")
             nuevo_param.set("name", param[0])
             nuevo_param.set("type", param[1])
             nuevo_param.set("size", str(param[2]))
 
-    # Obtener la referencia a la sección de sentencias existente
+    # Obtener o crear la sección de sentencias
     sentencias_existente = procedure.find(".//sentencias")
-
-    # Verificar si existe la sección de sentencias antes de continuar
     if sentencias_existente is not None:
-        # Eliminar los nodos existentes para actualizarlos
-        for child in sentencias_existente.findall("sentencia"):
-            sentencias_existente.remove(child)
-
-        for sent in lista_instrucciones:
-            nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
-            nuevo_sent.text = sent
+        sentencias_existente.clear()
     else:
-        # Si no existe la sección de sentencias, puedes crearla
         sentencias_existente = ET.SubElement(procedure, "sentencias")
-        for sent in lista_instrucciones:
-            nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
-            nuevo_sent.text = sent
 
-    ast.escribir_en_consola("PROCEDURE MODIFICADO\n")
+    # Agregar sentencias ordenadas
+    for sent in sorted(lista_instrucciones):
+        nuevo_sent = ET.SubElement(sentencias_existente, "sentencia")
+        nuevo_sent.text = sent
 
+    ast.escribir_en_consola("MODIFICAMOS UN PROCEDURE\n")
 

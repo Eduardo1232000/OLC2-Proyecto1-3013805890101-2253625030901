@@ -17,7 +17,7 @@ class CREATE_TABLE(Instruccion):
         if(isinstance(ast,AST)):
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):  #SI NO EXISTE LA BASE
-                ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No hay una base de datos seleccionada!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No hay una base de datos seleccionada",self.linea))
                 return
             nombre_tabla = ""
@@ -40,7 +40,7 @@ class CREATE_TABLE(Instruccion):
                         break
             
             if(base_existente == True):
-                ast.escribir_en_consola("ERROR: Ya existe la Tabla: "+str(nombre_tabla) +" en la Base de Datos: "+str(base_activa)+"\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Ya existe la Tabla: "+str(nombre_tabla) +" en la Base de Datos: "+str(base_activa)+"\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe la tabla "+str(nombre_tabla)+" En la base de datos"+ str(base_activa),self.linea))
                 return
             #NO EXISTE LA TABLA
@@ -92,16 +92,16 @@ class CREATE_TABLE(Instruccion):
                     #print(tabla_ref)
                     #print(campo_ref)
                     if(tabla_ref == False):
-                        ast.escribir_en_consola("ERROR: La tabla de referencia no existe")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La tabla de referencia no existe")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: La tabla de referencia no existe!",self.linea))
                         return
                     if(campo_ref == False):
-                        ast.escribir_en_consola("ERROR: El campo de referencia no existe dentro de la tabla")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El campo de referencia no existe dentro de la tabla")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no existe",self.linea))
                         return
                     #print(self.primary_campo_ref)
                     if(self.primary_campo_ref == "false"):
-                        ast.escribir_en_consola("ERROR: El campo de referencia no es primary key")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El campo de referencia no es primary key")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no es primary key",self.linea))
                         return
 
@@ -138,9 +138,10 @@ class CREATE_TABLE(Instruccion):
                                     elif(caract.tipo == TIPO.NOT_NULL):
                                         table.cambiar_nulo("false")
                                     elif(caract.tipo == TIPO.PRIMARY_KEY):
-                                        table.cambiar_primary_key("true")
-                                        table.cambiar_nulo("false")
-                                        numero_primary_keys +=1
+                                        if(table.obtener_primary_key() == "false"):
+                                            table.cambiar_primary_key("true")
+                                            table.cambiar_nulo("false")
+                                            numero_primary_keys +=1
                                 elif(isinstance(caract,FORANEA)):
                                     #print("ES FORANEA RARO")
                                     nom_base_origen = caract.base_origen.obtener_valor(actual,globa,ast)
@@ -179,29 +180,34 @@ class CREATE_TABLE(Instruccion):
                                     #print(tabla_ref)
                                     #print(campo_ref)
                                     if(tabla_ref == False):
-                                        ast.escribir_en_consola("ERROR: La tabla de referencia no existe")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La tabla de referencia no existe")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: La tabla de referencia no existe!",self.linea))
                                         return
                                     if(campo_ref == False):
-                                        ast.escribir_en_consola("ERROR: El campo de referencia no existe dentro de la tabla")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El campo de referencia no existe dentro de la tabla")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no existe",self.linea))
                                         return
                                     #print(self.primary_campo_ref)
                                     if(self.primary_campo_ref == "false"):
-                                        ast.escribir_en_consola("ERROR: El campo de referencia no es primary key")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El campo de referencia no es primary key")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: El campo de referencia no es primary key",self.linea))
                                         return
 
                                     #RECORRER LA LISTA DE CAMPOS EN BUSCA DE LA TABLA BASE
                                     table.cambiar_foreign_key(nom_base_origen)
                                     table.cambiar_reference(nom_tabla_referencia)
-
+                                
 
                     #VALIDAR QUE NO SEA NULO Y SEA PRIMARY KEY AL MISMO TIEMPO
                     primary_key_val = table.obtener_primary_key()
                     nulo_val = table.obtener_nulo()
+                    reference_val = table.obtener_reference()
+
+                    if(primary_key_val != "false" and reference_val !="false"):
+                        numero_primary_keys -=1
+
                     if(primary_key_val == "true" and nulo_val =="true"):
-                        ast.escribir_en_consola("ERROR: Llave primaria es nulo!\n")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Llave primaria es nulo!\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: La llave primaria es nulo!",self.linea))
                         return
 
@@ -209,10 +215,12 @@ class CREATE_TABLE(Instruccion):
                     lista_campos.append(table)
 
             #VERIFICAR QUE NO EXISTAN 2 PRIMARY KEY
-            if(numero_primary_keys>=2):
+            #LO QUITO PORQUE SE PUEDEN TENER LLAVES COMPUESTAS
+            '''if(numero_primary_keys>=2):
+
                 ast.escribir_en_consola("ERROR: Hay 2 Primary Key en la tabla!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Hay 2 primary key en la tabla",self.linea))
-                return
+                return'''
 
             #INSERTAR TABLA
             base_agregar_tabla(base_activa,nombre_tabla)
@@ -226,4 +234,4 @@ class CREATE_TABLE(Instruccion):
                     foreign = campo.obtener_foreign_key()
                     reference = campo.obtener_reference()
                     base_agregar_campo(base_activa,nombre_tabla,nombre_campo,tipo,nulo,primary_key,foreign,reference,campo.columna)
-            ast.escribir_en_consola("TABLA "+str(nombre_tabla)+" CREADA!\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"TABLA "+str(nombre_tabla)+" CREADA!\n")

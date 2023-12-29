@@ -21,7 +21,7 @@ class ALTER_FUNCTION_BASE(Instruccion):
     def ejecutar(self, actual, globa, ast):
         nombre_base = ast.obtener_base_activa()
         if nombre_base == "":
-            ast.escribir_en_consola("ERROR: No hay una base activa\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No hay una base activa\n")
             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO", "ALTER: No hay una base activa", self.linea))
             return
 
@@ -56,7 +56,7 @@ class ALTER_FUNCTION_BASE(Instruccion):
                             size_tipo_var = var[1].obtener_size()
                     else:
                         tipo_var = "ERROR"
-                        ast.escribir_en_consola("ERROR: No se reconoció un tipo de dato\n")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No se reconoció un tipo de dato\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO", "ALTER: No se reconoció un tipo de dato", self.linea))
                         return
 
@@ -114,6 +114,6 @@ class ALTER_FUNCTION_BASE(Instruccion):
                     ast.escribir_en_consola("FUNCION ALTERADA\n")
                     return
 
-        ast.escribir_en_consola("ERROR: No se encontró la función para alterar\n")
+        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No se encontró la función para alterar\n")
         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO", "ALTER: No se encontró la función para alterar", self.linea))
 

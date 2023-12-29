@@ -73,6 +73,6 @@ class INS_IF(Instruccion):
                         elif(isinstance(instr,Expresion)):
                             instr.obtener_valor(ambito_if,globa,ast)
                 else:#NO ES VALIDO
-                    ast.escribir_en_consola("ERROR: La condicion no es de tipo BIT o INT (1 o 0)")
+                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La condicion no es de tipo BIT o INT (1 o 0)")
                     ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","IF: La condicion no es de tipo BIT o INT (1 o 0)",self.linea))
                     return

@@ -2,7 +2,7 @@ import os
 import sys
 
 def crear_grafo(codigo,nombre):
-    print(nombre)
+    #print(nombre)
     
     dott = open(str(nombre)+".dot",'w')
     dott.write(codigo)

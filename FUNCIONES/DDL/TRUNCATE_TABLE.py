@@ -16,14 +16,14 @@ class TRUNCATE_TABLE(Instruccion):
         if isinstance(ast, AST):
             base_activa = ast.obtener_base_activa()
             if base_activa == "":
-                ast.escribir_en_consola("Error: No hay una base de datos seleccionada \n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"Error: No hay una base de datos seleccionada \n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","TRUNCATE: No hay una base de datos seleccionada",self.linea))
                 return
                 
             nombre_tabla = self.nombre_tabla.obtener_valor(actual, globa, ast)
             
 
-            if truncate_table(base_activa, nombre_tabla):
+            if truncate_table(base_activa, nombre_tabla, ast):
                 ast.escribir_en_consola(f"Se ha truncado la tabla {nombre_tabla}")
             else:
                 

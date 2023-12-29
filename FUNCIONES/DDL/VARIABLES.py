@@ -18,7 +18,7 @@ class DECLARE(Instruccion):
             #VALIDAR SI YA EXISTE
             id = self.nombre.obtener_valor(actual,globa,ast)
             if(actual.variable_existe(id)):     #SI EXISTE LA VARIABLE
-                ast.escribir_en_consola("ERROR: Variable "+str(id)+" ya existe !\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Variable "+str(id)+" ya existe !\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id)+" ya existe",self.linea))
                 return
             
@@ -45,7 +45,7 @@ class DECLARE(Instruccion):
             variable_crear = VARIABLE(id,tipo_valor_tabla_simbolo,self.tipo.obtener_size(),res)
             actual.agregar_variable_tabla(id,variable_crear)
             ast.guardar_en_tabla_simbolos(id,"VARIABLE",self.tipo.obtener_size(),"-", tipo_valor_tabla_simbolo,actual.nombre,"-",self.linea,self.columna)
-            ast.escribir_en_consola("Variable "+str(id) +" Creada!\n")
+            #ast.escribir_en_consola("Variable "+str(id) +" Creada!\n")
         #VALIDAR SI EXISTE EN EL AMBITO
 
 class ASIGNAR_VARIABLE(Instruccion):
@@ -63,22 +63,29 @@ class ASIGNAR_VARIABLE(Instruccion):
                     if(isinstance(objeto_variable,VARIABLE) and isinstance(self.valor,Expresion)):
                         val = self.valor.obtener_valor(actual,globa,ast)
                         #TRUNCAR TEXTO SI ES NCHAR
-                        if(objeto_variable.obtener_tipo() == "NCHAR"):
-                            nuevo_val = ""
-                            print(objeto_variable.obtener_size_tipo())
-                            if(len(str(val))>int(objeto_variable.obtener_size_tipo())):
-                                for i in range(int(objeto_variable.obtener_size_tipo())):
-                                    nuevo_val += str(val)[i]
-                                objeto_variable.modificar_valor(nuevo_val)
-                                #ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
-                                return
-                        objeto_variable.modificar_valor(val)
+                        #VALIDAR TIPOS
+                        tipo_valor = self.valor.tipo.obtener_tipo_dato()
+                        tipo_variable = objeto_variable.tipo
+                        if(tipo_valor == tipo_variable or((tipo_valor == TIPO.NCHAR or tipo_valor == TIPO.NVARCHAR)and(tipo_variable == TIPO.NVARCHAR or tipo_variable == TIPO.NCHAR)) or ((tipo_variable == TIPO.DECIMAL) and (tipo_valor == TIPO.INT or tipo_valor == TIPO.BIT )) or (tipo_variable == TIPO.INT and tipo_valor == TIPO.BIT)):
+                            if(objeto_variable.obtener_tipo() == "NCHAR"):
+                                nuevo_val = ""
+                                print(objeto_variable.obtener_size_tipo())
+                                if(len(str(val))>int(objeto_variable.obtener_size_tipo())):
+                                    for i in range(int(objeto_variable.obtener_size_tipo())):
+                                        nuevo_val += str(val)[i]
+                                    objeto_variable.modificar_valor(nuevo_val)
+                                    #ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
+                                    return
+                            objeto_variable.modificar_valor(val)
+                        else:#NO COINCIDEN LOS TIPOS
+                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El tipo de la expresion no coincide con el tipo de la variable!\n")
+                            ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SET: El tipo de la expresion no coincide con el tipo de la variable!",self.linea))
                         #ast.escribir_en_consola("VARIABLE MODIFICADA!\n")
                         return
                 else:
                     actual = actual.anterior 
 
-            ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La variable "+str(id_var)+" no existe!\n")
             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: La variable "+str(id_var)+" no existe!",self.linea))
             return
 
@@ -113,7 +120,7 @@ class VALIDAR_EXISTE_VARIABLE(Expresion):
                     actual = actual.anterior 
 
             #NO EXISTE LA VARIABLE EN NINGUN AMBITO 
-            ast.escribir_en_consola("ERROR: La variable "+str(id_var)+" no existe!\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La variable "+str(id_var)+" no existe!\n")
             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DECLARE: Variable "+str(id_var)+" no existe",self.linea))
             val = VALOR("ERROR","ERROR",self.linea,self.columna)
             self.tipo = val.tipo

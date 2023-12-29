@@ -62,7 +62,7 @@ class ALTER_PROCEDURE_BASE(Instruccion):
                         else:
                             tipo_var = "ERROR"
                             ast.escribir_en_consola(
-                                "ERROR: No se reconoció un tipo de dato"
+                                "("+str(self.linea)+")"+"ERROR: No se reconoció un tipo de dato"
                             )
                             ast.insertar_error_semantico(
                                 ERROR_LSS(

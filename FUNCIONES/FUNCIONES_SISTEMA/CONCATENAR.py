@@ -101,7 +101,7 @@ class CONCATENAR(Expresion):
                 
                 
             else:
-                ast.escribir_en_consola("ERROR: No se pudo reconocer el tipo de dato de los valores")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No se pudo reconocer el tipo de dato de los valores")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CONCATENAR: No se pudo reconocer el tipo de dato de los valores",self.linea))
                 respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                 self.tipo = respuesta.tipo
@@ -111,7 +111,7 @@ class CONCATENAR(Expresion):
         respuesta = VALOR(val_respuesta,TIPO.NVARCHAR,self.linea,self.columna)
 
         #BORRAR
-        ast.escribir_en_consola("LA NUEVA CADENA ES: "+respuesta.valor +"\n")
+        #ast.escribir_en_consola("("+str(self.linea)+")"+"LA NUEVA CADENA ES: "+respuesta.valor +"\n")
         self.tipo = respuesta.tipo
         return val_respuesta
     

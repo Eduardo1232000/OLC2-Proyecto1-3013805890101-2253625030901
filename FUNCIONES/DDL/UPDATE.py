@@ -18,7 +18,7 @@ class UPDATE(Instruccion):
             
             base_activa = ast.obtener_base_activa()
             if(base_activa == ""):
-                ast.escribir_en_consola("ERROR: No hay una DB seleccionada! \n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No hay una DB seleccionada! \n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","INSERT: No hay una base de datos seleccionada",self.linea))
                 return
             

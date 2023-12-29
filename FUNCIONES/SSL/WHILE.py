@@ -30,6 +30,6 @@ class INS_WHILE(Instruccion):
                             instr.obtener_valor(ambito_while,globa,ast)
                 return  #SOLO PARA ASEGURARNOS DE QUE FINALIZA
             else:
-                ast.escribir_en_consola("ERROR: La condicion no es de tipo BIT o INT (1 o 0)")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La condicion no es de tipo BIT o INT (1 o 0)")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","WHILE: La condicion no es de tipo BIT o INT (1 o 0)",self.linea))
                 return

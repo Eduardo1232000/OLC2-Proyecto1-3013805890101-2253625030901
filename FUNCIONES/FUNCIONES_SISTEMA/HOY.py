@@ -14,6 +14,6 @@ class HOY(Expresion):
         respuesta = VALOR(fecha,TIPO.DATETIME,self.linea,self.columna)
 
         #BORRAR
-        ast.escribir_en_consola("La fecha de hoy es: "+fecha +"\n")
+        #ast.escribir_en_consola("La fecha de hoy es: "+fecha +"\n")
         self.tipo = respuesta.tipo
         return fecha

@@ -135,7 +135,7 @@ class MAYOR_QUE(Expresion):
         else:
             respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
         #BORRAR
-        ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
+        #ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
         self.tipo = respuesta.tipo
         return respuesta.obtener_valor(actual,globa,ast)
     

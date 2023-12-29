@@ -1,0 +1,330 @@
+TERMINALES: 	
+
+SELECT		, FROM		, USE, WHERE
+, AS		, CREATE		, TABLE		, DATA
+, BASE		, CONCATENA		, SUBSTRAER		, HOY
+, CONTAR		, SUMA		, CAS		, MAS
+, RESTA		, MULTIPLICACION		, DIVISION		, IGUAL
+, IGUALIGUAL		, DIFERENTE		, MAYORQUE		, MENORQUE
+, MAYORIGUAL		, MENORIGUAL		, OR		, AND
+, RNOT		, PARABRE		, PARCIERRA		, COMA
+, ARROBA		, PTCOMA		, NINT		, NBIT
+, NDECIMAL		, FECHA		, FECHAHORA		, CADENA
+, NOMBRE		, INT		, BIT		, DECIMAL
+, DATETIME		, DATE		, NCHAR		, NVARCHAR
+, NOT		, NULL		, PRIMARY		, KEY
+, FOREIGN		, REFERENCE		, INSERT		, INTO
+, VALUES		, DELETE		, UPDATE		, ALTER
+, DROP		, TRUNCATE		, ADD		, MODIFY
+, COLUMN		, CONSTRAINT		, REFERENCES		, DECLARE
+, SET		, PROCEDURE		, FUNCTION		, BEGIN
+, END		, EXEC		, RETURN		, BETWEEN
+, IF		, ELSE		, THEN		, WHILE
+, PUNTO		, CASE		, WHEN
+
+
+
+
+NO TERMINALES: 
+instrucciones			, instruccion			, ins_while			, ins_if		
+,func_return			, declarar_funcion			, llamada_funcion			, declarar_procedure
+, variables_procedure			, var_procedure			, exec_procedure			, valores_proc		
+, valores_procedure_variables		, valor_procedure_variable				, valores_procedure_s			, valor_procedure_s
+, declarar_var			, asignacion_variable			, f_sistema			, expres_select_ini
+, expresion_select_inicio			, expresion_select_final			, alias			, continuacion_from
+, continuacion_where			, operacion_sis			, func_concatena			, func_substraer
+, func_hoy			, func_contar			, signo_relacional			, func_suma
+, func_cas			, condiciones			, exp_aritmetica			, op_suma
+, op_resta			, op_multiplicacion			, op_division			, exp_relacional
+, exr_igual			, exr_diferente			, exr_menorque			, exr_mayorque
+, exr_menorigual			, exr_mayorigual			, exp_logica			, exl_and
+, exl_or			, exl_not			, sent_create_database			, sent_create_table
+, sent_alter_table			, alter_action			, alter_add			, alter_drop
+, alter_modify			, sent_drop			, sent_truncate			, datos
+, dato			, dato_sin_caract			, dato_con_caract			, use_base
+, foreign_key			, caracteristicas			, caracteristica			, refererencia_tabla
+, caract_nulo			, caract_no_nulo			, caract_primary_key			, f_insert
+, f_delete			, columnas			, valores			, tipo_dato
+, dato_char			, dato_varchar			, expresion			, exp_case
+, ca_whens			, ca_when			, ca_else			, expr_select
+, variable			, parentesis			, numero			, name_columna
+, name
+		 
+
+
+GRAMATICA:
+
+
+'''instrucciones   : 		instruccion instrucciones 
+                       		| instruccion '''
+
+   '''instruccion  : 		f_sistema
+                    		| sent_create_database
+                    		| sent_create_table
+                    		| use_base
+                    		| f_insert 
+                    		| f_delete 
+                  		| sent_alter_table
+                 		| sent_drop
+                  		| sent_truncate
+                  		| declarar_var
+                   		| asignacion_variable
+                   		| declarar_procedure
+                   		| exec_procedure
+                   		| declarar_funcion
+                  		| ins_if
+                  		| ins_while
+                  		| func_return'''
+
+    '''ins_while :	 WHILE expresion BEGIN instrucciones END PTCOMA'''
+
+    '''ins_if : 	 IF expresion THEN  instrucciones ELSE instrucciones END IF PTCOMA '''
+
+    '''func_return :     RETURN expresion PTCOMA'''
+
+    '''declarar_funcion :CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN _ dato AS BEGIN instrucciones END PTCOMA
+                         | CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
+
+    '''llamada_funcion : name PARABRE valores_proc PARCIERRA
+                         | name PARABRE PARCIERRA'''
+
+    ''' declarar_procedure : CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA
+                           | CREATE PROCEDURE name  AS BEGIN instrucciones END PTCOMA'''
+    
+    ''' variables_procedure : var_procedure COMA variables_procedure
+                       		| var_procedure'''
+
+    ''' var_procedure : ARROBA name tipo_dato
+                   	          | ARROBA name AS tipo_dato'''
+
+    ''' exec_procedure : EXEC name valores_proc PTCOMA
+                      	 | EXEC name PTCOMA'''
+
+    ''' valores_proc : valores_procedure_variables
+                     	       | valores_procedure_simple'''
+
+    '''valores_procedure_variables : valor_procedure_variable COMA valores_proc
+                                    		| valor_procedure_variable'''
+
+    '''valor_procedure_variable : ARROBA name IGUAL expresion'''
+
+    '''valores_procedure_simple : valor_procedure_simple COMA valores_proc
+                                	      | valor_procedure_simple'''
+
+    '''valor_procedure_simple : expresion'''
+
+    ''' declarar_var : DECLARE ARROBA name tipo_dato PTCOMA
+                             | DECLARE ARROBA name AS tipo_dato PTCOMA'''
+
+    ''' asignacion_variable : SET ARROBA name IGUAL expresion PTCOMA'''
+    
+    ''' f_sistema : SELECT expresiones_select_ini continuacion_from'''
+
+    '''expresiones_select_ini : expresion_select_inicio COMA expresiones_select_ini
+                              		| expresion_select_inicio'''
+
+    '''expresion_select_inicio : expresion
+                        		| MULTIPLICACION'''
+    
+    '''expresion_select_final : expresion_select_final IGUAL expresion_select_final
+                              		| expresion_select_final signo_relacional expresion_select_final
+                              		| expresion'''
+    
+    
+    '''alias : name PUNTO name'''
+
+    '''continuacion_from : PTCOMA
+                         	     | FROM columnas continuacion_where'''
+
+    '''continuacion_where : PTCOMA
+                                       | WHERE expresion_select_final PTCOMA'''
+
+    '''operacion_sis : func_concatena
+                    | func_substraer
+                    | func_hoy
+                    | func_contar
+                    | func_suma
+                    | func_cas
+                    | exp_case
+                    '''
+    'func_concatena : CONCATENA PARABRE expresion COMA expresion PARCIERRA'
+
+    'func_substraer : SUBSTRAER PARABRE expresion COMA numero COMA numero PARCIERRA'
+
+    'func_hoy : HOY PARABRE PARCIERRA'
+
+    '''func_contar : CONTAR PARABRE MULTIPLICACION PARCIERRA '''
+
+    '''signo_relacional : DIFERENTE
+                        | MENORQUE
+                        | MAYORQUE
+                        | MENORIGUAL
+                        | MAYORIGUAL'''
+
+    '''func_suma : SUMA PARABRE name PARCIERRA '''
+
+    'func_cas : CAS PARABRE expresion AS tipo_dato PARCIERRA '
+
+    '''condiciones : expresion
+                    | expresion AND condiciones
+                    | expresion OR condiciones '''
+
+    '''exp_aritmetica   : op_suma
+                        | op_resta
+                        | op_multiplicacion
+                        | op_division'''
+
+    '''op_suma : expresion MAS expresion '''
+    
+    '''op_resta : expresion RESTA expresion '''
+    
+    '''op_multiplicacion : expresion MULTIPLICACION expresion '''
+
+    '''op_division : expresion DIVISION expresion '''
+
+    '''exp_relacional   : exr_igual
+                        | exr_diferente
+                        | exr_menorque
+                        | exr_mayorque
+                        | exr_menorigual
+                        | exr_mayorigual'''
+
+    '''exr_igual : expresion IGUALIGUAL expresion'''
+
+    '''exr_diferente : expresion DIFERENTE expresion'''
+
+    '''exr_menorque : expresion MENORQUE expresion'''
+
+    '''exr_mayorque : expresion MAYORQUE expresion'''
+
+    '''exr_menorigual : expresion MENORIGUAL expresion'''
+
+    '''exr_mayorigual : expresion MAYORIGUAL expresion'''
+
+    '''exp_logica : exl_and
+                  | exl_or
+                  | exl_not'''
+
+    '''exl_and : expresion AND expresion'''                              
+    
+    '''exl_or : expresion OR expresion'''
+
+    '''exl_not : RNOT expresion %prec RNOT'''
+
+    '''sent_create_database : CREATE DATA BASE name PTCOMA '''
+
+    '''sent_create_table : CREATE TABLE name PARABRE datos PARCIERRA PTCOMA'''
+
+    '''sent_alter_table : ALTER TABLE name alter_action PTCOMA'''
+
+    '''alter_action : alter_add
+                    | alter_drop
+                    | alter_modify'''
+
+    '''alter_add : ADD COLUMN name tipo_dato
+                 | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
+    
+    '''alter_drop : DROP COLUMN name
+                  | DROP CONSTRAINT name'''
+
+    '''alter_modify : MODIFY COLUMN name tipo_dato'''
+
+    '''sent_drop : DROP TABLE name PTCOMA
+                 | DROP DATA BASE name PTCOMA'''
+
+    '''sent_truncate : TRUNCATE TABLE name PTCOMA'''
+
+    '''datos : dato COMA datos
+             | dato '''
+
+    '''dato : dato_con_caract
+            | dato_sin_caract
+            | foreign_key'''
+
+    '''dato_sin_caract : name tipo_dato '''
+    
+    '''dato_con_caract : name tipo_dato caracteristicas'''
+   
+    '''use_base : USE name PTCOMA'''
+
+    '''foreign_key : FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA'''
+
+    '''caracteristicas : caracteristica caracteristicas
+                       | caracteristica'''
+
+    '''caracteristica :  caract_nulo
+                        | caract_no_nulo
+                        | caract_primary_key
+                        | refererencia_tabla'''
+
+    ''' refererencia_tabla : REFERENCE name PARABRE name PARCIERRA'''
+
+    '''caract_nulo : NULL'''
+
+    '''caract_no_nulo : NOT NULL'''
+
+    '''caract_primary_key : PRIMARY KEY'''
+
+    ''' f_insert :  INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA'''
+
+    ''' f_delete : DELETE FROM name WHERE name IGUAL expresion PTCOMA'''
+
+    ''' columnas : name
+                | name COMA columnas'''
+
+    ''' valores : expresion
+                | expresion COMA valores'''
+    
+    '''tipo_dato : INT 
+                 | BIT
+                 | DECIMAL
+                 | DATE
+                 | DATETIME
+                 | dato_char
+                 | dato_varchar'''
+
+    '''dato_char : NCHAR PARABRE NINT PARCIERRA
+                 | NCHAR'''
+
+    '''dato_varchar : NVARCHAR PARABRE NINT PARCIERRA
+                    | NVARCHAR'''
+
+    '''expresion : exp_aritmetica
+                 | exp_logica
+                 | operacion_sis
+                 | llamada_funcion
+                 | exp_relacional
+                 | variable
+                 | op_between
+                 | exp_if
+                 | parentesis
+                 | numero
+                 | FECHA
+                 | FECHAHORA
+                 | CADENA
+                 | expr_select
+                 | name_columna
+                 | alias '''
+    
+    ''' exp_case : CASE ca_whens ca_else  END'''
+
+    '''ca_whens : ca_when ca_whens
+                | ca_when'''
+
+    '''ca_when : WHEN expresion THEN expresion'''
+
+    '''ca_else : ELSE THEN expresion'''
+
+    ''' expr_select : expresion name_columna'''
+    
+    '''variable : ARROBA name '''
+
+    '''parentesis : PARABRE expresion PARCIERRA'''
+
+    '''numero : NINT
+             | NBIT
+             | NDECIMAL'''
+
+    '''name_columna : NOMBRE'''    
+
+    '''name : NOMBRE'''     

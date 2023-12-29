@@ -13,11 +13,11 @@ class ALIAS(Expresion):
         self.nombre_columna = nombre_columna
 
     def obtener_valor(self, actual, globa, ast):
+        print("a")
         if(isinstance(ast,AST) and isinstance(self.nombre_tabla,VALOR) and isinstance(self.nombre_columna,VALOR)):
             nom_tabla = self.nombre_tabla.obtener_valor(actual,globa,ast)
             nom_columna = self.nombre_columna.obtener_valor(actual,globa,ast)
-            self.nombre_tabla = nom_tabla
-            self.nombre_columna = nom_columna
+
             base_activa = ast.obtener_base_activa()
 
             ruta ="BASE_DATOS/"+str(base_activa)+".xml"
@@ -50,14 +50,18 @@ class ALIAS(Expresion):
                             for datos in tabla.findall('dato'):
                                 lst_dato.append(datos[contador].text)
                             lst.append(lst_dato)
+                            print(lst)
+                            print("VOY A RETORNAR LA LISTA")
                             return lst
 
                     #SI SALE AQUI ES PORQUE YA ENCONTRO LA TABLA Y NO LA COLUMNA (YA NO BUSCA EN EL RESTO DE TABLAS)
+                        print("NO SE ENCONTRO LA COLUMNA")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"Columna "+str(nom_columna) +"no existe en la tabla "+str(nom_tabla)+"!\n")
                     if(tabla_existe == True):
                         respuesta = VALOR(None,TIPO.ALIAS,self.linea,self.columna)
                         self.tipo = respuesta.tipo
                         return None
-                            
+                                   
         respuesta = VALOR(None,TIPO.ALIAS,self.linea,self.columna)
         self.tipo = respuesta.tipo
         return None

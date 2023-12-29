@@ -2,10 +2,9 @@ import xml.etree.ElementTree as ET
 import xml.dom.minidom
 import os
 
-def truncate_table(nombre_base, nombre_tabla):
+def truncate_table(nombre_base, nombre_tabla, ast):
     try:
-        print(nombre_base + " <-- NOMBRE DE LA base")
-        print("Nombre de la tabla: " + nombre_tabla)
+        
         ruta = f"BASE_DATOS/{nombre_base}.xml"
         tree = ET.parse(ruta)
         root = tree.getroot()
@@ -44,7 +43,8 @@ def truncate_table(nombre_base, nombre_tabla):
                         break
 
                 if referencia_en_otras_tablas:
-                    print("No se pueden eliminar los datos de la tabla debido a restricciones de integridad referencial.")
+                    #print("No se pueden eliminar los datos de la tabla debido a restricciones de integridad referencial.")
+                    ast.escribir_en_consola(f"No se pueden eliminar los datos de la tabla:  {nombre_tabla}  debido a restricciones de integridad referencial.")
                     return False
                 
             for dato in tabla_existente.findall('dato'):
@@ -64,5 +64,5 @@ def truncate_table(nombre_base, nombre_tabla):
         else:
             return False
     except Exception as e:
-        print(f"Error al truncar la tabla: {e}")
+        ast.escribir_en_consola(f"Error al truncar la tabla: {e}")
         return False

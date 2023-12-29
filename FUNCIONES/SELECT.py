@@ -29,7 +29,7 @@ class SELECT(Instruccion):
                     valor_expresion_select = expr.obtener_valor(actual,globa,ast)
                     tipo_expresion_select = expr.tipo.obtener_tipo_dato()
                     if(tipo_expresion_select == TIPO.ASTERISCO):
-                        ast.escribir_en_consola("ERROR: Hay * sin FROM!"+ "\n") 
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Hay * sin FROM!"+ "\n") 
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SELECT: Hay * sin FROM",self.linea))
                         return 
                     salida += str(valor_expresion_select) + "\n"   
@@ -42,7 +42,7 @@ class SELECT(Instruccion):
                         valor_expresion_select = expr.obtener_valor(actual,globa,ast)
                         tipo_expresion_select = expr.tipo.obtener_tipo_dato()
                         if(tipo_expresion_select == TIPO.COLUMNA):                  #HAY NOMBRES DE COLUMNAS SIN FROM (NO SE PUEDE TRABAJAR)
-                            ast.escribir_en_consola("ERROR: Hay nombres de columnas sin FROM!"+ "\n") 
+                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Hay nombres de columnas sin FROM!"+ "\n") 
                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SELECT: Hay nombres de columnas sin FROM",self.linea))
                             return
                         else:
@@ -66,14 +66,14 @@ class SELECT(Instruccion):
                     #VALIDAR SI ES UN ASTERISCO
                     ast.usar_tabla(tabla_from)
 
-                    expr = lista_expresiones[0].obtener_valor(actual,globa,ast)
-                    tipo_expr = lista_expresiones[0].tipo.obtener_tipo_dato()
+                    expr_temp = lista_expresiones[0].obtener_valor(actual,globa,ast)
+                    tipo_expr_temp = lista_expresiones[0].tipo.obtener_tipo_dato()
                     #print(tipo_expr)
                     
                     
                     
 
-                    if(tipo_expr == TIPO.ASTERISCO):  #SOLO UN CASO PUEDE TENER ESTO Y ES CUANDO VIENE *
+                    if(tipo_expr_temp == TIPO.ASTERISCO):  #SOLO UN CASO PUEDE TENER ESTO Y ES CUANDO VIENE *
                         
                         print("VIENE *")
                         for tab in valores_froms:
@@ -92,9 +92,8 @@ class SELECT(Instruccion):
                             #GUARDADO DE DATOS EN LISTAS
                             for expr in lista_expresiones: #OBTIENE LOS VALORES DE LAS EXPRESIONES Y LAS GUARDA EN LISTAS
 
-                                
-
                                 valor_expr = expr.obtener_valor(actual,globa,ast)
+                                print(valor_expr)
                                 if(isinstance(expr,SELECT_SUMA)):                                   
                                     salida += "SUMA: "+str(valor_expr)
                                     salida += "\n"
@@ -108,18 +107,21 @@ class SELECT(Instruccion):
                                 #print(valor_expr)
                                 tipo_expr = expr.tipo.obtener_tipo_dato()
 
+
                                 if(tipo_expr == TIPO.COLUMNA):                                      #ES COLUMNA
                                     lista_colum = self.obtener_lista_datos(obj_tabla,valor_expr)
                                     if(lista_colum !=None):
                                         lst_orden.append(lista_colum)    
                                     else:
-                                        ast.escribir_en_consola("ERROR: La columna " +str(valor_expr)+" No existe en la tabla "+str(tabla_from)+"!\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La columna " +str(valor_expr)+" No existe en la tabla "+str(tabla_from)+"!\n")
                                         return
                                 elif(tipo_expr == TIPO.ALIAS):                                      #ES TABLA.COLUMNA
+                                    print("ALI")
+                                    print(valor_expr)
                                     if(valor_expr!=None):
                                         lst_orden.append(valor_expr)
                                     else:
-                                        ast.escribir_en_consola("ERROR: NO existe la columna "+str(expr.nombre_columna) +" en la tabla "+str(expr.nombre_tabla)+"!\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: NO existe la columna "+str(expr.nombre_columna) +" en la tabla "+str(expr.nombre_tabla)+"!\n")
                                 else:           
                                     if(valor_expr!= None):                                                     #ES UNA EXPRESION
                                         lst_orden.append(valor_expr)
@@ -128,7 +130,9 @@ class SELECT(Instruccion):
                     tablas_res = []
                     num_datos_res = []
                     lista_columnas = []
+                    
                     for lis in lst_orden:  #OBTIENE EL NUMERO DE TABLAS, DATOS DE LAS RESPUESTAS DEL SELECT
+                        print("RES: "+str(lis))
                         nombre_tabla = lis[0]
                         nombre_columna = lis[1]
                         valores = lis[2]
@@ -174,16 +178,19 @@ class SELECT(Instruccion):
                         tabla_from = valor_from[0].obtener_valor(actual,globa,ast)
                         ast.usar_tabla(tabla_from)
                         lista_where = valor_where[0]
+                        #print("OBTENIENDO WHERES")
                         validaciones = lista_where.obtener_valor(actual,globa,ast)      #OBTENCION DE LISTA DE VALIDACIONES DEL WHERE
+                        #print("FIN WHERES")
                         if(validaciones == None):       #SI WHERE ES NONE ES PORQUE HUBO UN ERROR
-                            ast.escribir_en_consola("ERROR: Se encontro un error en el where!\n")
+                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Se encontro un error en el where!\n")
                             return 
+                        
                         valores_froms = []                                                  #CONVERTIR LISTA DE VALORES A LISTA DE STRINGS
                         for val in valor_from:
                             valores_froms.append(val.obtener_valor(actual,globa,ast))
                         ruta = "BASE_DATOS/"+str(base_activa)+".xml"
                         lst_orden =[]
-
+                        print("EMPEZANDO SELECT")
                         #VALIDAR SI ES UN ASTERISCO
                         expr = lista_expresiones[0].obtener_valor(actual,globa,ast)
                         tipo_expr = lista_expresiones[0].tipo.obtener_tipo_dato()
@@ -227,14 +234,14 @@ class SELECT(Instruccion):
                                         if(lista_colum !=None):
                                             lst_orden.append(lista_colum)    
                                         else:
-                                            ast.escribir_en_consola("ERROR: La columna " +str(valor_expr)+" No existe en la tabla "+str(tabla_from)+"!\n")
+                                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La columna " +str(valor_expr)+" No existe en la tabla "+str(tabla_from)+"!\n")
                                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SELECT: La columna " +str(valor_expr)+" No existe en la tabla",self.linea))
                                             return
                                     elif(tipo_expr == TIPO.ALIAS):                                      #ES TABLA.COLUMNA
                                         if(valor_expr!=None):
                                             lst_orden.append(valor_expr)
                                         else:
-                                            ast.escribir_en_consola("ERROR: NO existe la columna "+str(expr.nombre_columna) +" en la tabla "+str(expr.nombre_tabla)+"!\n")
+                                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: NO existe la columna "+str(expr.nombre_columna) +" en la tabla "+str(expr.nombre_tabla)+"!\n")
                                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SELECT:NO existe la columna "+str(expr.nombre_columna) +" en la tabla "+str(expr.nombre_tabla),self.linea))
                                     elif(tipo_expr == TIPO.EXPRESION_SELECT):
                                         print("VAMOS A VER SI ES UN OBJETO EXPRESION SELECT")
@@ -328,7 +335,10 @@ class SELECT(Instruccion):
         val = False
         for campos in objeto_tabla.findall('campo'):
             contador +=1
+            print(campos[0].text)
+            print(nomcampo)
             if(campos[0].text == nomcampo):
+                print("ENCONTRADOS")
                 val = True
                 break
         if(val == True):

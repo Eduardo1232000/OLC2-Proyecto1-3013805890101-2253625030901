@@ -33,7 +33,7 @@ class SUBSTRAER(Expresion):
                 val_respuesta = ""
                 #VALIDACION SI EL NUMERO FINAL EXCEDE LA CANTIDAD DE CARACTERES 
                 if(num2 > len(cadena)):
-                    ast.escribir_en_consola("ERROR: El numero final, excede la cantidad de caracteres de la cadena!\n")
+                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El numero final, excede la cantidad de caracteres de la cadena!\n")
                     ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: El numero final excede la cantidad de caracteres de la cadena",self.linea))
                     respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                     self.tipo = respuesta.tipo
@@ -42,7 +42,7 @@ class SUBSTRAER(Expresion):
                     val_respuesta += cadena[i]
                 
                 respuesta = VALOR(val_respuesta,TIPO.NVARCHAR,self.linea,self.columna)
-                ast.escribir_en_consola("LA NUEVA CADENA ES: "+respuesta.valor +"\n")
+                #ast.escribir_en_consola("("+str(self.linea)+")"+"LA NUEVA CADENA ES: "+respuesta.valor +"\n")
                 self.tipo = respuesta.tipo
                 return val_respuesta
             
@@ -92,7 +92,7 @@ class SUBSTRAER(Expresion):
                 
 
             else:
-                ast.escribir_en_consola("ERROR: Expresiones de tipo incorrecto!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Expresiones de tipo incorrecto!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: Expresiones de tipo incorrecto",self.linea))
 
             

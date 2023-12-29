@@ -3,18 +3,20 @@ from FUNCIONES.ARBOL.VALOR import *
 import xml.etree.ElementTree as ET
 
 class IGUAL(Expresion):        
-    def __init__(self, expr1,expr2, linea, columna):
+    def __init__(self, expr1a,expr2a, linea, columna):
         super().__init__(linea, columna, "IGUAL")
-        self.expr1 = expr1      #SON OBJETOS VALOR
-        self.expr2 = expr2
+        self.expr1 = expr1a      #SON OBJETOS VALOR
+        self.expr2 = expr2a
 
     def obtener_valor(self, actual, globa, ast):
         #print(self.text)
+        print("IGUAL====================")
         if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
             tipo_expr2 = self.expr2.tipo.obtener_tipo_dato()
+
             #print(tipo_expr1)
             #print(tipo_expr2)
             if(tipo_expr1 == TIPO.COLUMNA or tipo_expr2 == TIPO.COLUMNA or tipo_expr1 == TIPO.ALIAS or tipo_expr2==TIPO.ALIAS):
@@ -27,7 +29,6 @@ class IGUAL(Expresion):
                 #VALIDACION DE COLUMNAS
                 nombre_base = ast.obtener_base_activa()
                 nombre_tabla = ast.obtener_tabla_activa()
-                print(nombre_tabla)
                 ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
                 obj_tabla = self.obtener_objeto_tabla(ruta,nombre_tabla)
                 valor_exp1 = None
@@ -42,10 +43,18 @@ class IGUAL(Expresion):
                 if(tipo_expr2 == TIPO.COLUMNA and nombre_tabla != None):
                     valor_exp2 = self.obtener_lista_datos(obj_tabla,expr2)
                 elif(tipo_expr2 == TIPO.ALIAS):
-                    valor_exp2 = expr1
+                    valor_exp2 = expr2
                 else:
                     valor_exp2 = expr2
 
+                print(valor_exp1)
+                print(valor_exp2)
+                print(tipo_expr1)
+                print(tipo_expr2)
+                if(valor_exp1 == None or valor_exp2 == None):
+                    self.tipo = TIPODATO(TIPO.ERROR)
+                    return []
+                
                 if((tipo_expr1 == TIPO.COLUMNA or tipo_expr1 == TIPO.ALIAS)  and (tipo_expr2 == TIPO.COLUMNA or tipo_expr2 == TIPO.ALIAS)):
                     lista_respuesta1 = []
                     lista_respuesta1.append(valor_exp1[0])
@@ -77,6 +86,7 @@ class IGUAL(Expresion):
                     res.append(lista_respuesta2)
                     val = VALOR("",TIPO.LISTA_COLUMNAS,self.linea,self.columna)
                     self.tipo = val.tipo
+                    print("RESPUESTA IGUAL")
                     print(res)
                     return res
                 elif(tipo_expr1 == TIPO.COLUMNA or tipo_expr1 == TIPO.ALIAS):
@@ -136,7 +146,7 @@ class IGUAL(Expresion):
         else:
             respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
         #BORRAR
-        ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
+        #ast.escribir_en_consola("LA RESPUESTA ES: "+str(respuesta.valor) +"\n")
         self.tipo = respuesta.tipo
         return respuesta.obtener_valor(actual,globa,ast)
     

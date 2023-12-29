@@ -14,6 +14,7 @@ from FUNCIONES.EXPORTAR_IMPORTAR.EXPORTAR import *
 from FUNCIONES.EXPORTAR_IMPORTAR.IMPORTAR import *
 from FUNCIONES.EXPORTAR_IMPORTAR.DUMP import *
 from FUNCIONES.CREAR_REPORTES.MOSTRAR_REPORTES import *
+from FUNCIONES.CREAR_REPORTES.REPORTE_GRAMATICAL import *
 import gramatica
 
 contador_querys  = 1
@@ -31,14 +32,18 @@ class interfaz:
 def crear_pestana(notebook,texto_prueba):
     pestana = Frame(notebook) 
     notebook.add(pestana, text = texto_prueba)
-    contenido = Text(pestana,font=("Helvetica", 12))
-    contenido.configure(bg="#ECEEF1")
-    contenido.place(x=0,y=0,width=1000,height=300)
+    contenido_texto = Text(pestana,font=("Helvetica", 12))
+    contenido_texto.configure(bg="#ECEEF1")
+    contenido_texto.place(x=0,y=0,width=1000,height=300)
 
     contenido = Label(pestana,text=str(texto_prueba),state="disabled")       #PARA GUARDAR LA RUTA DEL ARCHIVO SI SE ABRIO UNO
     contenido = Label(pestana,text="",state="disabled")       #RUTA ERRORES
     contenido = Label(pestana,text="",state="disabled")       #RUTA TABLA
     contenido = Label(pestana,text="",state="disabled")       #RUTA ARBOL
+    contenido_texto.bind('<KeyRelease>', lambda event, contenido_texto=contenido_texto: actualizar_resaltar_palabras(event, contenido_texto))
+    notebook.select(pestana)
+    
+    
 
 
 
@@ -181,8 +186,19 @@ def accion_menu_herramientas(opcion):   #ACCION DEL MENU HERRAMIENTAS
         
             if(respuesta == None or respuesta == "" or respuesta == []):
                 print("",end="")
+                arbol_sintactico = AST(respuesta,respuesta_parser[1],respuesta_parser[2])
+                arbol_sintactico.graficar_reporte_errores(cuaderno)
+                #arbol_sintactico.graficar_tabla_simbolos(cuaderno)
+                #arbol_sintactico.graficar_ast(cuaderno)
+                arbol_sintactico.mostrar_errores_en_consola()
+                salida.config(state='normal')  #ASIGNAR CONTENIDO A SALIDA (PARA PRUEBAS)
+                salida.delete(1.0, END) 
+                salida.insert(END, arbol_sintactico.obtener_salida())  
+                salida.config(state='disabled')
+                cargar_datos_arbol()        #ACTUALIZAR VISTA ARBOL
             else:
                 arbol_sintactico = AST(respuesta,respuesta_parser[1],respuesta_parser[2])
+                arbol_sintactico.mostrar_errores_en_consola()
                 arbol_sintactico.ejecutar()
                 arbol_sintactico.graficar_reporte_errores(cuaderno)
                 arbol_sintactico.graficar_tabla_simbolos(cuaderno)
@@ -211,8 +227,25 @@ def mostrar_menu_archivo(): #ACCION BOTON ARCHIVO
 def mostrar_menu_herramientas(): #ACCION BOTON HERRAMIENTAS
     menu_herramientas.post(boton_herramientas.winfo_rootx(),boton_herramientas.winfo_rooty()+boton_herramientas.winfo_height())
 
-def actualizar_resaltar_palabras(event=None):
+def actualizar_resaltar_palabras(event, contenido_texto):
     resaltar_palabras(contenido_texto)
+
+def vincular_evento_cambio_de_pestanas(notebook):
+    notebook.bind('<<NotebookTabChanged>>', cambio_de_pestanas)
+    
+def obtener_contenido_pantalla_actual():
+    pestana_actual = cuaderno.select()
+    contenido_texto = cuaderno.nametowidget(pestana_actual).winfo_children()[0]
+    return contenido_texto, pestana_actual
+
+def cambio_de_pestanas(event):
+    contenido_texto_actual, pestana_actual = obtener_contenido_pantalla_actual()
+    actualizar_resaltar_palabras(event, contenido_texto_actual)
+
+def obtener_contenido_pantalla_actual():
+    pestana_actual = cuaderno.select()
+    contenido_texto = cuaderno.nametowidget(pestana_actual).winfo_children()[0]
+    return contenido_texto, pestana_actual
 
 def mostrar_reporte_errores(ventana_principal,cuaderno,tipo):
     print(tipo)
@@ -236,6 +269,10 @@ programa = interfaz(ventana_principal)
 titulo = Label(ventana_principal, text="XSQL-IDE", font=("Helvetica", 16))          #TITULO
 titulo.configure(bg="#252950",fg="white")
 titulo.place(x=0,y=0,width=1280,height=60)
+
+#BOTONES DE REPORTE GRAMATICAL
+boton_reporte_gram = Button(ventana_principal, text="Gramatica",bg="#9C8442", fg="white",font=("Helvetica", 12),command=lambda:mostrar_gramatical(ventana_principal))
+boton_reporte_gram.place(x=800,y=20, width=100, height=30)
 
 #BOTONES DE REPORTES
 boton_reporte_errores = Button(ventana_principal, text="Errores",bg="#9C8442", fg="white",font=("Helvetica", 12),command=lambda:mostrar_reporte_errores(ventana_principal,cuaderno,"ERRORES"))
@@ -304,6 +341,7 @@ area_query.place(x=250,y=100,width=1000,height=320)
 cuaderno = ttk.Notebook(area_query)
 crear_pestana(cuaderno, "Query1")
 cuaderno.pack(expand=True, fill='both')
+vincular_evento_cambio_de_pestanas(cuaderno)
 
 label_salida = Label(ventana_principal, text="Salida de Datos",font=("Helvetica", 12)) #CREAMOS EL TEXT PARA SALIDA
 label_salida.place(x=250,y=425,height=25)
@@ -316,6 +354,6 @@ salida.place(x=250, y=450, width=1000, height=250)
 pestana_actual = cuaderno.select()  #OBTENCION DE CODIGO DE LA pestana ACTUAL
 contenido_texto = cuaderno.nametowidget(pestana_actual).children['!text']
 
-contenido_texto.bind('<KeyRelease>', actualizar_resaltar_palabras)
+contenido_texto.bind('<KeyRelease>', lambda event, contenido_texto=contenido_texto: actualizar_resaltar_palabras(event, contenido_texto))
 #INICIALIZAMOS VENTANA
 ventana_principal.mainloop()

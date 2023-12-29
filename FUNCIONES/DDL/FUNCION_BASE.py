@@ -25,7 +25,7 @@ class CREATE_FUNCION_BASE(Instruccion):
         if(isinstance(actual,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(globa,TABLA_FUNCIONES_Y_VARIABLES) and isinstance(ast, AST) and isinstance(self.nombre, Expresion) and isinstance(self.retorno,TIPODATO)):
             nombre_base = ast.obtener_base_activa()
             if(nombre_base == ""):
-                ast.escribir_en_consola("ERROR: No hay una base activa\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No hay una base activa\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No hay una base activa",self.linea))
                 return
             nombre_func = self.nombre.obtener_valor(actual,globa,ast)
@@ -58,7 +58,7 @@ class CREATE_FUNCION_BASE(Instruccion):
                                 size_tipo_var = var[1].obtener_size()
                         else:
                             tipo_var = "ERROR"
-                            ast.escribir_en_consola("ERROR: No se reconocio un tipo de dato\n")
+                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No se reconocio un tipo de dato\n")
                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No se reconocio un tipo de dato",self.linea))
                             return
                         lst = []
@@ -75,7 +75,7 @@ class CREATE_FUNCION_BASE(Instruccion):
             for base in root.findall('base'):
                 for proc in base.findall('funcion'):
                     if(proc).attrib['name'] == nombre_func:
-                        ast.escribir_en_consola("ERROR: Ya existe una funcion con ese nombre\n")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Ya existe una funcion con ese nombre\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe una funcion con ese nombre",self.linea))
                         return 
                     
@@ -109,7 +109,7 @@ class CREATE_FUNCION_BASE(Instruccion):
 
                     with open(ruta, 'w', encoding='utf-8') as archivo:
                         archivo.write(xml_string)
-            ast.escribir_en_consola("FUNCION CREADA\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"FUNCION CREADA\n")
 
 class EJECUTAR_FUNCION_BASE(Expresion):
     def __init__(self,id,lista_valores, linea, columna):
@@ -152,7 +152,7 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                                 sentencias_unidas += senten.text 
                                 sentencias_unidas += "\n"
             if(existe_proc == False):
-                ast.escribir_en_consola("ERROR: No existe la funcion "+str(nombre_funcion)+" En la base "+str(nombre_base)+"\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No existe la funcion "+str(nombre_funcion)+" En la base "+str(nombre_base)+"\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: No existe la funcion "+str(nombre_funcion)+" En la base "+str(nombre_base),self.linea))
                 return
             
@@ -180,7 +180,7 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                 #VALIDACION NUMERO DE VALORES COINCIDE CON NUMERO DE PARAMETROS
                 if(self.lista_valores != None):
                     if(len(parametros_funcion) != len(self.lista_valores)):
-                        ast.escribir_en_consola("ERROR: El numero de parametros no coincide con el numero de variables del procedimiento\n")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El numero de parametros no coincide con el numero de variables del procedimiento\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El numero de parametros no coincide con el numero de variables del procedimiento",self.linea))
                         return
                                 
@@ -222,14 +222,14 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                                         if((tipo_var == "NCHAR" or tipo_var == "NVARCHAR")and (tipo_valor == "NCHAR" or tipo_valor == "NVARCHAR"))or((tipo_valor == "BIT" or tipo_valor == "INT") and(tipo_var == "BIT" or tipo_var=="INT")):
                                             pass
                                         else:
-                                            ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
+                                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
                                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion",self.linea))
                                             return 
                                     
                                     #VALIDAR QUE NO SE HAYA GUARDADO
                                     validacion_existe = ambito_funcion.variable_existe(nombre_var)
                                     if(validacion_existe == True):
-                                        ast.escribir_en_consola("ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: La variable "+str(nombre_var)+" se inserto mas de 1 vez",self.linea))
                                         return
                                     var.modificar_valor(valor_variable)
@@ -253,7 +253,7 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                                     if((tipo_var== TIPO.INT and tipo_valor == TIPO.BIT)or ((tipo_var == TIPO.NCHAR or tipo_var == TIPO.NVARCHAR)and(tipo_valor== TIPO.NCHAR or tipo_valor == TIPO.NVARCHAR) )):
                                         pass
                                     else:
-                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion\n")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en la funcion",self.linea))
                                         return 
                                 
@@ -273,13 +273,13 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                             tipo_return = self.ejecuto_return.tipo.obtener_tipo_dato()
                             
                             #COMPARAR EL TIPO RETORNO CON EL RETORNO DE LA FUNCION
-                            if((tipo_retorno == tipo_return) or((tipo_retorno == "BIT" or tipo_retorno == "INT") and(tipo_return=="BIT" or tipo_return =="INT"))  ):
+                            if((tipo_retorno == tipo_return) or((tipo_retorno == "NCHAR" or tipo_retorno == "NVARCHAR") and (tipo_return == "NCHAR" or tipo_return=="NVARCHAR")) or((tipo_retorno == "BIT" or tipo_retorno == "INT") and(tipo_return=="BIT" or tipo_return =="INT"))  ):
                                 respuesta = VALOR(valor_return,tipo_return,self.linea,self.columna)
                                 self.tipo = respuesta.tipo
                                 return valor_return
                             else:
                                 #ES ERROR PORQUE NO RETORNA EL TIPO QUE DICE
-                                ast.escribir_en_consola("ERROR: Funcion retorna Valor de tipo Incorrecto!\n")
+                                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Funcion retorna Valor de tipo Incorrecto!"+str(tipo_return)+" - "+str(tipo_retorno)+"\n")
                                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","FUNCION: Funcion retorna valor de tipo incorrecto",self.linea))
                                 respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                                 self.tipo = respuesta.tipo
@@ -289,7 +289,7 @@ class EJECUTAR_FUNCION_BASE(Expresion):
                         instr.obtener_valor(ambito_funcion,globa,ast)     # ES DECIR QUE SOLO ESCRIBIERON 1+1 Y NO LO ASIGNARON A ALGUNA VARIABLE
                 
                 #SALIO DEL FOR Y NO RETORNO NADA
-                ast.escribir_en_consola("ERROR: Funcion no retorno valor!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Funcion no retorno valor!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","FUNCION: No retorno valor",self.linea))
                 respuesta = VALOR("ERROR",TIPO.ERROR,self.linea,self.columna)
                 self.tipo = respuesta.tipo

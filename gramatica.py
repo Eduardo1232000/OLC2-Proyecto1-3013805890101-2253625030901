@@ -8,6 +8,7 @@ from FUNCIONES.DDL.ALTER_PROCEDURE_BASE import * #ALTER_PROCEDURE_BASE DROP AND 
 from FUNCIONES.DDL.ALTER_FUNCTION_BASE import * #ALTER_FUNCTION_BASE AQUI TAMBIÉN VOY A AGREGAR LOS DE DROP AND TRUNCATE FUNCTION
 from FUNCIONES.DDL.PROCEDURE_BASE import *
 from FUNCIONES.DDL.FUNCION_BASE import *
+from FUNCIONES.DDL.DROP_STATEMENT import *
 
 from FUNCIONES.SELECT import *
 from FUNCIONES.ALIAS import *
@@ -17,7 +18,7 @@ from FUNCIONES.SSL.CASE import *
 from FUNCIONES.DDL.TRUNCATE_TABLE import *
 
 from FUNCIONES.DDL.ALTER_TABLE import *
-from FUNCIONES.DDL.DROP import *
+from FUNCIONES.DDL.DROP import*
 
 from FUNCIONES.DDL.UPDATE import * #UPDATE
 from FUNCIONES.DDL.DELETE import * #DROP
@@ -55,7 +56,7 @@ from FUNCIONES.SSL.RETURN import *
 from FUNCIONES.SSL.IF import *
 from FUNCIONES.SSL.WHILE import *
 
-#UPDATE
+
 tokens = (
     'SELECT', 'FROM','USE', 'WHERE', 'AS', 'CREATE', 'TABLE', 'DATA', 'BASE', 
     'CONCATENA', 'SUBSTRAER', 'HOY', 'CONTAR', 'SUMA',
@@ -71,58 +72,59 @@ tokens = (
     'ADD', 'MODIFY',
     'COLUMN', 'CONSTRAINT', 'REFERENCES','DECLARE', 'SET',
     'PROCEDURE','FUNCTION','BEGIN','END','EXEC','RETURN','BETWEEN',
-    'IF','ELSE','THEN','WHILE','PUNTO', 'CASE', 'WHEN'
+    'IF','ELSE','THEN','WHILE','PUNTO','CASE','WHEN'
 )
 
 #Tokens
-t_INT               =   r'INT'
-t_BIT               =   r'BIT'
-t_DECIMAL           =   r'DECIMAL'
-t_DATETIME          =   r'DATETIME'
-t_DATE              =   r'DATE'
-t_NCHAR             =   r'NCHAR'
-t_NVARCHAR          =   r'NVARCHAR'
-t_NOT               =   r'NOT'
-t_NULL              =   r'NULL'
-t_PRIMARY           =   r'PRIMARY'
-t_FOREIGN           =   r'FOREIGN'
-t_REFERENCE         =   r'REFERENCE'
-t_KEY               =   r'KEY'
-t_SELECT            =   r'SELECT' 
-t_UPDATE            =   r'UPDATE' #AGREGADO@@@@!!!!
-t_FROM              =   r'FROM'
-t_USE               =   r'USE'
-t_WHERE             =   r'WHERE'
-t_CAS               =   r'CAS'
-t_AS                =   r'AS'
-t_CREATE            =   r'CREATE'
-t_TABLE             =   r'TABLE'
-t_DATA              =   r'DATA'
-t_BASE              =   r'BASE'
-t_CONCATENA         =   r'CONCATENA'
-t_SUBSTRAER         =   r'SUBSTRAER'
-t_HOY               =   r'HOY'
-t_CONTAR            =   r'CONTAR'
-t_SUMA              =   r'SUMA'
-t_INSERT            =   r'INSERT'
-t_INTO              =   r'INTO'
-t_VALUES            =   r'VALUES'
-t_DELETE            =   r'DELETE'
-t_DECLARE           =   r'DECLARE'
-t_SET               =   r'SET'
-t_PROCEDURE         =   r'PROCEDURE'
-t_FUNCTION          =   r'FUNCTION'
-t_BEGIN             =   r'BEGIN'
-t_END               =   r'END'
-t_EXEC              =   r'EXEC'
-t_RETURN            =   r'RETURN'
-t_BETWEEN           =   r'BETWEEN'
-t_IF                =   r'IF'
-t_ELSE              =   r'ELSE'
-t_THEN              =   r'THEN'
-t_WHILE             =   r'WHILE'
-t_CASE              =   r'CASE'
-t_WHEN              =   r'WHEN'
+
+t_INT               =   r'(?i)INT'
+t_BIT               =   r'(?i)BIT'
+t_DECIMAL           =   r'(?i)DECIMAL'
+t_DATETIME          =   r'(?i)DATETIME'
+t_DATE              =   r'(?i)DATE'
+t_NCHAR             =   r'(?i)NCHAR'
+t_NVARCHAR          =   r'(?i)NVARCHAR'
+t_NOT               =   r'(?i)NOT'
+t_NULL              =   r'(?i)NULL'
+t_PRIMARY           =   r'(?i)PRIMARY'
+t_FOREIGN           =   r'(?i)FOREIGN'
+t_REFERENCE         =   r'(?i)REFERENCE'
+t_KEY               =   r'(?i)KEY'
+t_SELECT            =   r'(?i)SELECT' 
+t_FROM              =   r'(?i)FROM'
+t_USE               =   r'(?i)USE'
+t_WHERE             =   r'(?i)WHERE'
+t_CAS               =   r'(?i)CAS'
+t_AS                =   r'(?i)AS'
+t_CREATE            =   r'(?i)CREATE'
+t_TABLE             =   r'(?i)TABLE'
+t_DATA              =   r'(?i)DATA'
+t_BASE              =   r'(?i)BASE'
+t_CONCATENA         =   r'(?i)CONCATENA'
+t_SUBSTRAER         =   r'(?i)SUBSTRAER'
+t_HOY               =   r'(?i)HOY'
+t_CONTAR            =   r'(?i)CONTAR'
+t_SUMA              =   r'(?i)SUMA'
+t_INSERT            =   r'(?i)INSERT'
+t_INTO              =   r'(?i)INTO'
+t_VALUES            =   r'(?i)VALUES'
+t_DELETE            =   r'(?i)DELETE'
+t_DECLARE           =   r'(?i)DECLARE'
+t_SET               =   r'(?i)SET'
+t_PROCEDURE         =   r'(?i)PROCEDURE'
+t_FUNCTION          =   r'(?i)FUNCTION'
+t_BEGIN             =   r'(?i)BEGIN'
+t_END               =   r'(?i)END'
+t_EXEC              =   r'(?i)EXEC'
+t_RETURN            =   r'(?i)RETURN'
+t_BETWEEN           =   r'(?i)BETWEEN'
+t_IF                =   r'(?i)IF'
+t_ELSE              =   r'(?i)ELSE'
+t_THEN              =   r'(?i)THEN'
+t_WHILE             =   r'(?i)WHILE'
+t_CASE              =   r'(?i)CASE'
+t_WHEN              =   r'(?i)WHEN'
+t_UPDATE            =   r'(?i)UPDATE' 
 
 t_PUNTO             =   r'\.'
 t_MAS               =   r'\+'
@@ -173,10 +175,10 @@ def t_FECHA(t):
 def t_NDECIMAL(t):
     r'-?\d+\.\d+'
     try:
-        print("RECONOCI DECIMAL: " +str(t.value))
+        #print("RECONOCI DECIMAL: " +str(t.value))
         t.value = float(t.value)
     except ValueError:
-        print("VALOR FLOAT DEMASIADO LARGO %d",t.value)
+        print("VALOR DECIMAL DEMASIADO LARGO %d",t.value)
         t.value = 0.0
     return t
 
@@ -227,6 +229,15 @@ t_ignore = " \t"
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
+    #print("CONTADOR DE LINEAS: ",end="")
+    #print(t.lexer.lineno)
+    #print(t)
+
+def t_eof(t):
+    r'\Z'
+    print("Fin del analisis en la linea "+str(t.lexer.lineno))
+    t.lexer.lineno = 0 #PARA REINICIAR EL CONTADOR PARA LA SIGUIENTE LECURA
+    return None
 
 def t_NULLL(t):
     r'NULL'
@@ -238,6 +249,8 @@ def t_error(t):
     lista_error_lexico.append(er)
     
     t.lexer.skip(1)
+
+
     
 
 #CONSTRUYENDO EL ANALIZADOR LEXICO
@@ -277,7 +290,7 @@ def p_instrucciones_lista(t):
         #AGREGAR LOS ERRORES LEXICOS Y SINTACTICOS
 
     
-#AGREGADO f_delete, f_update, alter_procedure, alter_function
+
 def p_instrucciones_evaluar(t):
     '''instruccion  : f_sistema
                     | sent_create_database
@@ -299,10 +312,108 @@ def p_instrucciones_evaluar(t):
                     | ins_if
                     | ins_while
                     | func_return
+                    | drop_statement
+                    | ins_case
                     '''
     #EXPRESION ES TEMPORAL (SOLO PARA VER SU FUNCIONAMIENTO)
     t[0] = t[1]
 
+def p_ins_case(t):
+    '''ins_case : CASE ca_whens_ins ca_else_ins  END PTCOMA'''
+    t[0] = INS_CASE(t[2],t[3],lexer.lineno,0)
+    t[0].text = str(t[1]) +" "
+
+    nodo_arbol = NODO_ARBOL("CASE",lexer.lineno,"blue")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CASE",lexer.lineno,"black"))
+    nodo_temp = NODO_ARBOL("WHENS",lexer.lineno,"blue")
+    padre1 = nodo_temp
+    izq1 = None
+    der1 = None
+
+    for i in range(len(t[2])):
+        when = t[2][i]
+        t[0].text += " WHEN "
+        
+
+        izq1 = NODO_ARBOL("WHEN",lexer.lineno,"blue")
+        izq1.agregar_hijo(NODO_ARBOL("P.R: WHEN",lexer.lineno,"black"))
+        condicion_when = when[0]
+        izq1.agregar_hijo(condicion_when.nodo_arbol)
+        instrucciones_true_when = when[1]
+        t[0].text += condicion_when.text
+        t[0].text += " THEN "
+        izq1.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black"))
+        nodo_temporal2 = NODO_ARBOL("instrucciones",lexer.lineno,"yellow")
+        izq = None
+        der = None
+        padre = nodo_temporal2
+
+        for j in range (len(instrucciones_true_when)):
+            inst = instrucciones_true_when[j]
+            t[0].text+= inst.text
+            izq = inst.nodo_arbol
+            padre.agregar_hijo(izq)
+            if(j < len(instrucciones_true_when)-1):
+                der = NODO_ARBOL("instrucciones",lexer.lineno,"yellow")
+                padre.agregar_hijo(der)
+                padre = der
+        izq1.agregar_hijo(nodo_temporal2)
+        padre1.agregar_hijo(izq1)
+
+        if(i < len(t[2])-1):
+            der1 = NODO_ARBOL("WHENS",lexer.lineno,"blue")
+            padre1.agregar_hijo(der1)
+            padre1 = der1
+    nodo_arbol.agregar_hijo(nodo_temp)
+
+    if(len(t[3])>0):
+        t[0].text += " ELSE THEN "
+        nodo_temporal = NODO_ARBOL("ELSE",lexer.lineno,"blue")
+        nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: ELSE",lexer.lineno,"black"))
+        nodo_temporal.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black"))
+        nodo_temporal2 = NODO_ARBOL("instrucciones",lexer.lineno,"yellow")
+        padre = nodo_temporal2
+        izq = None
+        der = None
+        for i in range(len(t[3])):
+            t[0].text += t[3][i].text
+            izq = NODO_ARBOL("instruccion",lexer.lineno,"green")
+            izq.agregar_hijo(t[3][i].nodo_arbol)
+            padre.agregar_hijo(izq)
+            if(i < len(t[3])-1):
+                der = NODO_ARBOL("instrucciones",lexer.lineno,"yellow")
+                padre.agregar_hijo(der)
+                padre = der
+        nodo_temporal.agregar_hijo(nodo_temporal2)
+        nodo_arbol.agregar_hijo(nodo_temporal)
+    
+    
+    t[0].text += str(t[4]) + str(t[5])
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+    t[0].nodo_arbol = nodo_arbol
+
+
+
+def p_whens_ins(t):
+    '''ca_whens_ins : ca_when_ins ca_whens_ins
+                | ca_when_ins'''
+    if len(t) == 2:
+        t[0] = [t[1]]
+    else:
+        t[2].insert(0, t[1])
+        t[0] = t[2]
+
+def p_ca_when_ins(t):
+    '''ca_when_ins : WHEN expresion THEN instrucciones'''
+    lst = []
+    lst.append(t[2])
+    lst.append(t[4][0])
+    t[0] = lst
+
+def p_else_ins(t):
+    '''ca_else_ins : ELSE THEN instrucciones'''
+    t[0] = t[3][0]
 
 def p_ins_while(t):
     '''ins_while : WHILE expresion BEGIN instrucciones END PTCOMA'''
@@ -342,63 +453,101 @@ def p_ins_while(t):
     t[0].nodo_arbol = nodo_arbol
 
 def p_ins_if(t):
-    '''ins_if : IF expresion THEN  instrucciones ELSE instrucciones END IF PTCOMA '''
-    t[0] = INS_IF(t[2],t[4][0],t[6][0],lexer.lineno,0)
-    t[0].text = str(t[1])+" "+str(t[2].text)+" "+str(t[3])+" "
-    nodo_arbol = NODO_ARBOL("IF",lexer.lineno,"purple")
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF ",lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(t[2].nodo_arbol)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black"))
+    '''ins_if : IF expresion THEN  instrucciones ELSE instrucciones END IF PTCOMA 
+              | IF expresion THEN  instrucciones END IF PTCOMA'''
+    
+    if(len(t) == 8):
+        t[0] = INS_IF(t[2],t[4][0],[],lexer.lineno,0)
+        t[0].text = str(t[1])+" "+str(t[2].text)+" "+str(t[3])+" "
+        nodo_arbol = NODO_ARBOL("IF",lexer.lineno,"purple")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF ",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(t[2].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black"))
 
-    nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
-    izq = None
-    der = None
-    padre = nodo_temp
-    for i in range(len(t[4][0])):
+        nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[4][0])):
+            
+            instr = t[4][0][i]
+            if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
+                t[0].text += str(instr.text) + " "
+
+                izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
+
+                if(i < len(t[4][0])-1):
+                    der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
+
+        nodo_arbol.agregar_hijo(nodo_temp)
+
         
-        instr = t[4][0][i]
-        if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
-            t[0].text += str(instr.text) + " "
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+        t[0].nodo_arbol = nodo_arbol
+        t[0].text += str(t[5]) + " "+str(t[6]) +str(t[7])
+    else:    
+        t[0] = INS_IF(t[2],t[4][0],t[6][0],lexer.lineno,0)
+        t[0].text = str(t[1])+" "+str(t[2].text)+" "+str(t[3])+" "
+        nodo_arbol = NODO_ARBOL("IF",lexer.lineno,"purple")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF ",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(t[2].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: THEN",lexer.lineno,"black"))
 
-            izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
-            izq.agregar_hijo(instr.nodo_arbol)
-            padre.agregar_hijo(izq)
+        nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[4][0])):
+            
+            instr = t[4][0][i]
+            if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
+                t[0].text += str(instr.text) + " "
 
-            if(i < len(t[4][0])-1):
-                der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
-                padre.agregar_hijo(der)
-                padre = der
+                izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
 
-    nodo_arbol.agregar_hijo(nodo_temp)
+                if(i < len(t[4][0])-1):
+                    der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
 
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: ELSE",lexer.lineno,"black"))   
-    t[0].text += str(t[5]) +" "
+        nodo_arbol.agregar_hijo(nodo_temp)
 
-    nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
-    izq = None
-    der = None
-    padre = nodo_temp
-    for i in range(len(t[6][0])):
-        
-        instr = t[6][0][i]
-        if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
-            t[0].text += str(instr.text) + " "
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: ELSE",lexer.lineno,"black"))   
+        t[0].text += str(t[5]) +" "
 
-            izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
-            izq.agregar_hijo(instr.nodo_arbol)
-            padre.agregar_hijo(izq)
+        nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[6][0])):
+            
+            instr = t[6][0][i]
+            if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
+                t[0].text += str(instr.text) + " "
 
-            if(i < len(t[6][0])-1):
-                der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
-                padre.agregar_hijo(der)
-                padre = der
+                izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
 
-    nodo_arbol.agregar_hijo(nodo_temp)
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF",lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
-    t[0].nodo_arbol = nodo_arbol
-    t[0].text += str(t[7]) + " "+str(t[8]) +str(t[9])
+                if(i < len(t[6][0])-1):
+                    der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
+
+        nodo_arbol.agregar_hijo(nodo_temp)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: IF",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+        t[0].nodo_arbol = nodo_arbol
+        t[0].text += str(t[7]) + " "+str(t[8]) +str(t[9])
 
 def p_return(t):
     '''func_return : RETURN expresion PTCOMA'''
@@ -545,19 +694,26 @@ def p_llamada_funcion(t):
         padre = nodo_temp
         for i in range(len(t[3])):
             valores= t[3][i]
+
             if(i!=0):
                 t[0].text += ", "
-                nodo_arbol.agregar_hijo(NODO_ARBOL(valores[1],lexer.lineno,"ORANGE"))
-            nodo_temp = NODO_ARBOL("dato",lexer.lineno,"ORANGE")
+                #nodo_arbol.agregar_hijo(valores[1].nodo_arbol)
+            izq = NODO_ARBOL("dato",lexer.lineno,"ORANGE")
             if(valores[0]!= None):
                 t[0].text += "@"+str(valores[0].text)+' ='+str(valores[1].text)
-                nodo_temp.agregar_hijo(NODO_ARBOL("@",lexer.lineno,"black"))
-                nodo_temp.agregar_hijo(valores[0].nodo_arbol)
-                nodo_temp.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"ORANGE"))
-                nodo_temp.agregar_hijo(valores[1].nodo_arbol)
+                izq.agregar_hijo(NODO_ARBOL("@",lexer.lineno,"black"))
+                izq.agregar_hijo(valores[0].nodo_arbol)
+                izq.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"ORANGE"))
+                izq.agregar_hijo(valores[1].nodo_arbol)
             else:
                 t[0].text += str(valores[1].text)
-                nodo_temp.agregar_hijo(valores[1].nodo_arbol)
+                izq.agregar_hijo(valores[1].nodo_arbol)
+            padre.agregar_hijo(izq)
+            if(i < len(t[3])-1):
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
+                der = NODO_ARBOL("valores",lexer.lineno,"ORANGE")
+                padre.agregar_hijo(der)
+                padre = der
         #AGREGAR LAS VARIABLES PROCEDURE
         
             #
@@ -845,7 +1001,7 @@ def p_funcion_sistema(t):
     if(t[3] == None):
         t[0].text += ";"
         nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
-        t[0].text += ";"
+        #t[0].text += ";"
     else:
         t[0].text += " FROM "
         nodo_from = (NODO_ARBOL("P.R: FROM",lexer.lineno,"red"))
@@ -869,7 +1025,6 @@ def p_funcion_sistema(t):
             expr = t[3][0][i]
         nodo_from.agregar_hijo(nodo_temporal)
         nodo_arbol.agregar_hijo(nodo_from)
-
 
         if(t[3][1] ==None):
             nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno,"black"))
@@ -897,7 +1052,7 @@ def p_funcion_sistema(t):
                     padre = der
             nodo_arbol.agregar_hijo(nodo_temporal)
             nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
-
+            t[0].text += ";"
                 
     
     t[0].nodo_arbol = nodo_arbol
@@ -932,9 +1087,7 @@ def p_expresion_select_ini(t):
 
 
 def p_expresion_select_fin(t):
-    '''expresion_select_final : expresion_select_final IGUAL expresion_select_final
-                              | expresion_select_final signo_relacional expresion_select_final
-                              | expresion'''
+    '''expresion_select_final :  expresion'''
     
     if len(t) == 2:
         # Solo hay una expresión
@@ -943,13 +1096,17 @@ def p_expresion_select_fin(t):
         # Hay más de una expresión
         if(t.slice[2].type == "IGUAL"):
             objeto = IGUAL(t[1],t[3],lexer.lineno,0)
-            objeto.text = str(t[1].text) +" "+ str(t[2])+" "+str(t[3].text)
+            '''objeto.text = str(t[1].text) +" "+ str(t[2])+" "+str(t[3].text)
+
+            
+
+
             nodo_arbol = NODO_ARBOL("IGUAL",lexer.lineno,"red")
             nodo_arbol.agregar_hijo(t[1].text)
             nodo_arbol.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
-            nodo_arbol.agregar_hijo(t[3].text)
+            nodo_arbol.agregar_hijo(t[3].text)'''
             t[3].insert(0, objeto)
-            objeto.nodo_arbol = nodo_arbol
+            #objeto.nodo_arbol = nodo_arbol
         else: 
             t[0] = t[3]
 
@@ -984,11 +1141,6 @@ def p_continuacion_where(t):
 
 #FIN SELECT
 
-
-
-
-
-#Elimine                     | select_dato 
 def p_operacion_sistema(t):
     '''operacion_sis : func_concatena
                     | func_substraer
@@ -1057,13 +1209,6 @@ def p_contar(t):
 
     t[0].nodo_arbol = nodo_arbol
 
-def p_signo_relacional(t):
-    '''signo_relacional : DIFERENTE
-                        | MENORQUE
-                        | MAYORQUE
-                        | MENORIGUAL
-                        | MAYORIGUAL'''
-    t[0] = t[1]
 
 def p_suma(t):
     '''func_suma : SUMA PARABRE name PARCIERRA '''
@@ -1093,11 +1238,11 @@ def p_cas(t):
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
 
-def p_condiciones(t):
+def p_condiciones (t):
     '''condiciones : expresion
                     | expresion AND condiciones
-                    | expresion OR condiciones
-                    | name IGUAL expresion'''
+                    | expresion OR condiciones '''
+                    #NO SE INCLUYO EL NAME IGUAL EXPRESION
 
 def p_expresion_aritmetica(t):
     '''exp_aritmetica   : op_suma
@@ -1155,7 +1300,6 @@ def p_expresion_relacional(t):
                         | exr_menorigual
                         | exr_mayorigual'''
     t[0] = t[1]
-
 
 def p_igual(t):
     '''exr_igual : expresion IGUALIGUAL expresion'''
@@ -1338,9 +1482,9 @@ def p_alter_table(t) :
     #AGREGAR TEXTO 
     #AGREGAR NODOS ARBOL
 
-#caracteristica
+
 def p_alter_action(t):
-    '''alter_action : alter_add 
+    '''alter_action : alter_add
                     | alter_drop
                     | alter_modify'''
     t[0] = t[1]
@@ -1350,7 +1494,7 @@ def p_alter_add(t):
                  | ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA'''
     if len(t) == 5:
         t[0] = ("ADD", "COLUMN", t[3], t[4])
-        #print(f"tipo de dato en p_alter_add: {t[4]}")
+        print(f"tipo de dato en p_alter_add: {t[4]}")
     elif len(t) == 14:
         t[0] = ("ADD_CONSTRAINT", t[3], "FOREIGN KEY", t[5], "REFERENCES", t[10], t[12], t[13])
     else:
@@ -1410,7 +1554,7 @@ def p_sent_truncate(t):
     nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black")) 
     t[0].nodo_arbol = nodo_arbol
-    #print("Estoy recibiendo la gramatica correcta?")
+    print("Estoy recibiendo la gramatica correcta?")
 
 
 
@@ -1572,7 +1716,7 @@ def p_f_insert(t):
     
     t[0].nodo_arbol = nodo_arbol
 
-
+    
 
 
 #UPDATE
@@ -1603,6 +1747,11 @@ def p_set_expresion(t):
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
     t[0] = DELETE(t[3], t[4], lexer.lineno, 0)
+    nodo_arbol = NODO_ARBOL("DELETE", lexer.lineno, "orange")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: DELETE", lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM", lexer.lineno, "black"))
+    nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+    t[0].nodo_arbol = nodo_arbol
 
 
 def p_condiciones_opt(t):
@@ -1622,7 +1771,7 @@ def p_operador_relacional(t):
                            | DIFERENTE '''
     t[0] = t[1]
 
-#FIN DELETE
+    
 
 
 def p_columnas(t):
@@ -1637,29 +1786,112 @@ def p_columnas(t):
         t[3].insert(0, t[1])
         t[0] = t[3]
 
-
-#MODIFICACIONES DE PROCEDURE
+                
+    #MODIFICACIONES DE PROCEDURE
 def p_alter_procedure(t):
     ''' alter_procedure : ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA
                         | ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA'''
     
-    if len(t) == 12:
-        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", t[5], t[9], lexer.lineno, 0)
-    
-    else:
+    if len(t) == 9:
         t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", None, t[6], lexer.lineno, 0)
+        t[0].text = t[1]+" "+t[2]+" "+t[3].text+" "+str(t[4])+" "+str(t[5]) +"  "
+        nodo_arbol = NODO_ARBOL("MODIFICACION DE PROCEDURE",lexer.lineno,"ORANGE")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CREATE",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: PROCEDURE",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: AS",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: BEGIN",lexer.lineno,"black")) 
+        #AGREGAR LAS INSTRUCCIONES
+        izq = None
+        der = None
+        padre = None
 
+        nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+        padre = nodo_temp
+        for i in range(len(t[6][0])):
+            instr = t[6][0][i]
+            if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
+                t[0].text +=instr.text
+                t[0].text += " "              
+                izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
 
-"""
-def p_sent_truncate_procedure(t):
-    '''sent_truncate_procedure : TRUNCATE PROCEDURE name PTCOMA'''
-    t[0] = TRUNCATE_PROCEDURE(t[3], lexer.lineno, 0)
+                if(i < len(t[6][0])-1):
+                    der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
 
-def p_sent_drop_procedure(t):
-    '''sent_drop_procedure : DROP PROCEDURE name PTCOMA'''
-    t[0] = DROP_PROCEDURE(t[3], lexer.lineno,0)
+        nodo_arbol.agregar_hijo(nodo_temp)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black")) 
+        t[0].nodo_arbol = nodo_arbol
 
-"""
+        t[0].text += " "+str(t[7])
+        t[0].text+= " "+str(t[8])
+    else:
+        t[0] = ALTER_PROCEDURE_BASE(t[3], "PROCEDURE", t[5], t[9], lexer.lineno, 0)
+        t[0].text = t[1]+" "+t[2]+" "+t[3].text+str(t[4]) 
+        nodo_arbol = NODO_ARBOL("MODIFICACION DE PROCEDURE",lexer.lineno,"ORANGE")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: CREATE",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: PROCEDURE",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black")) 
+
+        nodo_temp = NODO_ARBOL("variables",lexer.lineno,"black")
+        izq = None
+        der = None
+        padre = nodo_temp
+        #AGREGAR LAS VARIABLES PROCEDURE
+        for i in range(len(t[5])):
+            variable = t[5][i]
+            t[0].text+= "@" + str(variable[0].text) +" "+str(variable[1].text) 
+
+            izq = NODO_ARBOL("variable",lexer.lineno,"black")
+            izq.agregar_hijo(NODO_ARBOL("@",lexer.lineno,"black"))
+            izq.agregar_hijo(variable[0].nodo_arbol)
+            izq.agregar_hijo(variable[1].nodo_arbol)
+            padre.agregar_hijo(izq)
+
+            if(i< len(t[5])-1):
+                t[0].text += ", "
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
+                der =  NODO_ARBOL("variables",lexer.lineno,"black")
+                padre.agregar_hijo(der)
+                padre = der
+        #
+        nodo_arbol.agregar_hijo(nodo_temp)
+        nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: AS",lexer.lineno,"black")) 
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: BEGIN",lexer.lineno,"black")) 
+        t[0].text += str(t[6])+" "+str(t[7])+" "+str(t[8])+" "
+        #AGREGAR LAS INSTRUCCIONES
+        nodo_temp = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[9][0])):
+            
+            instr = t[9][0][i]
+            if(isinstance(instr,Instruccion) or isinstance(instr,Expresion)):
+                t[0].text += str(instr.text) + " "
+
+                izq = NODO_ARBOL("Instruccion",lexer.lineno,"green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
+
+                if(i < len(t[9][0])-1):
+                    der = NODO_ARBOL("Instrucciones",lexer.lineno,"yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
+
+        nodo_arbol.agregar_hijo(nodo_temp)
+        #
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black")) 
+        t[0].nodo_arbol = nodo_arbol
+        t[0].text+= " "+str(t[10])
+        t[0].text+= " "+str(t[11])
 
 #AQUI TERMINAN PARA PROCEDURE
 
@@ -1668,26 +1900,127 @@ def p_sent_drop_procedure(t):
 #PROCESOS PARA FUNCTIONS
 def p_alter_funcion(t):
     ''' alter_function : ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA
-                         | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
-    if(len(t)==11):
-        t[0] = ALTER_FUNCTION_BASE(t[3],t[5],"FUNCION",None,t[8],lexer.lineno,0)
+                       | ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA'''
+
+    if len(t) == 11:
+        t[0] = ALTER_FUNCTION_BASE(t[3], t[5], "FUNCION", None, t[8], lexer.lineno, 0)
+        t[0].text = str(t[1]) + " " + str(t[2]) + " " + str(t[3].text) + " " + str(t[4]) + " " + str(
+            t[5].text) + " " + str(str(t[6])) + " " + str(t[7]) + " "
+
+        nodo_arbol = NODO_ARBOL("ALTERAR FUNCION", lexer.lineno, "orange")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: ALTER ", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FUNCTION", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: RETURN ", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(t[5].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: AS", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: BEGIN ", lexer.lineno, "black"))
+
+        # INSTR
+        nodo_temp = NODO_ARBOL("Instrucciones", lexer.lineno, "yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[8][0])):
+            instr = t[8][0][i]
+            if isinstance(instr, Instruccion) or isinstance(instr, Expresion):
+                t[0].text += str(instr.text) + " "
+                izq = NODO_ARBOL("Instruccion", lexer.lineno, "green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
+                if i < len(t[8][0]) - 1:
+                    der = NODO_ARBOL("Instrucciones", lexer.lineno, "yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
+
+        nodo_arbol.agregar_hijo(nodo_temp)
+
+        t[0].text += str(t[9]) + str(t[10])
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno, "black"))
+        t[0].nodo_arbol = nodo_arbol
 
     else:
-        t[0] = ALTER_FUNCTION_BASE(t[3],t[8],"FUNCION",t[5],t[11],lexer.lineno,0)
+        t[0] = ALTER_FUNCTION_BASE(t[3], t[8], "FUNCION", t[5], t[11], lexer.lineno, 0)
+        t[0].text = str(t[1]) + " " + str(t[2]) + " " + str(t[3].text) + str(t[4]) + " "
 
+        nodo_arbol = NODO_ARBOL("ALTERAR FUNCION", lexer.lineno, "orange")
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: ALTER ", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FUNCTION", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("(", lexer.lineno, "black"))
 
-"""
-def p_sent_truncate_function(t):
-    '''sent_truncate_function : TRUNCATE FUNCTION name PTCOMA'''
-    t[0] = TRUNCATE_FUNCTION(t[3], lexer.lineno, 0)
+        # VARS
+        nodo_temp = NODO_ARBOL("variables", lexer.lineno, "black")
+        izq = None
+        der = None
+        padre = nodo_temp
+        # AGREGAR LAS VARIABLES PROCEDURE
+        for i in range(len(t[5])):
+            variable = t[5][i]
+            t[0].text += "@" + str(variable[0].text) + " " + str(variable[1].text)
 
-def p_sent_drop_function(t):
-    '''sent_drop_function : DROP FUNCTION name PTCOMA'''
-    t[0] = DROP_FUNCTION(t[3], lexer.lineno,0)
-"""
+            izq = NODO_ARBOL("variable", lexer.lineno, "black")
+            izq.agregar_hijo(NODO_ARBOL("@", lexer.lineno, "black"))
+            izq.agregar_hijo(variable[0].nodo_arbol)
+            izq.agregar_hijo(variable[1].nodo_arbol)
+            padre.agregar_hijo(izq)
 
+            if i < len(t[5]) - 1:
+                t[0].text += ", "
+                padre.agregar_hijo(NODO_ARBOL(",", lexer.lineno, "black"))
+                der = NODO_ARBOL("variables", lexer.lineno, "black")
+                padre.agregar_hijo(der)
+                padre = der
+        #
+        nodo_arbol.agregar_hijo(nodo_temp)
+        nodo_arbol.agregar_hijo(NODO_ARBOL(")", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: RETURN ", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(t[8].nodo_arbol)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: AS", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: BEGIN ", lexer.lineno, "black"))
+        #
+        t[0].text += str(t[6]) + " " + str(t[7]) + " " + str(t[8].text) + " " + str(t[9]) + " " + str(t[10]) + " "
+
+        # INSTR
+        nodo_temp = NODO_ARBOL("Instrucciones", lexer.lineno, "yellow")
+        izq = None
+        der = None
+        padre = nodo_temp
+        for i in range(len(t[11][0])):
+            instr = t[11][0][i]
+            if isinstance(instr, Instruccion) or isinstance(instr, Expresion):
+                t[0].text += str(instr.text) + " "
+                izq = NODO_ARBOL("Instruccion", lexer.lineno, "green")
+                izq.agregar_hijo(instr.nodo_arbol)
+                padre.agregar_hijo(izq)
+                if i < len(t[11][0]) - 1:
+                    der = NODO_ARBOL("Instrucciones", lexer.lineno, "yellow")
+                    padre.agregar_hijo(der)
+                    padre = der
+
+        nodo_arbol.agregar_hijo(nodo_temp)
+        #
+
+        t[0].text += " " + str(t[12]) + str(t[13])
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: END", lexer.lineno, "black"))
+        nodo_arbol.agregar_hijo(NODO_ARBOL(";", lexer.lineno, "black"))
+        t[0].nodo_arbol = nodo_arbol
 #AQUI TERMINA PARA FUNCTION
-                
+    
+        
+def p_drop_statement(t):
+    ''' drop_statement : DROP drop_type name PTCOMA'''
+    t[0] = DROP_STATEMENT(t[2], t[3], lexer.lineno, 0)
+
+def p_drop_type(t):
+    ''' drop_type : FUNCTION
+                  | PROCEDURE'''
+    t[0] = t[1]
+
+
+#aqui termina drop
+
 
 def p_valores(t):
     ''' valores : expresion
@@ -1891,6 +2224,8 @@ def p_else(t):
 
 
 
+
+
 def p_expr_select(t):
     ''' expr_select : expresion name_columna'''
     t[0] = EXPRESION_SELECT(t[2],t[1],lexer.lineno,0)
@@ -1964,10 +2299,22 @@ def p_numero(t):
              | NDECIMAL'''
     if(t.slice[1].type == "NINT"):
         t[0] = VALOR(t[1],"INT",lexer.lineno,0)
+        t[0].text = str(t[1])
+        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"blue")            #CREO UN NODO CON TEXTO EXPRESION
+        nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[1]),lexer.lineno,"black")) #APUNTA AL VALOR
+        t[0].nodo_arbol = nodo_arbol                                        #LO GUARDO
     elif(t.slice[1].type == "NBIT"):
         t[0] = VALOR(t[1],"BIT",lexer.lineno,0)
+        t[0].text = str(t[1])
+        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"blue")            #CREO UN NODO CON TEXTO EXPRESION
+        nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[1]),lexer.lineno,"black")) #APUNTA AL VALOR
+        t[0].nodo_arbol = nodo_arbol                                        #LO GUARDO
     elif(t.slice[1].type == "NDECIMAL"):
         t[0] = VALOR(t[1],"DECIMAL",lexer.lineno,0)
+        t[0].text = str(t[1])
+        nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"blue")            #CREO UN NODO CON TEXTO EXPRESION
+        nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[1]),lexer.lineno,"black")) #APUNTA AL VALOR
+        t[0].nodo_arbol = nodo_arbol                                        #LO GUARDO
     else:
         t[0] = t[1]     #CASO DE ERROR
     t[0].text = str(t[1])
@@ -1992,26 +2339,27 @@ def p_name(t):
     t[0].nodo_arbol = nodo_arbol                                        #LO GUARDO
 
 def p_error(t):
-    if t is not None:
-        print("Error sintáctico en '%s'" % t.value)
-        er = ERROR_LSS("SINTACTICO",str(t.value)+" Genera un error en la sintaxis",lexer.lineno)
-        lista_error_sintactico.append(er)
+    #print("ERROR")
+    #print(t)
+    if t is None:
+        try:
+            print("Error sintáctico en '%s'" % t.value)
+            er = ERROR_LSS("SINTACTICO",str(t.value)+" Genera un error en la sintaxis",lexer.lineno)
+            global lista_error_lexico
+            lista_error_lexico.append(er)
+            
+        except:
+            print("ERROR SINTACTICO EN LINEA "+str(lexer.lineno))
+            er = ERROR_LSS("SINTACTICO"," Error sintactico",lexer.lineno)
+            lista_error_lexico.append(er)
 
-        reiniciar_parser()
-        while True:
+        '''while True:
             tok = lexer.token()
-            if not tok or tok.type == 'PTCOMA'or tok.type == 'NULL':
-                break
+            print(tok.type)
+            if tok.type == 'PTCOMA':
+                break'''
     else:
         print("Error: Vacio")
-
-def reiniciar_parser():
-    global parser
-    parser = yacc.yacc()
-
-def reiniciar_lexer():
-    global lexer
-    lexer = lex.lex()
 
 
 
@@ -2025,10 +2373,19 @@ def parses(data):
     listado_instrucciones = []  #EN CADA ANALISIS SE VACIA  
     lista_error_sintactico = []
     lista_error_lexico = []
- 
     parser = yacc.yacc()
     
     result = parser.parse(data)
+    #print("ERRORES LEXICOS")
+    #print(lista_error_lexico)
+    #print("ERRORES SINTACTICOS")
+   # print(lista_error_sintactico)
+    if(result ==None):
+        ls = []
+        ls.append(None)
+        ls.append(lista_error_lexico)
+        ls.append(lista_error_sintactico)
+        return ls
     return result
 
 #input_text = input("ingrese la expresion: ")

@@ -13,8 +13,8 @@ class CREATE_BASE(Instruccion):
         if(isinstance(self.nombre,Expresion)):
             respuesta = crear_base_vacia(self.nombre.obtener_valor(actual,globa,ast))
             if(respuesta == False):
-                ast.escribir_en_consola("ERROR: Ya existe una base de datos con ese nombre!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Ya existe una base de datos con ese nombre!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe una base de datos con ese nombre",self.linea))
             else:
-                ast.escribir_en_consola("BASE DE DATOS CREADA!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"BASE DE DATOS CREADA!\n")
                 ast.usar_base(self.nombre.obtener_valor(actual,globa,ast))

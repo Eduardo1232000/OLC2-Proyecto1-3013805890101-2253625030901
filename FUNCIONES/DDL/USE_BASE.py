@@ -18,9 +18,9 @@ class USE_BASE(Instruccion):
             if os.path.exists(ruta):   #SI YA EXISTE LA BASE DE DATOS
                 if(isinstance(ast, AST)):
                     ast.usar_base(nombre)
-                    ast.escribir_en_consola("SE VA A UTILIZAR LA BASE: "+str(nombre)+"\n")
+                    ast.escribir_en_consola("("+str(self.linea)+")"+"SE VA A UTILIZAR LA BASE: "+str(nombre)+"\n")
                     #GUARDAR CADA PROCEDIMIENTO FUNCION ETC EN SUS RESPECTIVAS LISTAS
 
             else:   #SI NO EXISTE LA BASE DE DATOS
-                ast.escribir_en_consola("NO EXISTE LA BASE DE DATOS: "+str(nombre)+"\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"NO EXISTE LA BASE DE DATOS: "+str(nombre)+"\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","USE: No existe la base de datos",self.linea))

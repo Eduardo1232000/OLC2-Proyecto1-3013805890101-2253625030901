@@ -25,10 +25,10 @@ class DROP(Instruccion):
                 elif self.drop_type == 'DATA':
                     borrar_base(nombre, ast)
                 else:
-                    ast.escribir_en_consola("Error: DROP no valido: " + str(self.drop_type))
+                    ast.escribir_en_consola("("+str(self.linea)+")"+"Error: DROP no valido: " + str(self.drop_type))
                     ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DROP: DROP No valido!",self.linea))
             else:
-                ast.escribir_en_consola("Error: Nombre de objeto no valido")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"Error: Nombre de objeto no valido")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","DROP: Nombre de objeto no valido",self.linea))
 
                 

@@ -32,7 +32,7 @@ class AST:
         TABLA_FUNCIONES_Y_VARIABLES_GLOBAL = TABLA_FUNCIONES_Y_VARIABLES(None,"global")     #AMBITO GLOBAL
         TABLA_FUNCIONES_Y_VARIABLES_ACTUAL = TABLA_FUNCIONES_Y_VARIABLES_GLOBAL             #AMBITO ACTUAL ES EL GLOBAL PORQUE ES EL INICIO
         for instr in self.EJECUCIONES:
-            
+            self.usar_tabla(None)   #PARA QUE AL INICIO DE CADA INSTRUCCION LA TABLA ESTE VACIA (SE LLENARA CUANDO SIRVA)
             if isinstance(instr,Instruccion):
                 instr.ejecutar(TABLA_FUNCIONES_Y_VARIABLES_ACTUAL,TABLA_FUNCIONES_Y_VARIABLES_GLOBAL,self)
 
@@ -46,6 +46,13 @@ class AST:
     def escribir_en_consola(self,texto):    #ESCRIBIR EN LA CONSOLA
         self.salida_cadena += str(texto)
 
+    def mostrar_errores_en_consola(self):
+        self.salida_cadena += "----------------------------------------------------------------------------------------- ERRORES --------------------------------------------------------------------------------------------\n"
+        for err in self.errores_codigo:
+            if(isinstance(err,ERROR_LSS)):
+                self.salida_cadena += "("+str(err.linea)+")"+"ERROR: "+err.descripcion + "\n"
+        self.salida_cadena += "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n"
+        
     def obtener_salida(self):
         return(self.salida_cadena)
     

@@ -50,7 +50,7 @@ class CREATE_PROCEDURE_BASE(Instruccion):
                                 size_tipo_var = var[1].obtener_size()
                         else:
                             tipo_var = "ERROR"
-                            ast.escribir_en_consola("ERROR: No se reconocio un tipo de dato\n")
+                            ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No se reconocio un tipo de dato\n")
                             ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: No se reconocio un tipo de dato",self.linea))
                             return
                         lst = []
@@ -67,7 +67,7 @@ class CREATE_PROCEDURE_BASE(Instruccion):
             for base in root.findall('base'):
                 for proc in base.findall('procedure'):
                     if(proc).attrib['name'] == nombre_func:
-                        ast.escribir_en_consola("ERROR: Ya existe un procedure con ese nombre\n")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Ya existe un procedure con ese nombre\n")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CREATE: Ya existe un procedure con ese nombre",self.linea))
                         return 
             for base in root.findall('base'):
@@ -97,7 +97,7 @@ class CREATE_PROCEDURE_BASE(Instruccion):
 
                     with open(ruta, 'w', encoding='utf-8') as archivo:
                         archivo.write(xml_string) 
-            ast.escribir_en_consola("PROCEDURE CREADO\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"PROCEDURE CREADO\n")
 
 class EJECUTAR_PROCEDURE_BASE(Instruccion):
     def __init__(self,id,lista_valores, linea, columna):
@@ -135,7 +135,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                                 sentencias_unidas += senten.text 
                                 sentencias_unidas += "\n"
             if(existe_proc == False):
-                ast.escribir_en_consola("ERROR: No existe el procedure "+str(nombre_procedure)+" En la base "+str(nombre_base))
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No existe el procedure "+str(nombre_procedure)+" En la base "+str(nombre_base))
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: No existe el procedure "+str(nombre_procedure)+" En la base "+str(nombre_base),self.linea))
                 return
             
@@ -159,7 +159,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                 #VALIDACION NUMERO DE VALORES COINCIDE CON NUMERO DE PARAMETROS
                 if(self.lista_valores != None):
                     if(len(parametros_procedure) != len(self.lista_valores)):
-                        ast.escribir_en_consola("ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
+                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El numero de parametros no coincide con el numero de variables del procedimiento",self.linea))
                         return
                                 
@@ -193,14 +193,14 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
 
                                     #VALIDACION TIPOS
                                     if(tipo_var != tipo_valor):
-                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
                                         return 
                                     
                                     #VALIDAR QUE NO SE HAYA GUARDADO
                                     validacion_existe = ambito_procedure.variable_existe(nombre_var)
                                     if(validacion_existe == True):
-                                        ast.escribir_en_consola("ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: La variable "+str(nombre_var)+" se inserto mas de 1 vez",self.linea))
                                         return
                                     var.modificar_valor(valor_variable)
@@ -224,7 +224,7 @@ class EJECUTAR_PROCEDURE_BASE(Instruccion):
                                     if(tipo_var== TIPO.INT and tipo_valor == TIPO.BIT):
                                         pass
                                     else:
-                                        ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                        ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
                                         ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","EXEC: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure",self.linea))
                                         return 
                                 

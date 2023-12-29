@@ -53,7 +53,7 @@ class CREATE_PROCEDURE(Instruccion):
 
             #GUARDAR VARIABLES EN EL NUEVO AMBITO
             actual.agregar_procedure_tabla(nombre_func,objeto_procedure)
-            ast.escribir_en_consola("PROCEDURE CREADO\n")
+            ast.escribir_en_consola("("+str(self.linea)+")"+"PROCEDURE CREADO\n")
 
 class EJECUTAR_PROCEDURE(Instruccion):
     def __init__(self,id,lista_valores, linea, columna):
@@ -75,7 +75,7 @@ class EJECUTAR_PROCEDURE(Instruccion):
 
                 #VALIDACION NUMERO DE VALORES COINCIDE CON NUMERO DE PARAMETROS
                 if(len(parametros_procedure) != len(self.lista_valores)):
-                    ast.escribir_en_consola("ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
+                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El numero de parametros no coincide con el numero de variables del procedimiento")
                     return
                 
                 #CREAR EL AMBITO DE PROCEDURE
@@ -105,13 +105,13 @@ class EJECUTAR_PROCEDURE(Instruccion):
 
                                 #VALIDACION TIPOS
                                 if(tipo_var != tipo_valor):
-                                    ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
                                     return 
                                 
                                 #VALIDAR QUE NO SE HAYA GUARDADO
                                 validacion_existe = ambito_procedure.variable_existe(nombre_var)
                                 if(validacion_existe == True):
-                                    ast.escribir_en_consola("ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
+                                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: La variable "+str(nombre_var)+"se inserto mas de 1 vez\n")
                                 var.modificar_valor(valor_variable)
                                 ambito_procedure.agregar_variable_tabla(var)
 
@@ -133,7 +133,7 @@ class EJECUTAR_PROCEDURE(Instruccion):
                                 if(tipo_var== TIPO.INT and tipo_valor == TIPO.BIT):
                                     pass
                                 else:
-                                    ast.escribir_en_consola("ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
+                                    ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: El valor "+str(valor_variable)+" no es del tipo correcto en el procedure\n")
                                     return 
                             
                             var.modificar_valor(valor_variable)

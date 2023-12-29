@@ -17,7 +17,7 @@ class ALTER_TABLE(Instruccion):
             base_activa = ast.obtener_base_activa()
             if base_activa == "":  # SI NO EXISTE LA BASE
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","ALTER: No hay una base de datos seleccionada",self.linea))
-                ast.escribir_en_consola("ERROR: No hay una base de datos seleccionada!\n")
+                ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: No hay una base de datos seleccionada!\n")
                 return
 
             nombre_tabla = self.nombre_tabla.obtener_valor(actual, globa, ast)
