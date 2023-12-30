@@ -141,10 +141,15 @@ def drop_columna(nombre_base, nombre_tabla, nombre_columna):
 
         if tabla_existente is not None:
             # Buscar la columna y eliminarla
+            contador = -1
             for columna in tabla_existente.findall('campo'):
+                contador +=1
                 nombre_actual = columna.find('nombre').text
                 if nombre_actual == nombre_columna:
                     tabla_existente.remove(columna)
+                    #BORRAR EL ULTIMO VALOR DE CADA REGISTRO
+                    for val in tabla_existente.findall("dato"):
+                        val.remove(val[contador])
                     xml_string = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
 
                     # Eliminar líneas en blanco

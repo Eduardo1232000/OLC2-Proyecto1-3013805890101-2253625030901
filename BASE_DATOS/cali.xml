@@ -26,19 +26,30 @@
                 <foreignkey>False</foreignkey>
                 <reference/>
             </campo>
+            <campo>
+                <nombre>extra2</nombre>
+                <tipo size="0">INT</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
             <dato>
                 <valor>1</valor>
                 <valor>Hola</valor>
+                <valor/>
                 <valor/>
             </dato>
             <dato>
                 <valor>2</valor>
                 <valor>Hola2</valor>
                 <valor/>
+                <valor/>
             </dato>
             <dato>
                 <valor>3</valor>
                 <valor>Hola3</valor>
+                <valor/>
                 <valor/>
             </dato>
         </tabla>
