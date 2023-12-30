@@ -21,6 +21,7 @@ from FUNCIONES.DDL.ALTER_TABLE import *
 from FUNCIONES.DDL.DROP import*
 
 from FUNCIONES.DDL.UPDATE import * #UPDATE
+from FUNCIONES.DDL.UPDATE_MODIFICADO import * #UPDATE
 from FUNCIONES.DDL.DELETE import * #DROP
 
 
@@ -1741,8 +1742,8 @@ def p_f_insert(t):
 
 #UPDATE
 def p_f_update(t):
-    ''' f_update : UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA'''
-    t[0] = UPDATE(t[2], t[4], t[6], t[8], lexer.lineno, 0)
+    ''' f_update : UPDATE name SET set_list WHERE expresion PTCOMA'''
+    t[0] = UPDATE_MODIFICADO(t[2], t[4], t[6], lexer.lineno, 0)
 
 def p_set_list(t):
     ''' set_list : set_expresion

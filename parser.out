@@ -146,7 +146,7 @@ Rule 140   caract_nulo -> NULL
 Rule 141   caract_no_nulo -> NOT NULL
 Rule 142   caract_primary_key -> PRIMARY KEY
 Rule 143   f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
-Rule 144   f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+Rule 144   f_update -> UPDATE name SET set_list WHERE expresion PTCOMA
 Rule 145   set_list -> set_expresion
 Rule 146   set_list -> set_expresion COMA set_list
 Rule 147   set_expresion -> name IGUAL expresion
@@ -252,7 +252,7 @@ FROM                 : 65 148
 FUNCTION             : 34 35 161 162 164
 HOY                  : 77
 IF                   : 31 31 32 32 202
-IGUAL                : 50 56 144 147 151
+IGUAL                : 50 56 147 151
 IGUALIGUAL           : 98
 INSERT               : 143
 INT                  : 168
@@ -375,7 +375,7 @@ ins_while            : 21
 instruccion          : 1 2
 instrucciones        : 1 28 29 30 31 31 32 34 35 38 39 159 160 161 162 0
 llamada_funcion      : 182
-name                 : 34 35 36 37 38 39 42 43 44 45 50 54 55 56 63 63 79 110 111 112 116 117 117 117 117 118 119 120 121 122 123 129 130 131 132 132 132 139 139 143 144 144 147 148 150 157 158 159 160 161 162 163 203
+name                 : 34 35 36 37 38 39 42 43 44 45 50 54 55 56 63 63 79 110 111 112 116 117 117 117 117 118 119 120 121 122 123 129 130 131 132 132 132 139 139 143 144 147 148 150 157 158 159 160 161 162 163 203
 name_columna         : 193 200
 numero               : 76 76 188
 op_between           : 185
@@ -441,7 +441,7 @@ state 0
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -548,7 +548,7 @@ state 2
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -1366,7 +1366,7 @@ state 29
 
 state 30
 
-    (144) f_update -> UPDATE . name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE . name SET set_list WHERE expresion PTCOMA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
@@ -3613,7 +3613,7 @@ state 105
 
 state 106
 
-    (144) f_update -> UPDATE name . SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE name . SET set_list WHERE expresion PTCOMA
 
     SET             shift and go to state 166
 
@@ -7093,7 +7093,7 @@ state 165
 
 state 166
 
-    (144) f_update -> UPDATE name SET . set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE name SET . set_list WHERE expresion PTCOMA
     (145) set_list -> . set_expresion
     (146) set_list -> . set_expresion COMA set_list
     (147) set_expresion -> . name IGUAL expresion
@@ -7388,7 +7388,7 @@ state 185
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -7488,7 +7488,7 @@ state 186
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -8915,7 +8915,7 @@ state 231
 
 state 232
 
-    (144) f_update -> UPDATE name SET set_list . WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE name SET set_list . WHERE expresion PTCOMA
 
     WHERE           shift and go to state 303
 
@@ -9808,7 +9808,7 @@ state 268
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -9908,7 +9908,7 @@ state 269
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -11134,7 +11134,7 @@ state 296
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -11397,12 +11397,131 @@ state 302
 
 state 303
 
-    (144) f_update -> UPDATE name SET set_list WHERE . name IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE name SET set_list WHERE . expresion PTCOMA
+    (179) expresion -> . exp_aritmetica
+    (180) expresion -> . exp_logica
+    (181) expresion -> . operacion_sis
+    (182) expresion -> . llamada_funcion
+    (183) expresion -> . exp_relacional
+    (184) expresion -> . variable
+    (185) expresion -> . op_between
+    (186) expresion -> . exp_if
+    (187) expresion -> . parentesis
+    (188) expresion -> . numero
+    (189) expresion -> . FECHA
+    (190) expresion -> . FECHAHORA
+    (191) expresion -> . CADENA
+    (192) expresion -> . expr_select
+    (193) expresion -> . name_columna
+    (194) expresion -> . alias
+    (84) exp_aritmetica -> . op_suma
+    (85) exp_aritmetica -> . op_resta
+    (86) exp_aritmetica -> . op_multiplicacion
+    (87) exp_aritmetica -> . op_division
+    (104) exp_logica -> . exl_and
+    (105) exp_logica -> . exl_or
+    (106) exp_logica -> . exl_not
+    (68) operacion_sis -> . func_concatena
+    (69) operacion_sis -> . func_substraer
+    (70) operacion_sis -> . func_hoy
+    (71) operacion_sis -> . func_contar
+    (72) operacion_sis -> . func_suma
+    (73) operacion_sis -> . func_cas
+    (74) operacion_sis -> . exp_case
+    (36) llamada_funcion -> . name PARABRE valores_proc PARCIERRA
+    (37) llamada_funcion -> . name PARABRE PARCIERRA
+    (92) exp_relacional -> . exr_igual
+    (93) exp_relacional -> . exr_diferente
+    (94) exp_relacional -> . exr_menorque
+    (95) exp_relacional -> . exr_mayorque
+    (96) exp_relacional -> . exr_menorigual
+    (97) exp_relacional -> . exr_mayorigual
+    (203) variable -> . ARROBA name
+    (201) op_between -> . expresion BETWEEN expresion AND expresion
+    (202) exp_if -> . IF PARABRE expresion COMA expresion COMA expresion PARCIERRA
+    (204) parentesis -> . PARABRE expresion PARCIERRA
+    (205) numero -> . NINT
+    (206) numero -> . NBIT
+    (207) numero -> . NDECIMAL
+    (200) expr_select -> . expresion name_columna
+    (208) name_columna -> . NOMBRE
+    (63) alias -> . name PUNTO name
+    (88) op_suma -> . expresion MAS expresion
+    (89) op_resta -> . expresion RESTA expresion
+    (90) op_multiplicacion -> . expresion MULTIPLICACION expresion
+    (91) op_division -> . expresion DIVISION expresion
+    (107) exl_and -> . expresion AND expresion
+    (108) exl_or -> . expresion OR expresion
+    (109) exl_not -> . RNOT expresion
+    (75) func_concatena -> . CONCATENA PARABRE expresion COMA expresion PARCIERRA
+    (76) func_substraer -> . SUBSTRAER PARABRE expresion COMA numero COMA numero PARCIERRA
+    (77) func_hoy -> . HOY PARABRE PARCIERRA
+    (78) func_contar -> . CONTAR PARABRE MULTIPLICACION PARCIERRA
+    (79) func_suma -> . SUMA PARABRE name PARCIERRA
+    (80) func_cas -> . CAS PARABRE expresion AS tipo_dato PARCIERRA
+    (195) exp_case -> . CASE ca_whens ca_else END
     (209) name -> . NOMBRE
+    (98) exr_igual -> . expresion IGUALIGUAL expresion
+    (99) exr_diferente -> . expresion DIFERENTE expresion
+    (100) exr_menorque -> . expresion MENORQUE expresion
+    (101) exr_mayorque -> . expresion MAYORQUE expresion
+    (102) exr_menorigual -> . expresion MENORIGUAL expresion
+    (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    NOMBRE          shift and go to state 103
+    FECHA           shift and go to state 56
+    FECHAHORA       shift and go to state 57
+    CADENA          shift and go to state 58
+    ARROBA          shift and go to state 84
+    IF              shift and go to state 85
+    PARABRE         shift and go to state 77
+    NINT            shift and go to state 86
+    NBIT            shift and go to state 87
+    NDECIMAL        shift and go to state 88
+    NOMBRE          shift and go to state 89
+    RNOT            shift and go to state 90
+    CONCATENA       shift and go to state 91
+    SUBSTRAER       shift and go to state 92
+    HOY             shift and go to state 93
+    CONTAR          shift and go to state 94
+    SUMA            shift and go to state 95
+    CAS             shift and go to state 96
+    CASE            shift and go to state 97
 
-    name                           shift and go to state 359
+    name                           shift and go to state 76
+    expresion                      shift and go to state 359
+    exp_aritmetica                 shift and go to state 46
+    exp_logica                     shift and go to state 47
+    operacion_sis                  shift and go to state 48
+    llamada_funcion                shift and go to state 49
+    exp_relacional                 shift and go to state 50
+    variable                       shift and go to state 51
+    op_between                     shift and go to state 52
+    exp_if                         shift and go to state 53
+    parentesis                     shift and go to state 54
+    numero                         shift and go to state 55
+    expr_select                    shift and go to state 59
+    name_columna                   shift and go to state 60
+    alias                          shift and go to state 61
+    op_suma                        shift and go to state 62
+    op_resta                       shift and go to state 63
+    op_multiplicacion              shift and go to state 64
+    op_division                    shift and go to state 65
+    exl_and                        shift and go to state 66
+    exl_or                         shift and go to state 67
+    exl_not                        shift and go to state 68
+    func_concatena                 shift and go to state 69
+    func_substraer                 shift and go to state 70
+    func_hoy                       shift and go to state 71
+    func_contar                    shift and go to state 72
+    func_suma                      shift and go to state 73
+    func_cas                       shift and go to state 74
+    exp_case                       shift and go to state 75
+    exr_igual                      shift and go to state 78
+    exr_diferente                  shift and go to state 79
+    exr_menorque                   shift and go to state 80
+    exr_mayorque                   shift and go to state 81
+    exr_menorigual                 shift and go to state 82
+    exr_mayorigual                 shift and go to state 83
 
 state 304
 
@@ -11566,7 +11685,7 @@ state 313
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -11897,7 +12016,7 @@ state 324
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -12781,10 +12900,40 @@ state 358
 
 state 359
 
-    (144) f_update -> UPDATE name SET set_list WHERE name . IGUAL expresion PTCOMA
+    (144) f_update -> UPDATE name SET set_list WHERE expresion . PTCOMA
+    (201) op_between -> expresion . BETWEEN expresion AND expresion
+    (200) expr_select -> expresion . name_columna
+    (88) op_suma -> expresion . MAS expresion
+    (89) op_resta -> expresion . RESTA expresion
+    (90) op_multiplicacion -> expresion . MULTIPLICACION expresion
+    (91) op_division -> expresion . DIVISION expresion
+    (107) exl_and -> expresion . AND expresion
+    (108) exl_or -> expresion . OR expresion
+    (98) exr_igual -> expresion . IGUALIGUAL expresion
+    (99) exr_diferente -> expresion . DIFERENTE expresion
+    (100) exr_menorque -> expresion . MENORQUE expresion
+    (101) exr_mayorque -> expresion . MAYORQUE expresion
+    (102) exr_menorigual -> expresion . MENORIGUAL expresion
+    (103) exr_mayorigual -> expresion . MAYORIGUAL expresion
+    (208) name_columna -> . NOMBRE
 
-    IGUAL           shift and go to state 405
+    PTCOMA          shift and go to state 405
+    BETWEEN         shift and go to state 129
+    MAS             shift and go to state 132
+    RESTA           shift and go to state 133
+    MULTIPLICACION  shift and go to state 134
+    DIVISION        shift and go to state 135
+    AND             shift and go to state 130
+    OR              shift and go to state 136
+    IGUALIGUAL      shift and go to state 137
+    DIFERENTE       shift and go to state 138
+    MENORQUE        shift and go to state 139
+    MAYORQUE        shift and go to state 140
+    MENORIGUAL      shift and go to state 141
+    MAYORIGUAL      shift and go to state 142
+    NOMBRE          shift and go to state 143
 
+    name_columna                   shift and go to state 131
 
 state 360
 
@@ -13548,7 +13697,7 @@ state 402
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -13661,131 +13810,29 @@ state 404
 
 state 405
 
-    (144) f_update -> UPDATE name SET set_list WHERE name IGUAL . expresion PTCOMA
-    (179) expresion -> . exp_aritmetica
-    (180) expresion -> . exp_logica
-    (181) expresion -> . operacion_sis
-    (182) expresion -> . llamada_funcion
-    (183) expresion -> . exp_relacional
-    (184) expresion -> . variable
-    (185) expresion -> . op_between
-    (186) expresion -> . exp_if
-    (187) expresion -> . parentesis
-    (188) expresion -> . numero
-    (189) expresion -> . FECHA
-    (190) expresion -> . FECHAHORA
-    (191) expresion -> . CADENA
-    (192) expresion -> . expr_select
-    (193) expresion -> . name_columna
-    (194) expresion -> . alias
-    (84) exp_aritmetica -> . op_suma
-    (85) exp_aritmetica -> . op_resta
-    (86) exp_aritmetica -> . op_multiplicacion
-    (87) exp_aritmetica -> . op_division
-    (104) exp_logica -> . exl_and
-    (105) exp_logica -> . exl_or
-    (106) exp_logica -> . exl_not
-    (68) operacion_sis -> . func_concatena
-    (69) operacion_sis -> . func_substraer
-    (70) operacion_sis -> . func_hoy
-    (71) operacion_sis -> . func_contar
-    (72) operacion_sis -> . func_suma
-    (73) operacion_sis -> . func_cas
-    (74) operacion_sis -> . exp_case
-    (36) llamada_funcion -> . name PARABRE valores_proc PARCIERRA
-    (37) llamada_funcion -> . name PARABRE PARCIERRA
-    (92) exp_relacional -> . exr_igual
-    (93) exp_relacional -> . exr_diferente
-    (94) exp_relacional -> . exr_menorque
-    (95) exp_relacional -> . exr_mayorque
-    (96) exp_relacional -> . exr_menorigual
-    (97) exp_relacional -> . exr_mayorigual
-    (203) variable -> . ARROBA name
-    (201) op_between -> . expresion BETWEEN expresion AND expresion
-    (202) exp_if -> . IF PARABRE expresion COMA expresion COMA expresion PARCIERRA
-    (204) parentesis -> . PARABRE expresion PARCIERRA
-    (205) numero -> . NINT
-    (206) numero -> . NBIT
-    (207) numero -> . NDECIMAL
-    (200) expr_select -> . expresion name_columna
-    (208) name_columna -> . NOMBRE
-    (63) alias -> . name PUNTO name
-    (88) op_suma -> . expresion MAS expresion
-    (89) op_resta -> . expresion RESTA expresion
-    (90) op_multiplicacion -> . expresion MULTIPLICACION expresion
-    (91) op_division -> . expresion DIVISION expresion
-    (107) exl_and -> . expresion AND expresion
-    (108) exl_or -> . expresion OR expresion
-    (109) exl_not -> . RNOT expresion
-    (75) func_concatena -> . CONCATENA PARABRE expresion COMA expresion PARCIERRA
-    (76) func_substraer -> . SUBSTRAER PARABRE expresion COMA numero COMA numero PARCIERRA
-    (77) func_hoy -> . HOY PARABRE PARCIERRA
-    (78) func_contar -> . CONTAR PARABRE MULTIPLICACION PARCIERRA
-    (79) func_suma -> . SUMA PARABRE name PARCIERRA
-    (80) func_cas -> . CAS PARABRE expresion AS tipo_dato PARCIERRA
-    (195) exp_case -> . CASE ca_whens ca_else END
-    (209) name -> . NOMBRE
-    (98) exr_igual -> . expresion IGUALIGUAL expresion
-    (99) exr_diferente -> . expresion DIFERENTE expresion
-    (100) exr_menorque -> . expresion MENORQUE expresion
-    (101) exr_mayorque -> . expresion MAYORQUE expresion
-    (102) exr_menorigual -> . expresion MENORIGUAL expresion
-    (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
+    (144) f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .
 
-    FECHA           shift and go to state 56
-    FECHAHORA       shift and go to state 57
-    CADENA          shift and go to state 58
-    ARROBA          shift and go to state 84
-    IF              shift and go to state 85
-    PARABRE         shift and go to state 77
-    NINT            shift and go to state 86
-    NBIT            shift and go to state 87
-    NDECIMAL        shift and go to state 88
-    NOMBRE          shift and go to state 89
-    RNOT            shift and go to state 90
-    CONCATENA       shift and go to state 91
-    SUBSTRAER       shift and go to state 92
-    HOY             shift and go to state 93
-    CONTAR          shift and go to state 94
-    SUMA            shift and go to state 95
-    CAS             shift and go to state 96
-    CASE            shift and go to state 97
+    SELECT          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    CREATE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    USE             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    INSERT          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    DELETE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    UPDATE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    ALTER           reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    DROP            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    TRUNCATE        reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    DECLARE         reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    SET             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    EXEC            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    IF              reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    WHILE           reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    RETURN          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    CASE            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    $end            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    ELSE            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    END             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
+    WHEN            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE expresion PTCOMA .)
 
-    name                           shift and go to state 76
-    expresion                      shift and go to state 430
-    exp_aritmetica                 shift and go to state 46
-    exp_logica                     shift and go to state 47
-    operacion_sis                  shift and go to state 48
-    llamada_funcion                shift and go to state 49
-    exp_relacional                 shift and go to state 50
-    variable                       shift and go to state 51
-    op_between                     shift and go to state 52
-    exp_if                         shift and go to state 53
-    parentesis                     shift and go to state 54
-    numero                         shift and go to state 55
-    expr_select                    shift and go to state 59
-    name_columna                   shift and go to state 60
-    alias                          shift and go to state 61
-    op_suma                        shift and go to state 62
-    op_resta                       shift and go to state 63
-    op_multiplicacion              shift and go to state 64
-    op_division                    shift and go to state 65
-    exl_and                        shift and go to state 66
-    exl_or                         shift and go to state 67
-    exl_not                        shift and go to state 68
-    func_concatena                 shift and go to state 69
-    func_substraer                 shift and go to state 70
-    func_hoy                       shift and go to state 71
-    func_contar                    shift and go to state 72
-    func_suma                      shift and go to state 73
-    func_cas                       shift and go to state 74
-    exp_case                       shift and go to state 75
-    exr_igual                      shift and go to state 78
-    exr_diferente                  shift and go to state 79
-    exr_menorque                   shift and go to state 80
-    exr_mayorque                   shift and go to state 81
-    exr_menorigual                 shift and go to state 82
-    exr_mayorigual                 shift and go to state 83
 
 state 406
 
@@ -13798,7 +13845,7 @@ state 407
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN . KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    KEY             shift and go to state 431
+    KEY             shift and go to state 430
 
 
 state 408
@@ -13812,14 +13859,14 @@ state 409
 
     (159) alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS . BEGIN instrucciones END PTCOMA
 
-    BEGIN           shift and go to state 432
+    BEGIN           shift and go to state 431
 
 
 state 410
 
     (160) alter_procedure -> ALTER PROCEDURE name AS BEGIN instrucciones END . PTCOMA
 
-    PTCOMA          shift and go to state 433
+    PTCOMA          shift and go to state 432
 
 
 state 411
@@ -13845,7 +13892,7 @@ state 411
     NCHAR           shift and go to state 259
     NVARCHAR        shift and go to state 260
 
-    tipo_dato                      shift and go to state 434
+    tipo_dato                      shift and go to state 433
     dato_char                      shift and go to state 257
     dato_varchar                   shift and go to state 258
 
@@ -13882,7 +13929,7 @@ state 412
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -13924,7 +13971,7 @@ state 412
     RETURN          shift and go to state 35
     CASE            shift and go to state 40
 
-    instrucciones                  shift and go to state 435
+    instrucciones                  shift and go to state 434
     instruccion                    shift and go to state 2
     f_sistema                      shift and go to state 3
     sent_create_database           shift and go to state 4
@@ -13981,7 +14028,7 @@ state 415
 
     (31) ins_if -> IF expresion THEN instrucciones ELSE instrucciones END . IF PTCOMA
 
-    IF              shift and go to state 436
+    IF              shift and go to state 435
 
 
 state 416
@@ -14029,7 +14076,7 @@ state 417
     (103) exr_mayorigual -> expresion . MAYORIGUAL expresion
     (208) name_columna -> . NOMBRE
 
-    PARCIERRA       shift and go to state 437
+    PARCIERRA       shift and go to state 436
     BETWEEN         shift and go to state 129
     MAS             shift and go to state 132
     RESTA           shift and go to state 133
@@ -14051,7 +14098,7 @@ state 418
 
     (76) func_substraer -> SUBSTRAER PARABRE expresion COMA numero COMA numero . PARCIERRA
 
-    PARCIERRA       shift and go to state 438
+    PARCIERRA       shift and go to state 437
 
 
 state 419
@@ -14090,14 +14137,14 @@ state 422
 
     (139) refererencia_tabla -> REFERENCE name . PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 439
+    PARABRE         shift and go to state 438
 
 
 state 423
 
     (132) foreign_key -> FOREIGN KEY PARABRE name . PARCIERRA REFERENCE name PARABRE name PARCIERRA
 
-    PARCIERRA       shift and go to state 440
+    PARCIERRA       shift and go to state 439
 
 
 state 424
@@ -14133,7 +14180,7 @@ state 424
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -14175,7 +14222,7 @@ state 424
     RETURN          shift and go to state 35
     CASE            shift and go to state 40
 
-    instrucciones                  shift and go to state 441
+    instrucciones                  shift and go to state 440
     instruccion                    shift and go to state 2
     f_sistema                      shift and go to state 3
     sent_create_database           shift and go to state 4
@@ -14238,14 +14285,14 @@ state 427
 
     (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato . AS BEGIN instrucciones END PTCOMA
 
-    AS              shift and go to state 442
+    AS              shift and go to state 441
 
 
 state 428
 
     (35) declarar_funcion -> CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones . END PTCOMA
 
-    END             shift and go to state 443
+    END             shift and go to state 442
 
 
 state 429
@@ -14343,8 +14390,8 @@ state 429
     CASE            shift and go to state 97
 
     name                           shift and go to state 76
-    valores                        shift and go to state 444
-    expresion                      shift and go to state 445
+    valores                        shift and go to state 443
+    expresion                      shift and go to state 444
     exp_aritmetica                 shift and go to state 46
     exp_logica                     shift and go to state 47
     operacion_sis                  shift and go to state 48
@@ -14381,49 +14428,12 @@ state 429
 
 state 430
 
-    (144) f_update -> UPDATE name SET set_list WHERE name IGUAL expresion . PTCOMA
-    (201) op_between -> expresion . BETWEEN expresion AND expresion
-    (200) expr_select -> expresion . name_columna
-    (88) op_suma -> expresion . MAS expresion
-    (89) op_resta -> expresion . RESTA expresion
-    (90) op_multiplicacion -> expresion . MULTIPLICACION expresion
-    (91) op_division -> expresion . DIVISION expresion
-    (107) exl_and -> expresion . AND expresion
-    (108) exl_or -> expresion . OR expresion
-    (98) exr_igual -> expresion . IGUALIGUAL expresion
-    (99) exr_diferente -> expresion . DIFERENTE expresion
-    (100) exr_menorque -> expresion . MENORQUE expresion
-    (101) exr_mayorque -> expresion . MAYORQUE expresion
-    (102) exr_menorigual -> expresion . MENORIGUAL expresion
-    (103) exr_mayorigual -> expresion . MAYORIGUAL expresion
-    (208) name_columna -> . NOMBRE
-
-    PTCOMA          shift and go to state 446
-    BETWEEN         shift and go to state 129
-    MAS             shift and go to state 132
-    RESTA           shift and go to state 133
-    MULTIPLICACION  shift and go to state 134
-    DIVISION        shift and go to state 135
-    AND             shift and go to state 130
-    OR              shift and go to state 136
-    IGUALIGUAL      shift and go to state 137
-    DIFERENTE       shift and go to state 138
-    MENORQUE        shift and go to state 139
-    MAYORQUE        shift and go to state 140
-    MENORIGUAL      shift and go to state 141
-    MAYORIGUAL      shift and go to state 142
-    NOMBRE          shift and go to state 143
-
-    name_columna                   shift and go to state 131
-
-state 431
-
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY . PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 447
+    PARABRE         shift and go to state 445
 
 
-state 432
+state 431
 
     (159) alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN . instrucciones END PTCOMA
     (1) instrucciones -> . instruccion instrucciones
@@ -14456,7 +14466,7 @@ state 432
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -14498,7 +14508,7 @@ state 432
     RETURN          shift and go to state 35
     CASE            shift and go to state 40
 
-    instrucciones                  shift and go to state 448
+    instrucciones                  shift and go to state 446
     instruccion                    shift and go to state 2
     f_sistema                      shift and go to state 3
     sent_create_database           shift and go to state 4
@@ -14523,7 +14533,7 @@ state 432
     drop_statement                 shift and go to state 23
     ins_case                       shift and go to state 24
 
-state 433
+state 432
 
     (160) alter_procedure -> ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA .
 
@@ -14549,28 +14559,28 @@ state 433
     WHEN            reduce using rule 160 (alter_procedure -> ALTER PROCEDURE name AS BEGIN instrucciones END PTCOMA .)
 
 
-state 434
+state 433
 
     (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato . AS BEGIN instrucciones END PTCOMA
 
-    AS              shift and go to state 449
+    AS              shift and go to state 447
+
+
+state 434
+
+    (162) alter_function -> ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones . END PTCOMA
+
+    END             shift and go to state 448
 
 
 state 435
 
-    (162) alter_function -> ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones . END PTCOMA
+    (31) ins_if -> IF expresion THEN instrucciones ELSE instrucciones END IF . PTCOMA
 
-    END             shift and go to state 450
+    PTCOMA          shift and go to state 449
 
 
 state 436
-
-    (31) ins_if -> IF expresion THEN instrucciones ELSE instrucciones END IF . PTCOMA
-
-    PTCOMA          shift and go to state 451
-
-
-state 437
 
     (202) exp_if -> IF PARABRE expresion COMA expresion COMA expresion PARCIERRA .
 
@@ -14601,7 +14611,7 @@ state 437
     WHERE           reduce using rule 202 (exp_if -> IF PARABRE expresion COMA expresion COMA expresion PARCIERRA .)
 
 
-state 438
+state 437
 
     (76) func_substraer -> SUBSTRAER PARABRE expresion COMA numero COMA numero PARCIERRA .
 
@@ -14632,51 +14642,51 @@ state 438
     WHERE           reduce using rule 76 (func_substraer -> SUBSTRAER PARABRE expresion COMA numero COMA numero PARCIERRA .)
 
 
-state 439
+state 438
 
     (139) refererencia_tabla -> REFERENCE name PARABRE . name PARCIERRA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
 
-    name                           shift and go to state 452
+    name                           shift and go to state 450
 
-state 440
+state 439
 
     (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA . REFERENCE name PARABRE name PARCIERRA
 
-    REFERENCE       shift and go to state 453
+    REFERENCE       shift and go to state 451
+
+
+state 440
+
+    (38) declarar_procedure -> CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones . END PTCOMA
+
+    END             shift and go to state 452
 
 
 state 441
 
-    (38) declarar_procedure -> CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones . END PTCOMA
+    (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS . BEGIN instrucciones END PTCOMA
 
-    END             shift and go to state 454
+    BEGIN           shift and go to state 453
 
 
 state 442
 
-    (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS . BEGIN instrucciones END PTCOMA
+    (35) declarar_funcion -> CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
 
-    BEGIN           shift and go to state 455
+    PTCOMA          shift and go to state 454
 
 
 state 443
 
-    (35) declarar_funcion -> CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
+    (143) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores . PARCIERRA PTCOMA
 
-    PTCOMA          shift and go to state 456
+    PARCIERRA       shift and go to state 455
 
 
 state 444
-
-    (143) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores . PARCIERRA PTCOMA
-
-    PARCIERRA       shift and go to state 457
-
-
-state 445
 
     (166) valores -> expresion .
     (167) valores -> expresion . COMA valores
@@ -14697,7 +14707,7 @@ state 445
     (208) name_columna -> . NOMBRE
 
     PARCIERRA       reduce using rule 166 (valores -> expresion .)
-    COMA            shift and go to state 458
+    COMA            shift and go to state 456
     BETWEEN         shift and go to state 129
     MAS             shift and go to state 132
     RESTA           shift and go to state 133
@@ -14715,63 +14725,37 @@ state 445
 
     name_columna                   shift and go to state 131
 
-state 446
-
-    (144) f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .
-
-    SELECT          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    CREATE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    USE             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    INSERT          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    DELETE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    UPDATE          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    ALTER           reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    DROP            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    TRUNCATE        reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    DECLARE         reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    SET             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    EXEC            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    IF              reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    WHILE           reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    RETURN          reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    CASE            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    $end            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    ELSE            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    END             reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-    WHEN            reduce using rule 144 (f_update -> UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA .)
-
-
-state 447
+state 445
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE . name PARCIERRA REFERENCES name PARABRE name PARCIERRA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
 
-    name                           shift and go to state 459
+    name                           shift and go to state 457
 
-state 448
+state 446
 
     (159) alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones . END PTCOMA
 
-    END             shift and go to state 460
+    END             shift and go to state 458
 
 
-state 449
+state 447
 
     (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS . BEGIN instrucciones END PTCOMA
 
-    BEGIN           shift and go to state 461
+    BEGIN           shift and go to state 459
 
 
-state 450
+state 448
 
     (162) alter_function -> ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
 
-    PTCOMA          shift and go to state 462
+    PTCOMA          shift and go to state 460
 
 
-state 451
+state 449
 
     (31) ins_if -> IF expresion THEN instrucciones ELSE instrucciones END IF PTCOMA .
 
@@ -14797,30 +14781,30 @@ state 451
     WHEN            reduce using rule 31 (ins_if -> IF expresion THEN instrucciones ELSE instrucciones END IF PTCOMA .)
 
 
-state 452
+state 450
 
     (139) refererencia_tabla -> REFERENCE name PARABRE name . PARCIERRA
 
-    PARCIERRA       shift and go to state 463
+    PARCIERRA       shift and go to state 461
 
 
-state 453
+state 451
 
     (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE . name PARABRE name PARCIERRA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
 
-    name                           shift and go to state 464
+    name                           shift and go to state 462
 
-state 454
+state 452
 
     (38) declarar_procedure -> CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END . PTCOMA
 
-    PTCOMA          shift and go to state 465
+    PTCOMA          shift and go to state 463
 
 
-state 455
+state 453
 
     (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN . instrucciones END PTCOMA
     (1) instrucciones -> . instruccion instrucciones
@@ -14853,7 +14837,7 @@ state 455
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -14895,7 +14879,7 @@ state 455
     RETURN          shift and go to state 35
     CASE            shift and go to state 40
 
-    instrucciones                  shift and go to state 466
+    instrucciones                  shift and go to state 464
     instruccion                    shift and go to state 2
     f_sistema                      shift and go to state 3
     sent_create_database           shift and go to state 4
@@ -14920,7 +14904,7 @@ state 455
     drop_statement                 shift and go to state 23
     ins_case                       shift and go to state 24
 
-state 456
+state 454
 
     (35) declarar_funcion -> CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .
 
@@ -14946,14 +14930,14 @@ state 456
     WHEN            reduce using rule 35 (declarar_funcion -> CREATE FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .)
 
 
-state 457
+state 455
 
     (143) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA . PTCOMA
 
-    PTCOMA          shift and go to state 467
+    PTCOMA          shift and go to state 465
 
 
-state 458
+state 456
 
     (167) valores -> expresion COMA . valores
     (166) valores -> . expresion
@@ -15047,8 +15031,8 @@ state 458
     CAS             shift and go to state 96
     CASE            shift and go to state 97
 
-    expresion                      shift and go to state 445
-    valores                        shift and go to state 468
+    expresion                      shift and go to state 444
+    valores                        shift and go to state 466
     exp_aritmetica                 shift and go to state 46
     exp_logica                     shift and go to state 47
     operacion_sis                  shift and go to state 48
@@ -15084,21 +15068,21 @@ state 458
     exr_menorigual                 shift and go to state 82
     exr_mayorigual                 shift and go to state 83
 
-state 459
+state 457
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name . PARCIERRA REFERENCES name PARABRE name PARCIERRA
 
-    PARCIERRA       shift and go to state 469
+    PARCIERRA       shift and go to state 467
 
 
-state 460
+state 458
 
     (159) alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END . PTCOMA
 
-    PTCOMA          shift and go to state 470
+    PTCOMA          shift and go to state 468
 
 
-state 461
+state 459
 
     (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN . instrucciones END PTCOMA
     (1) instrucciones -> . instruccion instrucciones
@@ -15131,7 +15115,7 @@ state 461
     (131) use_base -> . USE name PTCOMA
     (143) f_insert -> . INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA
     (148) f_delete -> . DELETE FROM name condiciones_opt PTCOMA
-    (144) f_update -> . UPDATE name SET set_list WHERE name IGUAL expresion PTCOMA
+    (144) f_update -> . UPDATE name SET set_list WHERE expresion PTCOMA
     (112) sent_alter_table -> . ALTER TABLE name alter_action PTCOMA
     (121) sent_drop -> . DROP TABLE name PTCOMA
     (122) sent_drop -> . DROP DATA BASE name PTCOMA
@@ -15173,7 +15157,7 @@ state 461
     RETURN          shift and go to state 35
     CASE            shift and go to state 40
 
-    instrucciones                  shift and go to state 471
+    instrucciones                  shift and go to state 469
     instruccion                    shift and go to state 2
     f_sistema                      shift and go to state 3
     sent_create_database           shift and go to state 4
@@ -15198,7 +15182,7 @@ state 461
     drop_statement                 shift and go to state 23
     ins_case                       shift and go to state 24
 
-state 462
+state 460
 
     (162) alter_function -> ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .
 
@@ -15224,7 +15208,7 @@ state 462
     WHEN            reduce using rule 162 (alter_function -> ALTER FUNCTION name RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .)
 
 
-state 463
+state 461
 
     (139) refererencia_tabla -> REFERENCE name PARABRE name PARCIERRA .
 
@@ -15236,14 +15220,14 @@ state 463
     PARCIERRA       reduce using rule 139 (refererencia_tabla -> REFERENCE name PARABRE name PARCIERRA .)
 
 
-state 464
+state 462
 
     (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name . PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 472
+    PARABRE         shift and go to state 470
 
 
-state 465
+state 463
 
     (38) declarar_procedure -> CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA .
 
@@ -15269,14 +15253,14 @@ state 465
     WHEN            reduce using rule 38 (declarar_procedure -> CREATE PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA .)
 
 
-state 466
+state 464
 
     (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones . END PTCOMA
 
-    END             shift and go to state 473
+    END             shift and go to state 471
 
 
-state 467
+state 465
 
     (143) f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .
 
@@ -15302,21 +15286,21 @@ state 467
     WHEN            reduce using rule 143 (f_insert -> INSERT INTO name PARABRE columnas PARCIERRA VALUES PARABRE valores PARCIERRA PTCOMA .)
 
 
-state 468
+state 466
 
     (167) valores -> expresion COMA valores .
 
     PARCIERRA       reduce using rule 167 (valores -> expresion COMA valores .)
 
 
-state 469
+state 467
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA . REFERENCES name PARABRE name PARCIERRA
 
-    REFERENCES      shift and go to state 474
+    REFERENCES      shift and go to state 472
 
 
-state 470
+state 468
 
     (159) alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA .
 
@@ -15342,16 +15326,32 @@ state 470
     WHEN            reduce using rule 159 (alter_procedure -> ALTER PROCEDURE name PARABRE variables_procedure PARCIERRA AS BEGIN instrucciones END PTCOMA .)
 
 
-state 471
+state 469
 
     (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones . END PTCOMA
 
-    END             shift and go to state 475
+    END             shift and go to state 473
+
+
+state 470
+
+    (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE . name PARCIERRA
+    (209) name -> . NOMBRE
+
+    NOMBRE          shift and go to state 103
+
+    name                           shift and go to state 474
+
+state 471
+
+    (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
+
+    PTCOMA          shift and go to state 475
 
 
 state 472
 
-    (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE . name PARCIERRA
+    (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES . name PARABRE name PARCIERRA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
@@ -15360,35 +15360,19 @@ state 472
 
 state 473
 
-    (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
+    (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
 
     PTCOMA          shift and go to state 477
 
 
 state 474
 
-    (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES . name PARABRE name PARCIERRA
-    (209) name -> . NOMBRE
-
-    NOMBRE          shift and go to state 103
-
-    name                           shift and go to state 478
-
-state 475
-
-    (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END . PTCOMA
-
-    PTCOMA          shift and go to state 479
-
-
-state 476
-
     (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name . PARCIERRA
 
-    PARCIERRA       shift and go to state 480
+    PARCIERRA       shift and go to state 478
 
 
-state 477
+state 475
 
     (34) declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .
 
@@ -15414,14 +15398,14 @@ state 477
     WHEN            reduce using rule 34 (declarar_funcion -> CREATE FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .)
 
 
-state 478
+state 476
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name . PARABRE name PARCIERRA
 
-    PARABRE         shift and go to state 481
+    PARABRE         shift and go to state 479
 
 
-state 479
+state 477
 
     (161) alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .
 
@@ -15447,7 +15431,7 @@ state 479
     WHEN            reduce using rule 161 (alter_function -> ALTER FUNCTION name PARABRE variables_procedure PARCIERRA RETURN tipo_dato AS BEGIN instrucciones END PTCOMA .)
 
 
-state 480
+state 478
 
     (132) foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .
 
@@ -15455,23 +15439,23 @@ state 480
     PARCIERRA       reduce using rule 132 (foreign_key -> FOREIGN KEY PARABRE name PARCIERRA REFERENCE name PARABRE name PARCIERRA .)
 
 
-state 481
+state 479
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE . name PARCIERRA
     (209) name -> . NOMBRE
 
     NOMBRE          shift and go to state 103
 
-    name                           shift and go to state 482
+    name                           shift and go to state 480
 
-state 482
+state 480
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name . PARCIERRA
 
-    PARCIERRA       shift and go to state 483
+    PARCIERRA       shift and go to state 481
 
 
-state 483
+state 481
 
     (117) alter_add -> ADD CONSTRAINT name FOREIGN KEY PARABRE name PARCIERRA REFERENCES name PARABRE name PARCIERRA .
 
