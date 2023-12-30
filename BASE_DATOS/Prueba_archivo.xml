@@ -197,6 +197,7 @@
             <sentencias>
                 <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = 8;</sentencia>
+                <sentencia>SELECT @VALOR1;</sentencia>
             </sentencias>
         </procedure>
         <procedure name="procedure2">
@@ -206,6 +207,7 @@
             <sentencias>
                 <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
+                <sentencia>SELECT @VALOR1;</sentencia>
             </sentencias>
         </procedure>
         <procedure name="procedure3">
@@ -216,6 +218,8 @@
             <sentencias>
                 <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
+                <sentencia>SELECT @VALOR1;</sentencia>
+                <sentencia>SELECT @var2;</sentencia>
             </sentencias>
         </procedure>
 

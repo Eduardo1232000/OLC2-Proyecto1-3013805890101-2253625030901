@@ -234,11 +234,7 @@ def t_newline(t):
     #print(t.lexer.lineno)
     #print(t)
 
-def t_eof(t):
-    r'\Z'
-    print("Fin del analisis en la linea "+str(t.lexer.lineno))
-    t.lexer.lineno = 0 #PARA REINICIAR EL CONTADOR PARA LA SIGUIENTE LECURA
-    return None
+
 
 def t_NULLL(t):
     r'NULL'
@@ -251,6 +247,15 @@ def t_error(t):
     
     t.lexer.skip(1)
 
+def t_ANY_error(t):
+    print(f"Carácter inesperado '{t.value[0]}' en la línea {t.lexer.lineno}")
+    t.lexer.skip(1)
+    
+def t_eof(t):
+    r'\Z'
+    print("Fin del analisis en la linea "+str(t.lexer.lineno))
+    t.lexer.lineno = 0 #PARA REINICIAR EL CONTADOR PARA LA SIGUIENTE LECURA
+    return None
 
     
 
@@ -1648,6 +1653,15 @@ def p_caracteristica(t):
 def p_refererencia_tabla(t):
     ''' refererencia_tabla : REFERENCE name PARABRE name PARCIERRA'''
     t[0] = FORANEA(t[2],None,t[4],lexer.lineno,0)
+    t[0].text = str(t[1])+" "+ str(t[2].text)+str(t[3]) +str(t[4].text)+str(t[5])
+    nodo_arbol = NODO_ARBOL("LLAVE FORANEA",lexer.lineno,"red")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: REFERENCE",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(t[2].nodo_arbol)
+    nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(t[4].nodo_arbol)
+    nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black"))
+    t[0].nodo_arbol = nodo_arbol
+
 
 
 def p_caract_nulo(t):
@@ -2370,15 +2384,16 @@ def p_error(t):
             
         except:
             print("ERROR SINTACTICO EN LINEA "+str(lexer.lineno))
-            er = ERROR_LSS("SINTACTICO"," Error sintactico",lexer.lineno)
+            er = ERROR_LSS("SINTACTICO"," Error sintactico p",lexer.lineno)
             lista_error_lexico.append(er)
-            yacc.errok()
+            if(t !=None):       #EN LA ULTIMA LINEA Y HAY ERROR TIRA ERROR Y SE EJECUTA ESTO (SIN ESE IF, SE ENCIERRA EN BUCLE INFINITO)
+                yacc.errok()
 
     else:
         print("Error: Vacio")
         er = ERROR_LSS("SINTACTICO"," Error sintactico",lexer.lineno)
         lista_error_lexico.append(er)
-        yacc.errok()
+        #yacc.errok()
 
 import ply.yacc as yacc
 parser = yacc.yacc()
