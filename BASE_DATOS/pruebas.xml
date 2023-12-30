@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<database>
+    <base name="pruebas">
+        <tabla name="dos">
+            <campo>
+                <nombre>id</nombre>
+                <tipo>INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>true</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>name</nombre>
+                <tipo>CHAR(5)</tipo>
+                <nulo>true</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+            <campo>
+                <nombre>edad</nombre>
+                <tipo>INT</tipo>
+                <nulo>false</nulo>
+                <primarykey>false</primarykey>
+                <foreignkey>false</foreignkey>
+                <reference>false</reference>
+            </campo>
+        </tabla>
+    </base>
+</database>

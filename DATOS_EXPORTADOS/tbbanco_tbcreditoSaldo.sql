@@ -1,0 +1,26 @@
+USE tbbanco;
+
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-01-2023, 1, 1, 5, 0, 600, 0, 0, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 28-02-2023, 1, 1, 4400, 0, 600, 0, 0, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-03-2023, 1, 1, 3800, 0, 600, 0, 0, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 30-04-2023, 1, 1, 3200, 0, 600, 0, 0, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-05-2023, 1, 1, 2600, 0, 600, 0, 0, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 30-06-2023, 1, 1, 2600, 600, 600, 30, 1, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-07-2023, 1, 1, 3150, 1200.25, 600, 60, 2, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 30-08-2023, 1, 1, 3760, 1700, 600, 90, 3, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 30-09-2023, 1, 2, 4275, 2300, 600, 120, 4, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-10-2023, 1, 2, 4275, 2900, 600, 120, 4, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 30-11-2023, 1, 2, 4275, 3500, 700, 120, 4, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (1, 31-12-2023, 1, 2, 3575, 3575, 600, 120, 4, 5000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-01-2023, 1, 1, 15000, 0, 1250.25, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 28-02-2023, 1, 1, 14249.75, 0, 1250.25, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-03-2023, 1, 1, 12999.5, 0, 1250.25, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 30-04-2023, 1, 1, 11748.75, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-05-2023, 1, 1, 10498, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 30-06-2023, 1, 1, 9247.25, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-07-2023, 1, 1, 7996.5, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 30-08-2023, 1, 1, 6745.75, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 30-09-2023, 1, 2, 5495, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-10-2023, 1, 2, 4244.25, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 30-11-2023, 1, 2, 2993.5, 0, 1250.75, 0, 0, 15000, 1);
+INSERT INTO tbcreditoSaldo (credito, fechacorte, idmoneda, idcreditoestado, SaldoActual, SaldoMora, ValorCuota, DiasMora, alturamora, limite, idcalificacion) VALUES (2, 31-12-2023, 1, 2, 1742.75, 0, 1250.75, 0, 0, 15000, 1);

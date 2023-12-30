@@ -3,6 +3,7 @@ from FUNCIONES.ARBOL.VALOR import *
 from FUNCIONES.BORRAR import *
 from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.ERROR_LSS import *
+from FUNCIONES.ALTERAR_PROCEDURE import *
 
 
 class DROP_STATEMENT(Instruccion):

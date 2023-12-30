@@ -1114,9 +1114,9 @@ def p_alias(t):
     '''alias : name PUNTO name'''
     t[0] = ALIAS(t[1],t[3],lexer.lineno,0)
     nodo_arbol = NODO_ARBOL("ALIAS",lexer.lineno,"red")
-    nodo_arbol.agregar_hijo(t[1].text)
+    nodo_arbol.agregar_hijo(t[1].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(str(t[2]),lexer.lineno,"red"))
-    nodo_arbol.agregar_hijo(t[3].text)
+    nodo_arbol.agregar_hijo(t[3].nodo_arbol)
     t[0].nodo_arbol = nodo_arbol
 
 def p_continuacion_from(t):
@@ -1690,26 +1690,48 @@ def p_f_insert(t):
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: INTO",lexer.lineno,"black")) 
     nodo_arbol.agregar_hijo(t[3].nodo_arbol) 
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black"))
+
+    nodo_temporal = NODO_ARBOL("columnas",lexer.lineno,"blue")
+    padre = nodo_temporal
+    izq = None
+    der =None 
     for i in range(len(t[5])):
         objeto = t[5][i]
         if(isinstance(objeto,Instruccion) or isinstance(objeto,Expresion) or isinstance(objeto, TIPODATO)):
             t[0].text+=str(objeto.text)
-            if(i != 0):
-                nodo_arbol.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
-            nodo_arbol.agregar_hijo(objeto.nodo_arbol)
+            izq = NODO_ARBOL("columna",lexer.lineno,"skyblue")
+            izq.agregar_hijo(objeto.nodo_arbol)
+            padre.agregar_hijo(izq)
+            if(i < len(t[5])-1):
+                der = NODO_ARBOL("columnas",lexer.lineno,"blue")
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
+                padre.agregar_hijo(der)
+                padre = der
+            #nodo_arbol.agregar_hijo(objeto.nodo_arbol)
+    nodo_arbol.agregar_hijo(nodo_temporal)
 
     t[0].text+= str(t[6]) +" "+ str(t[7]) + " "+ str(t[8])                      #AGREGAMOS LOS VALORES SEPARADOS POR COMAS
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(NODO_ARBOL("VALUES",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(NODO_ARBOL("(",lexer.lineno,"black"))
+    nodo_temporal = NODO_ARBOL("valores",lexer.lineno,"green")
+    padre = nodo_temporal
+    izq = None
+    der = None
     for i in range(len(t[9])):
         objeto = t[9][i]
         if(isinstance(objeto,Instruccion) or isinstance(objeto,Expresion) or isinstance(objeto, TIPODATO)):
             t[0].text+=str(objeto.text)
-            if(i != 0):
-                nodo_arbol.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
-            nodo_arbol.agregar_hijo(objeto.nodo_arbol)
+            izq = NODO_ARBOL("valor",lexer.lineno,"green")
+            izq.agregar_hijo(objeto.nodo_arbol)
+            padre.agregar_hijo(izq)
 
+            if(i < len(t[9])-1):
+                der = NODO_ARBOL("valores",lexer.lineno,"green")
+                padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
+                padre.agregar_hijo(der)
+                padre = der
+    nodo_arbol.agregar_hijo(nodo_temporal)
     t[0].text+= str(t[10]) +str(t[11])
     nodo_arbol.agregar_hijo(NODO_ARBOL(")",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))

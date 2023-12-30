@@ -79,7 +79,7 @@ def agregar_columna(
 
             # Tipo
             tipo_campo = ET.SubElement(nuevo_campo, 'tipo', {'size': str(size)})  # Añadir el atributo 'size'
-            tipo_campo.text = tipo_columna
+            tipo_campo.text = tipo_columna.upper()
 
             # Nulo
             if nulo is not None:
@@ -99,7 +99,7 @@ def agregar_columna(
             # Reference
             if reference is not None:
                 reference_campo = ET.SubElement(nuevo_campo, 'reference')
-                reference_campo.text = reference
+                reference_campo.text = str(reference)
 
             # Encontrar el último campo existente
             ultima_posicion = len(tabla_existente.findall('campo'))

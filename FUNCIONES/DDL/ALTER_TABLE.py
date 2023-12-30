@@ -4,6 +4,7 @@ from FUNCIONES.ARBOL.AST import *
 from FUNCIONES.CREAR_BASE import *
 from FUNCIONES.ALTERAR_TABLA import *
 from FUNCIONES.ERROR_LSS import *
+import xml.etree.ElementTree as ET
 
 class ALTER_TABLE(Instruccion):        
     def __init__(self, nombre_tabla, operacion, linea, columna):
@@ -36,7 +37,30 @@ class ALTER_TABLE(Instruccion):
             nombre_tipo_dato = tipo_dato.tipo
             size = getattr(tipo_dato, 'size', 0) #OBTENEMOS EL VALOR SIZE SI EXISTE
 
-            if agregar_columna(base_activa, nombre_tabla, nombre_columna, tipo_dato.tipo, size=size, nulo=True, primarykey=False, foreignkey=False, reference=False):
+            if agregar_columna(base_activa, nombre_tabla, nombre_columna, tipo_dato.tipo, size=size, nulo="true", primarykey="false", foreignkey="false", reference="false"):
+                try:
+                    #AGREGAR EL DATO VACIO DE LA COLUMNA A LA BASE
+                    ruta = "BASE_DATOS/"+str(base_activa)+".xml"
+                    tree = ET.parse(ruta)
+                    root = tree.getroot()
+                    base_existente = None
+                    for base in root.findall('base'):
+                        for tabla in base:
+                            if tabla.attrib['name'] == nombre_tabla:
+                                for dato in tabla.findall("dato"):
+                                    dato_vacio = ET.SubElement(dato, 'valor')
+                    xml_string = xml.dom.minidom.parseString(ET.tostring(root)).toprettyxml(indent="    ")
+
+                    # Eliminar líneas en blanco
+                    lines = xml_string.split('\n')
+                    xml_string = '\n'.join(line for line in lines if line.strip())
+
+                    with open(ruta, 'w', encoding='utf-8') as archivo:
+                        archivo.write(xml_string)
+                                    
+                    #
+                except:
+                    print("ERROR AL AGREGAR CAMPO VACIO A CADA REGISTRO")
                 ast.escribir_en_consola(f"Se ha agregado la columna {nombre_columna} de tipo {nombre_tipo_dato} a la tabla {nombre_tabla}\n")
             else:
                 ast.escribir_en_consola(f"No se pudo agregar la columna {nombre_columna} a la tabla {nombre_tabla}\n")
