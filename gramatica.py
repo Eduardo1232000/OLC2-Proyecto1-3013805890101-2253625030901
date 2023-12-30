@@ -281,10 +281,8 @@ def p_instrucciones_lista(t):
                        | instruccion '''
 
     if len(t) == 2:
-        
         t[0] = [[t[1]], lista_error_lexico, lista_error_sintactico]
     else:
-
         t[2][0].insert(0, t[1])
         t[0] = t[2]
         #AGREGAR LOS ERRORES LEXICOS Y SINTACTICOS
@@ -2361,29 +2359,25 @@ def p_name(t):
     t[0].nodo_arbol = nodo_arbol                                        #LO GUARDO
 
 def p_error(t):
-    #print("ERROR")
-    #print(t)
     if t is None:
         try:
             print("Error sintáctico en '%s'" % t.value)
             er = ERROR_LSS("SINTACTICO",str(t.value)+" Genera un error en la sintaxis",lexer.lineno)
             global lista_error_lexico
             lista_error_lexico.append(er)
+            yacc.errok()
             
         except:
             print("ERROR SINTACTICO EN LINEA "+str(lexer.lineno))
             er = ERROR_LSS("SINTACTICO"," Error sintactico",lexer.lineno)
             lista_error_lexico.append(er)
+            yacc.errok()
 
-        '''while True:
-            tok = lexer.token()
-            print(tok.type)
-            if tok.type == 'PTCOMA':
-                break'''
     else:
         print("Error: Vacio")
-
-
+        er = ERROR_LSS("SINTACTICO"," Error sintactico",lexer.lineno)
+        lista_error_lexico.append(er)
+        yacc.errok()
 
 import ply.yacc as yacc
 parser = yacc.yacc()
@@ -2398,10 +2392,7 @@ def parses(data):
     parser = yacc.yacc()
     
     result = parser.parse(data)
-    #print("ERRORES LEXICOS")
-    #print(lista_error_lexico)
-    #print("ERRORES SINTACTICOS")
-   # print(lista_error_sintactico)
+
     if(result ==None):
         ls = []
         ls.append(None)
@@ -2409,6 +2400,3 @@ def parses(data):
         ls.append(lista_error_sintactico)
         return ls
     return result
-
-#input_text = input("ingrese la expresion: ")
-#parser.parse(input_text)
