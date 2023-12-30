@@ -7,7 +7,7 @@ from FUNCIONES.ERROR_LSS import *
 class DROP(Instruccion):
     def __init__(self, drop_type, nombre, linea, columna):
         super().__init__(linea, columna, "DROP")
-        self.drop_type = drop_type  # DATA BASE o TABLE
+        self.drop_type = drop_type.upper()  # DATA BASE o TABLE
         self.nombre = nombre
 
     def ejecutar(self, actual, globa, ast):
