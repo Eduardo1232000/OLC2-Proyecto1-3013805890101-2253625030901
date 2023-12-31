@@ -23,6 +23,7 @@ from FUNCIONES.DDL.DROP import*
 from FUNCIONES.DDL.UPDATE import * #UPDATE
 from FUNCIONES.DDL.UPDATE_MODIFICADO import * #UPDATE
 from FUNCIONES.DDL.DELETE import * #DROP
+from FUNCIONES.DDL.DELETE_MODIFICADO import *
 
 
 from FUNCIONES.DDL.INSERT_INTO import *
@@ -1781,21 +1782,17 @@ def p_set_expresion(t):
 
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
-    t[0] = DELETE(t[3], t[4], lexer.lineno, 0)
-    nodo_arbol = NODO_ARBOL("DELETE", lexer.lineno, "orange")
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: DELETE", lexer.lineno,"black"))
-    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM", lexer.lineno, "black"))
-    nodo_arbol.agregar_hijo(t[3].nodo_arbol)
-    t[0].nodo_arbol = nodo_arbol
+    t[0] = DELETE_MODIFICADO(t[3], t[4], lexer.lineno, 0)
 
 
 def p_condiciones_opt(t):
     ''' condiciones_opt : 
-                        | WHERE name operador_relacional expresion '''
+                        | WHERE expresion'''
     if len(t) == 1:
-        t[0] = None  # Sin condiciones
+        t[0] = None #no hay condiciones
     else:
-        t[0] = (t[2], t[3], t[4])  # Tupla: (nombre_columna, operador_relacional, valor)
+        t[0] = t[2]
+
 
 def p_operador_relacional(t):
     ''' operador_relacional : IGUAL
