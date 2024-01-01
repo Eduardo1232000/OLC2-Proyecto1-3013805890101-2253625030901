@@ -36,7 +36,7 @@ def resaltar_palabras(contenido_texto):
                 inicio = fin
 
     # Identificadores entre comillas
-    identificadores_comillas = re.findall(r'"[a-zA-Z0-9_-]+"', contenido_texto.get("1.0", "end-1c"))
+    identificadores_comillas = re.findall(r"'[^']*'", contenido_texto.get("1.0", "end-1c"))
     for identificador_comillas in identificadores_comillas:
         inicio = '1.0'
         while inicio:

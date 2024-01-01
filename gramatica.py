@@ -66,7 +66,7 @@ tokens = (
     'IGUAL', 'IGUALIGUAL', 'DIFERENTE', 'MAYORQUE', 'MENORQUE', 'MAYORIGUAL', 'MENORIGUAL', 
     'OR', 'AND', 'RNOT',
     'PARABRE', 'PARCIERRA', 'COMA', 'ARROBA', 'PTCOMA',
-    'NINT', 'NBIT', 'NDECIMAL', 'FECHA', 'FECHAHORA', 'CADENA', 
+    'NINT', 'NBIT', 'NDECIMAL', 'FECHAN', 'FECHAHORA', 'CADENA', 
     'NOMBRE', 'INT', 'BIT', 'DECIMAL','DATETIME', 'DATE',  'NCHAR', 'NVARCHAR',
     'NOT', 'NULL', 'PRIMARY', 'KEY', 'FOREIGN', 'REFERENCE', 
     'INSERT', 'INTO', 'VALUES', 'DELETE', 'UPDATE',
@@ -161,7 +161,7 @@ def t_FECHAHORA(t):
         print("VALOR FECHA HORA INCORRECTO %s" % t.value)
     return t
 
-def t_FECHA(t):
+def t_FECHAN(t):
     #r'\d\d\-\d\d\-\d\d\d\d'
     r'("|\')?\d{2}-\d{2}-\d{4}("|\')?'
     try:
@@ -2199,7 +2199,7 @@ def p_expresion(t):
                  | exp_if
                  | parentesis
                  | numero
-                 | FECHA
+                 | FECHAN
                  | FECHAHORA
                  | CADENA
                  | expr_select
@@ -2208,7 +2208,7 @@ def p_expresion(t):
                  
                  '''
     
-    if(t.slice[1].type == "FECHA"):
+    if(t.slice[1].type == "FECHAN"):
         t[0] = VALOR(t[1],"FECHA",lexer.lineno,0)
         t[0].text = str(t[1])
         nodo_arbol = NODO_ARBOL("EXPRESION",lexer.lineno,"red")            #CREO UN NODO CON TEXTO EXPRESION

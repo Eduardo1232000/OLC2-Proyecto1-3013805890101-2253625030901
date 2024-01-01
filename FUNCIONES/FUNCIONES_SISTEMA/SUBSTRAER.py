@@ -70,32 +70,36 @@ class SUBSTRAER(Expresion):
                     valor_exp1 = cadena
                 
                 lista_respuesta1 = []
-                lista_respuesta1.append(valor_exp1[0])
-                lista_respuesta1.append("SUBSTRAER")
+                if(valor_exp1 != None):
+                    print("a")
+                    print(valor_exp1)
+                    if(isinstance(valor_exp1,list)):
+                        lista_respuesta1.append(valor_exp1[0])
+                        lista_respuesta1.append("SUBSTRAER")
 
-                lst_vals = []
-                for i in range(len(valor_exp1[2])):
-                    val = valor_exp1[2][i]
-                    nueva_cadena = ""
-                    for j in range(int(num1), int(num2)):
-                        try:
-                            nueva_cadena+= val[j]
-                        except:
-                            nueva_cadena+=""
+                    lst_vals = []
+                    for i in range(len(valor_exp1[2])):
+                        val = valor_exp1[2][i]
+                        nueva_cadena = ""
+                        for j in range(int(num1), int(num2)):
+                            try:
+                                nueva_cadena+= val[j]
+                            except:
+                                nueva_cadena+=""
 
-                    lst_vals.append(str(nueva_cadena))
-                lista_respuesta1.append(lst_vals)
+                        lst_vals.append(str(nueva_cadena))
+                    lista_respuesta1.append(lst_vals)
 
-                val = VALOR("",TIPO.LISTA_COLUMNAS,self.linea,self.columna)
-                self.tipo = val.tipo
-                return lista_respuesta1
+                    val = VALOR("",TIPO.LISTA_COLUMNAS,self.linea,self.columna)
+                    self.tipo = val.tipo
+                    return lista_respuesta1
                 
 
             else:
                 ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Expresiones de tipo incorrecto!\n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","SUBSTRAER: Expresiones de tipo incorrecto",self.linea))
-
             
+            self.tipo = TIPODATO(TIPO.ERROR)
     def obtener_objeto_tabla(self,ruta,nomtabla):
         tree = ET.parse(ruta)
         root = tree.getroot()

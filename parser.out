@@ -185,7 +185,7 @@ Rule 179   expresion -> op_between
 Rule 180   expresion -> exp_if
 Rule 181   expresion -> parentesis
 Rule 182   expresion -> numero
-Rule 183   expresion -> FECHA
+Rule 183   expresion -> FECHAN
 Rule 184   expresion -> FECHAHORA
 Rule 185   expresion -> CADENA
 Rule 186   expresion -> expr_select
@@ -239,8 +239,8 @@ DROP                 : 118 119 121 122 157
 ELSE                 : 29 31 193
 END                  : 25 30 31 32 34 35 38 39 153 154 155 156 189
 EXEC                 : 44 45
-FECHA                : 183
 FECHAHORA            : 184
+FECHAN               : 183
 FOREIGN              : 117 132
 FROM                 : 65 148
 FUNCTION             : 34 35 155 156 158
@@ -1201,7 +1201,7 @@ state 25
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -1262,7 +1262,7 @@ state 25
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
     MULTIPLICACION  shift and go to state 45
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -1421,7 +1421,7 @@ state 35
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -1481,7 +1481,7 @@ state 35
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -1568,7 +1568,7 @@ state 38
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -1628,7 +1628,7 @@ state 38
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -1696,7 +1696,7 @@ state 39
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -1756,7 +1756,7 @@ state 39
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -2214,33 +2214,33 @@ state 55
 
 state 56
 
-    (183) expresion -> FECHA .
+    (183) expresion -> FECHAN .
 
-    BETWEEN         reduce using rule 183 (expresion -> FECHA .)
-    MAS             reduce using rule 183 (expresion -> FECHA .)
-    RESTA           reduce using rule 183 (expresion -> FECHA .)
-    MULTIPLICACION  reduce using rule 183 (expresion -> FECHA .)
-    DIVISION        reduce using rule 183 (expresion -> FECHA .)
-    AND             reduce using rule 183 (expresion -> FECHA .)
-    OR              reduce using rule 183 (expresion -> FECHA .)
-    IGUALIGUAL      reduce using rule 183 (expresion -> FECHA .)
-    DIFERENTE       reduce using rule 183 (expresion -> FECHA .)
-    MENORQUE        reduce using rule 183 (expresion -> FECHA .)
-    MAYORQUE        reduce using rule 183 (expresion -> FECHA .)
-    MENORIGUAL      reduce using rule 183 (expresion -> FECHA .)
-    MAYORIGUAL      reduce using rule 183 (expresion -> FECHA .)
-    NOMBRE          reduce using rule 183 (expresion -> FECHA .)
-    COMA            reduce using rule 183 (expresion -> FECHA .)
-    PTCOMA          reduce using rule 183 (expresion -> FECHA .)
-    FROM            reduce using rule 183 (expresion -> FECHA .)
-    THEN            reduce using rule 183 (expresion -> FECHA .)
-    BEGIN           reduce using rule 183 (expresion -> FECHA .)
-    PARCIERRA       reduce using rule 183 (expresion -> FECHA .)
-    AS              reduce using rule 183 (expresion -> FECHA .)
-    END             reduce using rule 183 (expresion -> FECHA .)
-    WHEN            reduce using rule 183 (expresion -> FECHA .)
-    ELSE            reduce using rule 183 (expresion -> FECHA .)
-    WHERE           reduce using rule 183 (expresion -> FECHA .)
+    BETWEEN         reduce using rule 183 (expresion -> FECHAN .)
+    MAS             reduce using rule 183 (expresion -> FECHAN .)
+    RESTA           reduce using rule 183 (expresion -> FECHAN .)
+    MULTIPLICACION  reduce using rule 183 (expresion -> FECHAN .)
+    DIVISION        reduce using rule 183 (expresion -> FECHAN .)
+    AND             reduce using rule 183 (expresion -> FECHAN .)
+    OR              reduce using rule 183 (expresion -> FECHAN .)
+    IGUALIGUAL      reduce using rule 183 (expresion -> FECHAN .)
+    DIFERENTE       reduce using rule 183 (expresion -> FECHAN .)
+    MENORQUE        reduce using rule 183 (expresion -> FECHAN .)
+    MAYORQUE        reduce using rule 183 (expresion -> FECHAN .)
+    MENORIGUAL      reduce using rule 183 (expresion -> FECHAN .)
+    MAYORIGUAL      reduce using rule 183 (expresion -> FECHAN .)
+    NOMBRE          reduce using rule 183 (expresion -> FECHAN .)
+    COMA            reduce using rule 183 (expresion -> FECHAN .)
+    PTCOMA          reduce using rule 183 (expresion -> FECHAN .)
+    FROM            reduce using rule 183 (expresion -> FECHAN .)
+    THEN            reduce using rule 183 (expresion -> FECHAN .)
+    BEGIN           reduce using rule 183 (expresion -> FECHAN .)
+    PARCIERRA       reduce using rule 183 (expresion -> FECHAN .)
+    AS              reduce using rule 183 (expresion -> FECHAN .)
+    END             reduce using rule 183 (expresion -> FECHAN .)
+    WHEN            reduce using rule 183 (expresion -> FECHAN .)
+    ELSE            reduce using rule 183 (expresion -> FECHAN .)
+    WHERE           reduce using rule 183 (expresion -> FECHAN .)
 
 
 state 57
@@ -2855,7 +2855,7 @@ state 77
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -2915,7 +2915,7 @@ state 77
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -3312,7 +3312,7 @@ state 90
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -3372,7 +3372,7 @@ state 90
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -3531,7 +3531,7 @@ state 103
     PTCOMA          reduce using rule 203 (name -> NOMBRE .)
     SET             reduce using rule 203 (name -> NOMBRE .)
     ARROBA          reduce using rule 203 (name -> NOMBRE .)
-    FECHA           reduce using rule 203 (name -> NOMBRE .)
+    FECHAN          reduce using rule 203 (name -> NOMBRE .)
     FECHAHORA       reduce using rule 203 (name -> NOMBRE .)
     CADENA          reduce using rule 203 (name -> NOMBRE .)
     IF              reduce using rule 203 (name -> NOMBRE .)
@@ -3766,7 +3766,7 @@ state 119
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -3828,7 +3828,7 @@ state 119
 
     PTCOMA          shift and go to state 178
     ARROBA          shift and go to state 183
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     IF              shift and go to state 85
@@ -3998,7 +3998,7 @@ state 124
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4058,7 +4058,7 @@ state 124
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4194,7 +4194,7 @@ state 128
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4255,7 +4255,7 @@ state 128
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
     MULTIPLICACION  shift and go to state 45
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4325,7 +4325,7 @@ state 129
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4385,7 +4385,7 @@ state 129
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4453,7 +4453,7 @@ state 130
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4513,7 +4513,7 @@ state 130
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4612,7 +4612,7 @@ state 132
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4672,7 +4672,7 @@ state 132
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4740,7 +4740,7 @@ state 133
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4800,7 +4800,7 @@ state 133
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4868,7 +4868,7 @@ state 134
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -4928,7 +4928,7 @@ state 134
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -4996,7 +4996,7 @@ state 135
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5056,7 +5056,7 @@ state 135
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5124,7 +5124,7 @@ state 136
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5184,7 +5184,7 @@ state 136
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5252,7 +5252,7 @@ state 137
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5312,7 +5312,7 @@ state 137
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5380,7 +5380,7 @@ state 138
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5440,7 +5440,7 @@ state 138
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5508,7 +5508,7 @@ state 139
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5568,7 +5568,7 @@ state 139
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5636,7 +5636,7 @@ state 140
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5696,7 +5696,7 @@ state 140
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5764,7 +5764,7 @@ state 141
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5824,7 +5824,7 @@ state 141
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -5892,7 +5892,7 @@ state 142
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -5952,7 +5952,7 @@ state 142
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -6060,7 +6060,7 @@ state 144
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6122,7 +6122,7 @@ state 144
 
     PARCIERRA       shift and go to state 208
     ARROBA          shift and go to state 183
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     IF              shift and go to state 85
@@ -6271,7 +6271,7 @@ state 148
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6331,7 +6331,7 @@ state 148
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -6461,7 +6461,7 @@ state 150
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6521,7 +6521,7 @@ state 150
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -6589,7 +6589,7 @@ state 151
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6649,7 +6649,7 @@ state 151
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -6740,7 +6740,7 @@ state 155
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6800,7 +6800,7 @@ state 155
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -6891,7 +6891,7 @@ state 158
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -6951,7 +6951,7 @@ state 158
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -8903,7 +8903,7 @@ state 230
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -8963,7 +8963,7 @@ state 230
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -9054,7 +9054,7 @@ state 234
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -9114,7 +9114,7 @@ state 234
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -9578,7 +9578,7 @@ state 262
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -9639,7 +9639,7 @@ state 262
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
     ARROBA          shift and go to state 183
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     IF              shift and go to state 85
@@ -9719,7 +9719,7 @@ state 263
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -9780,7 +9780,7 @@ state 263
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
     ARROBA          shift and go to state 183
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     IF              shift and go to state 85
@@ -10153,7 +10153,7 @@ state 272
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -10213,7 +10213,7 @@ state 272
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -10295,7 +10295,7 @@ state 274
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -10355,7 +10355,7 @@ state 274
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -10454,7 +10454,7 @@ state 276
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -10514,7 +10514,7 @@ state 276
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -10582,7 +10582,7 @@ state 277
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -10642,7 +10642,7 @@ state 277
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -10843,7 +10843,7 @@ state 283
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -10903,7 +10903,7 @@ state 283
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -10971,7 +10971,7 @@ state 284
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -11031,7 +11031,7 @@ state 284
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -11410,7 +11410,7 @@ state 302
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -11470,7 +11470,7 @@ state 302
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -11538,7 +11538,7 @@ state 303
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -11598,7 +11598,7 @@ state 303
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -11998,7 +11998,7 @@ state 323
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -12058,7 +12058,7 @@ state 323
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -13087,7 +13087,7 @@ state 372
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -13147,7 +13147,7 @@ state 372
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -14131,7 +14131,7 @@ state 421
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -14191,7 +14191,7 @@ state 421
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84
@@ -14773,7 +14773,7 @@ state 448
     (180) expresion -> . exp_if
     (181) expresion -> . parentesis
     (182) expresion -> . numero
-    (183) expresion -> . FECHA
+    (183) expresion -> . FECHAN
     (184) expresion -> . FECHAHORA
     (185) expresion -> . CADENA
     (186) expresion -> . expr_select
@@ -14833,7 +14833,7 @@ state 448
     (102) exr_menorigual -> . expresion MENORIGUAL expresion
     (103) exr_mayorigual -> . expresion MAYORIGUAL expresion
 
-    FECHA           shift and go to state 56
+    FECHAN          shift and go to state 56
     FECHAHORA       shift and go to state 57
     CADENA          shift and go to state 58
     ARROBA          shift and go to state 84

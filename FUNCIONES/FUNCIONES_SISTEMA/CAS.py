@@ -31,7 +31,7 @@ class CAS(Expresion):
                     ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Valor de tipo de dato incorrecto \n")
                     ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CAS: Valor de tipo incorrecto",self.linea))  
             elif(tipo_cambio == TIPO.NVARCHAR):
-                if(tipo_valor1 == TIPO.INT or tipo_valor1 == TIPO.BIT):
+                if(tipo_valor1 == TIPO.INT or tipo_valor1 == TIPO.BIT ):
                     if (valor1 > 250):
                         respuesta = VALOR("",TIPO.NVARCHAR,self.linea,self.columna)
                     else:
@@ -48,6 +48,6 @@ class CAS(Expresion):
                 ast.escribir_en_consola("("+str(self.linea)+")"+"ERROR: Tipo de dato incorrecto \n")
                 ast.insertar_error_semantico(ERROR_LSS("SEMANTICO","CAS: Tipo incorrecto",self.linea))
             #BORRAR
-            ast.escribir_en_consola("("+str(self.linea)+")"+"LA NUEVA CADENA ES: "+str(respuesta.obtener_valor(actual,globa,ast)) +"\n")
+            #ast.escribir_en_consola("("+str(self.linea)+")"+"LA NUEVA CADENA ES: "+str(respuesta.obtener_valor(actual,globa,ast)) +"\n")
             self.tipo = respuesta.tipo
             return respuesta.obtener_valor(actual,globa,ast)
