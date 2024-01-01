@@ -8,17 +8,17 @@ class EXP_AND(Expresion):
         self.expr2 = expr2
 
     def obtener_valor(self, actual, globa, ast):
-        print("AND-------------------------")
+        #print("AND-------------------------")
         #print(self.text)
         if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
             tipo_expr1 = self.expr1.tipo.obtener_tipo_dato()
             tipo_expr2 = self.expr2.tipo.obtener_tipo_dato()
-            print("---------------- VAL 1")
-            print(expr1)
-            print("------------------VAL 2")
-            print(expr2)
+            #print("---------------- VAL 1")
+            #print(expr1)
+            #print("------------------VAL 2")
+            #print(expr2)
 
             #print(tipo_expr1)
             #print(tipo_expr2)

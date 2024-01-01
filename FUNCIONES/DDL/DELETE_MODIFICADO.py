@@ -11,6 +11,7 @@ class DELETE_MODIFICADO(Instruccion):
         self.condicion = condicion  # ES UNA EXPRESION OPCIONAL
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if isinstance(self.tabla, Expresion) and isinstance(ast, AST):
             base_activa = ast.obtener_base_activa()
             ruta = "BASE_DATOS/" + str(base_activa) + ".xml"

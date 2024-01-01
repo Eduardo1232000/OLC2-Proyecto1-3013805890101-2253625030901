@@ -20,11 +20,11 @@ class DIFERENTE(Expresion):
                     val = VALOR("",TIPO.ERROR,self.linea,self.columna)
                     self.tipo = val.tipo
                     return None
-                print("SERA COLUMNA")
+                #print("SERA COLUMNA")
                 #VALIDACION DE COLUMNAS
                 nombre_base = ast.obtener_base_activa()
                 nombre_tabla = ast.obtener_tabla_activa()
-                print(nombre_tabla)
+                #print(nombre_tabla)
                 ruta = "BASE_DATOS/"+str(nombre_base)+".xml"
                 obj_tabla = self.obtener_objeto_tabla(ruta,nombre_tabla)
                 valor_exp1 = None

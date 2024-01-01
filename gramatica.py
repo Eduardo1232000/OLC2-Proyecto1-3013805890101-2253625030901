@@ -1607,7 +1607,7 @@ def p_use_base(t):
     '''use_base : USE name PTCOMA'''
     t[0] = USE_BASE(t[2],lexer.lineno,0)
     t[0].text = str(t[1]) +" "+str(t[2].text) +str(t[3])
-    nodo_arbol = NODO_ARBOL("USE BASE",lexer.lineno,"orange")
+    nodo_arbol = NODO_ARBOL("USE",lexer.lineno,"orange")
     nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: USE",lexer.lineno,"black"))
     nodo_arbol.agregar_hijo(t[2].nodo_arbol)
     nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
@@ -1759,6 +1759,43 @@ def p_f_insert(t):
 def p_f_update(t):
     ''' f_update : UPDATE name SET set_list WHERE expresion PTCOMA'''
     t[0] = UPDATE_MODIFICADO(t[2], t[4], t[6], lexer.lineno, 0)
+    t[0].text = str(t[1]) +" "+ str(t[2].text)+" "+str(t[3])+" "
+    nodo_arbol = NODO_ARBOL("UPDATE", lexer.lineno,"orange")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: UPDATE",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(t[2].nodo_arbol)
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: SET",lexer.lineno,"black"))
+    nodo_temporal = NODO_ARBOL("set list",lexer.lineno,"red")
+    padre = nodo_temporal
+    izq = None
+    der = None
+    for i in range(len(t[4])):
+        lst = t[4][i]
+        if(i != 0):
+            t[0].text += ","
+        t[0].text += lst[0].text + " = "
+        t[0].text += lst[2].text
+        izq = NODO_ARBOL("set expresion",lexer.lineno,"orange")
+        izq.agregar_hijo(lst[0].nodo_arbol)
+        izq.agregar_hijo(NODO_ARBOL("=",lexer.lineno,"black"))
+        izq.agregar_hijo(lst[2].nodo_arbol)
+        padre.agregar_hijo(izq)
+        if(i < len(t[4])-1):
+            der = NODO_ARBOL("set list",lexer.lineno,"red")
+            padre.agregar_hijo(NODO_ARBOL(",",lexer.lineno,"black"))
+            padre.agregar_hijo(der)
+            padre = der
+    nodo_arbol.agregar_hijo(nodo_temporal)
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(t[6].nodo_arbol)
+    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"black"))
+    t[0].nodo_arbol = nodo_arbol
+
+
+        #print(lst)
+
+    t[0].text += " "+str(t[5])
+    t[0].text += " "+str(t[6].text)
+    t[0].text += str(t[7])
 
 def p_set_list(t):
     ''' set_list : set_expresion
@@ -1783,6 +1820,21 @@ def p_set_expresion(t):
 def p_f_delete(t):
     ''' f_delete : DELETE FROM name condiciones_opt PTCOMA'''
     t[0] = DELETE_MODIFICADO(t[3], t[4], lexer.lineno, 0)
+    t[0].text = str(t[1]) +" "+str(t[2])+" "+str(t[3].text) +" "
+    nodo_arbol = NODO_ARBOL("DELETE",lexer.lineno,"orange")
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: DELETE",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: FROM",lexer.lineno,"black"))
+    nodo_arbol.agregar_hijo(t[3].nodo_arbol)
+    if(t[4] != None):
+        t[0].text +=" WHERE "+str(t[4].text)
+        nodo_arbol.agregar_hijo(NODO_ARBOL("P.R: WHERE",lexer.lineno,"black"))
+        nodo_arbol.agregar_hijo(t[4].nodo_arbol)
+    t[0].text += str(t[5])
+    
+
+    nodo_arbol.agregar_hijo(NODO_ARBOL(";",lexer.lineno,"orange"))
+    t[0].nodo_arbol = nodo_arbol
+
 
 
 def p_condiciones_opt(t):
@@ -1792,19 +1844,7 @@ def p_condiciones_opt(t):
         t[0] = None #no hay condiciones
     else:
         t[0] = t[2]
-
-
-def p_operador_relacional(t):
-    ''' operador_relacional : IGUAL
-                           | MENORQUE
-                           | MAYORQUE
-                           | MENORIGUAL
-                           | MAYORIGUAL
-                           | DIFERENTE '''
-    t[0] = t[1]
-
-    
-
+  
 
 def p_columnas(t):
     ''' columnas : name

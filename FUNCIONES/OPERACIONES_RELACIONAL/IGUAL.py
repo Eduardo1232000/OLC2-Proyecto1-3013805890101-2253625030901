@@ -10,7 +10,7 @@ class IGUAL(Expresion):
 
     def obtener_valor(self, actual, globa, ast):
         #print(self.text)
-        print("IGUAL====================")
+        #print("IGUAL====================")
         if(isinstance(self.expr1,Expresion) and isinstance(self.expr2,Expresion)):
             expr1 = self.expr1.obtener_valor(actual,globa,ast)
             expr2 = self.expr2.obtener_valor(actual,globa,ast)
@@ -24,7 +24,7 @@ class IGUAL(Expresion):
                     val = VALOR("",TIPO.ERROR,self.linea,self.columna)
                     self.tipo = val.tipo
                     return None
-                print("SERA COLUMNA")
+                #print("SERA COLUMNA")
                 
                 #VALIDACION DE COLUMNAS
                 nombre_base = ast.obtener_base_activa()
@@ -47,10 +47,10 @@ class IGUAL(Expresion):
                 else:
                     valor_exp2 = expr2
 
-                print(valor_exp1)
-                print(valor_exp2)
-                print(tipo_expr1)
-                print(tipo_expr2)
+                #print(valor_exp1)
+                #print(valor_exp2)
+                #print(tipo_expr1)
+                #print(tipo_expr2)
                 if(valor_exp1 == None or valor_exp2 == None):
                     self.tipo = TIPODATO(TIPO.ERROR)
                     return []
@@ -86,8 +86,8 @@ class IGUAL(Expresion):
                     res.append(lista_respuesta2)
                     val = VALOR("",TIPO.LISTA_COLUMNAS,self.linea,self.columna)
                     self.tipo = val.tipo
-                    print("RESPUESTA IGUAL")
-                    print(res)
+                    #print("RESPUESTA IGUAL")
+                    #print(res)
                     return res
                 elif(tipo_expr1 == TIPO.COLUMNA or tipo_expr1 == TIPO.ALIAS):
                     lista_respuesta1 = []

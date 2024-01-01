@@ -12,6 +12,7 @@ class UPDATE_MODIFICADO(Instruccion):
         self.where = where #ES UNA EXPRESION 
 
     def ejecutar(self, actual, globa, ast):
+        #print(self.text)
         if(isinstance(self.tabla, Expresion) and isinstance(ast, AST)):
             base_activa = ast.obtener_base_activa()
             ruta = "BASE_DATOS/" +str(base_activa)+".xml"
@@ -46,7 +47,7 @@ class UPDATE_MODIFICADO(Instruccion):
                 columna_actual = set[0].obtener_valor(actual,globa,ast)
                 valor = set[2].obtener_valor(actual,globa,ast)
                 posicion_col = self.buscar_pos_column(obj_tabla,columna_actual)
-                print("POSICION DE COLUMNA: "+str(columna_actual) +" = "+str(posicion_col)+", con update = "+str(valor))
+                #print("POSICION DE COLUMNA: "+str(columna_actual) +" = "+str(posicion_col)+", con update = "+str(valor))
                 if(posicion_col != None):
                     contador = -1
                     for val in obj_tabla.findall("dato"):

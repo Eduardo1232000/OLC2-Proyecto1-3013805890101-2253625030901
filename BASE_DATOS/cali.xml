@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='us-ascii'?>
 <database>
     <base name="cali">
         <tabla name="tabla1">
@@ -24,7 +24,7 @@
                 <nulo>True</nulo>
                 <primarykey>False</primarykey>
                 <foreignkey>False</foreignkey>
-                <reference/>
+                <reference />
             </campo>
             <campo>
                 <nombre>extra2</nombre>
@@ -37,61 +37,61 @@
             <dato>
                 <valor>1</valor>
                 <valor>Hola</valor>
-                <valor/>
-                <valor/>
+                <valor />
+                <valor />
             </dato>
             <dato>
                 <valor>2</valor>
                 <valor>Hola2</valor>
-                <valor/>
-                <valor/>
+                <valor>actual</valor>
+                <valor>6</valor>
             </dato>
             <dato>
                 <valor>3</valor>
                 <valor>Hola3</valor>
-                <valor/>
-                <valor/>
+                <valor>actual</valor>
+                <valor>6</valor>
             </dato>
         </tabla>
         <procedure name="procedure1">
             <parameters>
-                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var1" type="INT" size="0" />
             </parameters>
             <sentencias>
                 <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
-                <sentencia>IF @VALOR1 &gt;= 6 THEN SELECT &quot;ES MAYOR A 6&quot;; ELSE SELECT &quot;ES DIFERENTE DE 6&quot;; END IF;</sentencia>
+                <sentencia>IF @VALOR1 &gt;= 6 THEN SELECT "ES MAYOR A 6"; ELSE SELECT "ES DIFERENTE DE 6"; END IF;</sentencia>
             </sentencias>
         </procedure>
         <procedure name="procedure2">
             <parameters>
-                <parameter name="var1" type="INT" size="0"/>
+                <parameter name="var1" type="INT" size="0" />
             </parameters>
             <sentencias>
                 <sentencia>DECLARE @VALOR1 INT;</sentencia>
                 <sentencia>SET @VALOR1 = @var1;</sentencia>
-                <sentencia>IF @VALOR1 &gt;= 6 THEN SELECT &quot;ES MAYOR A 6&quot;; IF @VALOR1 == 9 THEN SELECT &quot;ES 9&quot;; END IF; ELSE SELECT &quot;ES DIFERENTE DE 6&quot;; END IF;</sentencia>
+                <sentencia>IF @VALOR1 &gt;= 6 THEN SELECT "ES MAYOR A 6"; IF @VALOR1 == 9 THEN SELECT "ES 9"; END IF; ELSE SELECT "ES DIFERENTE DE 6"; END IF;</sentencia>
             </sentencias>
         </procedure>
         <funcion name="fn_retornaalturamora">
-            <retorno type="NVARCHAR" size="100"/>
+            <retorno type="NVARCHAR" size="100" />
             <parameters>
-                <parameter name="diasmora" type="INT" size="0"/>
+                <parameter name="diasmora" type="INT" size="0" />
             </parameters>
             <sentencias>
                 <sentencia>DECLARE @alturamora nvarchar(100);</sentencia>
-                <sentencia>IF (@diasmora &gt; 0) &amp;&amp; (@diasmora &lt; 30) THEN SET @alturamora = &quot;Al dia&quot;; END IF;</sentencia>
-                <sentencia>IF (@diasmora &gt;= 30) &amp;&amp; (@diasmora &lt; 60) THEN SET @alturamora = &quot;Altura Mora 2&quot;; END IF;</sentencia>
-                <sentencia>IF (@diasmora &gt;= 30) &amp;&amp; (@diasmora &lt; 60) THEN SET @alturamora = &quot;Altura Mora 3&quot;; END IF;</sentencia>
-                <sentencia>IF (@diasmora &gt;= 60) &amp;&amp; (@diasmora &lt; 90) THEN SET @alturamora = &quot;Altura Mora 4&quot;; END IF;</sentencia>
-                <sentencia>IF (@diasmora &gt;= 90) &amp;&amp; (@diasmora &lt; 120) THEN SET @alturamora = &quot;Altura Mora 5&quot;; END IF;</sentencia>
+                <sentencia>IF (@diasmora &gt; 0) &amp;&amp; (@diasmora &lt; 30) THEN SET @alturamora = "Al dia"; END IF;</sentencia>
+                <sentencia>IF (@diasmora &gt;= 30) &amp;&amp; (@diasmora &lt; 60) THEN SET @alturamora = "Altura Mora 2"; END IF;</sentencia>
+                <sentencia>IF (@diasmora &gt;= 30) &amp;&amp; (@diasmora &lt; 60) THEN SET @alturamora = "Altura Mora 3"; END IF;</sentencia>
+                <sentencia>IF (@diasmora &gt;= 60) &amp;&amp; (@diasmora &lt; 90) THEN SET @alturamora = "Altura Mora 4"; END IF;</sentencia>
+                <sentencia>IF (@diasmora &gt;= 90) &amp;&amp; (@diasmora &lt; 120) THEN SET @alturamora = "Altura Mora 5"; END IF;</sentencia>
                 <sentencia>RETURN @alturamora;</sentencia>
             </sentencias>
         </funcion>
         <procedure name="sp_actualizaalturamora">
             <parameters>
-                <parameter name="credito" type="INT" size="0"/>
-                <parameter name="diasmora" type="INT" size="0"/>
+                <parameter name="credito" type="INT" size="0" />
+                <parameter name="diasmora" type="INT" size="0" />
             </parameters>
             <sentencias>
                 <sentencia>DECLARE @alturamora int;</sentencia>
@@ -103,11 +103,11 @@
             </sentencias>
         </procedure>
         <funcion name="sp_calculacuota">
-            <retorno type="DECIMAL" size="0"/>
+            <retorno type="DECIMAL" size="0" />
             <parameters>
-                <parameter name="saldo" type="DECIMAL" size="0"/>
-                <parameter name="plazo" type="INT" size="0"/>
-                <parameter name="diasmora" type="INT" size="0"/>
+                <parameter name="saldo" type="DECIMAL" size="0" />
+                <parameter name="plazo" type="INT" size="0" />
+                <parameter name="diasmora" type="INT" size="0" />
             </parameters>
             <sentencias>
                 <sentencia>DECLARE @cuota decimal;</sentencia>
@@ -116,7 +116,7 @@
                 <sentencia>if (@saldo &gt; 15000) &amp;&amp; (@diasmora &gt; 30) then set @cuota = (@saldo / @plazo) * 0.65; END IF;</sentencia>
                 <sentencia>if (@saldo &gt; 25000) &amp;&amp; (@diasmora &gt; 60) THEN set @cuota = (@saldo / @plazo) * 0.7; END IF;</sentencia>
                 <sentencia>if (@saldo &lt; 15000) &amp;&amp; (@diasmora &lt; 30) THEN set @cuota = (@saldo / @plazo) * 0.15; END IF;</sentencia>
-                <sentencia>CASE WHEN (@cuota &gt; 1000) &amp;&amp; (@cuota &lt; 1500) THEN SET @ajuste = 75;SELECT &quot;HOLA&quot;;WHEN @cuota &gt;= 1500 &amp;&amp; @cuota &lt; 2000 THEN SET @ajuste = 125;SELECT &quot;HOLA&quot;;WHEN @cuota &gt; 0 &amp;&amp; @cuota &lt; 1000 THEN SET @ajuste = 25;SELECT &quot;HOLA&quot;;WHEN @cuota &gt;= 2000 THEN SET @ajuste = 150;SELECT &quot;HOLA&quot;; ELSE THEN SET @ajuste = 0;SELECT &quot;HOLAs&quot;;END;</sentencia>
+                <sentencia>CASE WHEN (@cuota &gt; 1000) &amp;&amp; (@cuota &lt; 1500) THEN SET @ajuste = 75;SELECT "HOLA";WHEN @cuota &gt;= 1500 &amp;&amp; @cuota &lt; 2000 THEN SET @ajuste = 125;SELECT "HOLA";WHEN @cuota &gt; 0 &amp;&amp; @cuota &lt; 1000 THEN SET @ajuste = 25;SELECT "HOLA";WHEN @cuota &gt;= 2000 THEN SET @ajuste = 150;SELECT "HOLA"; ELSE THEN SET @ajuste = 0;SELECT "HOLAs";END;</sentencia>
                 <sentencia>SET @cuota = @cuota - @ajuste;</sentencia>
                 <sentencia>RETURN @cuota;</sentencia>
             </sentencias>
